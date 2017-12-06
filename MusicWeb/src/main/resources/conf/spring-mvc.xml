@@ -27,7 +27,7 @@
 	<mvc:annotation-driven />
 	
 	<!-- 组件扫描 -->
-	<context:component-scan base-package="com.music.*" />
+	<context:component-scan base-package="music.*" />
 	
 	<!-- task任务扫描注解驱动 -->
 	<task:annotation-driven />

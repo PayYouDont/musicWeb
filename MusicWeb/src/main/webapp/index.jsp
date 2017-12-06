@@ -19,11 +19,13 @@
 	var basePath  = '<%=basePath%>';
 </script>
 <script type="text/javascript" src="<%=basePath%>js/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/jquery.jsonp.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/jquery-ui.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/canvas.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/mousewheel.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/scroll.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/xiami.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/index.js"></script>
 </head>
 <body>
 	<!--模糊画布-->
@@ -36,7 +38,7 @@
 		<div class="top">
 			<a href="#" class="logo"></a>
 			<div class="search">
-				<div type="submit" class="searchBtn"></div>
+				<div type="submit" class="searchBtn" onclick="searchMusic();"></div>
 				<input type="text" class="searchTxt">
 			</div>
 			<div class="mainNav">

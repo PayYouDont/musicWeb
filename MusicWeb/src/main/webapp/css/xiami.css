@@ -107,7 +107,7 @@ a {
 	width: 18px;
 	height: 28px;
 	padding: 1px 6px;
-	background: url("../css/images/sbtn.png") no-repeat 10 50%;
+	background: url("../css/images/sbtn.png") no-repeat 10px 50%;
 	cursor: pointer;
 }
 
