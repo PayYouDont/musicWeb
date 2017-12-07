@@ -39,4 +39,17 @@ public class MusicApiAction {
 			return JsonWrapper.failureWrapper("搜索失败");
 		}
 	}
+	@RequestMapping("/getlyr")
+	@ResponseBody
+	public HashMap<String, Object> getlyr(String sid) {
+		StringBuffer sb = new StringBuffer();
+		String urlStr = "http://music.qq.com/miniportal/static/lyric/"+(new Integer(sid)%100)+"/"+sid+".xml";
+		try {
+			sb = service.search(urlStr,"GB2312");
+			return JsonWrapper.successWrapper(sb);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JsonWrapper.failureWrapper("获取失败");
+		}
+	}
 }

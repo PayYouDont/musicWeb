@@ -51,13 +51,14 @@ $(function() {
 
 			});
 	/* 点击列表播放按钮 */
-	$(".start em").click(function() {
-						/* 开始放歌 */
+	/*$(".start em").click(function() {
+						 开始放歌 
 						var sid = $(this).attr("sonN");
+						//获取歌曲
 						songIndex = sid;
 						$("#audio").attr("src", 'songs/' + sid + '.mp3');
 						audio = document.getElementById("audio");// 获得音频元素
-						/* 显示歌曲总长度 */
+						 显示歌曲总长度 
 						if (audio.paused) {
 							audio.play();
 						} else
@@ -68,11 +69,11 @@ $(function() {
 						audio.addEventListener('play', audioPlay, false);
 						audio.addEventListener('pause', audioPause, false);
 						audio.addEventListener('ended', audioEnded, false);
-						/* 播放歌词 */
+						 播放歌词 
 						getReady(sid);// 准备播放
 						mPlay();// 显示歌词
 						// 对audio元素监听pause事件
-						/* 外观改变 */
+						 外观改变 
 						var html = "";
 						html += '<div class="manyou">';
 						html += '	<a href="#" class="manyouA">漫游相似歌曲</a>';
@@ -93,14 +94,14 @@ $(function() {
 						$(this).parent().parent().parent().css(
 								"background-color", "#f0f0f0");
 
-						/* 底部显示歌曲信息 */
+						 底部显示歌曲信息 
 						var songName = $(this).parent().parent().find(".colsn")
 								.html();
 						var singerName = $(this).parent().parent().find(
 								".colcn").html();
 						$(".songName").html(songName);
 						$(".songPlayer").html(singerName);
-						/* 换右侧图片 */
+						 换右侧图片 
 						$("#canvas1").attr("src", 'images/' + sid + '.jpg');
 						$("#canvas1").load(function() {
 							loadBG();
@@ -111,7 +112,7 @@ $(function() {
 							opacity : "1"
 						}, 1000);
 
-					});
+					});*/
 	/* 双击播放 */
 	$(".songList").dblclick(function() {
 		var sid = $(this).find(".start em").html();
@@ -333,7 +334,7 @@ function sToArray(str)// 解析如“[02:02][00:24]没想到是你”的字符�
 	}
 	if (left != 0) {
 		for (var i = 0; i < leftAr.length; i++) {
-			lytext[tflag] = str.substring(str.lastIndexOf("]") + 1);// 放歌词
+			lytext[tflag] = str.substring(str.lastIndexOf("]"));// 放歌词
 			lytime[tflag] = conSeconds(str.substring(leftAr[i] + 1,
 					leftAr[i] + 6));// 放时间
 			tflag++;
