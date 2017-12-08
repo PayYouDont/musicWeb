@@ -109,12 +109,12 @@ public class UploaderAction {
 			
 		}
 	}
-	private static String getTempFilePath() {  
+	public static String getTempFilePath() {  
        // return "C:\\Users\\Pay\\Desktop\\文档\\part";  
 		 return "L:\\part\\";  
     }  
       
-    private static String getTempFilePath1() {  
+    public static String getTempFilePath1() {  
         return "L:\\data\\";  
     }
     //获取文件夹中的所有目录
