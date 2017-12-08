@@ -1,6 +1,12 @@
 $(function(){
 	searchMusicByKey();
+	toLogin();
 });
+function toLogin(){
+	$(".loginA").off("click").on("click",function(){
+		window.location.href = basePath+"rest/userAction/toLogin";
+	})
+}
 //键盘回车搜索
 function searchMusicByKey(){
 	$(".searchTxt").keydown(function(e){
