@@ -14,6 +14,7 @@ import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -24,17 +25,18 @@ import music.user.controller.UploaderAction;
 
 public class excelRead {
 	
-	public static void main(String[] args) throws Exception {
-		name("C:\\Users\\Pay\\Desktop\\文档\\02 已审\\02 已审\\11月城市车辆运营费用-阜阳.xlsx","城市运营供应商汇总");
-	}
-	public static void name(String path,String sheetName) throws Exception{
+/*	public static void main(String[] args) throws Exception {
+		name("","城市运营供应商汇总");
+	}*/
+	public static void createExcel(String path,String sheetName) throws Exception{
 		List<String> fileNames = UploaderAction.getFileName();
 		InputStream is = null;
 		List<String> ls = new ArrayList<String>();
 		try {
+			int index = 0;
 			for(String fns:fileNames) {
-				path = UploaderAction.getTempFilePath1()+fns;
-				File sourcefile = new File(path);
+				String filepath = UploaderAction.getTempFilePath1()+fns;
+				File sourcefile = new File(filepath);
 				is = new FileInputStream(sourcefile);
 				Workbook wb = WorkbookFactory.create(is);// 此WorkbookFactory在POI-3.10版本中使用需要添加dom4j
 				int sheetCounts = wb.getNumberOfSheets(); // Sheet的数量
@@ -43,10 +45,12 @@ public class excelRead {
 					if (!sheetName.equals(sheet.getSheetName())) {
 						continue;
 					}
+					index++;
 					int lastRowNum = sheet.getLastRowNum();
 					Row row = null; // 兼容
 					Cell cell = null; // 兼容
-					for (int rowNum =2; rowNum <= lastRowNum; rowNum++) {
+					
+					for (int rowNum = index==1?1:2; rowNum <= lastRowNum; rowNum++) {
 						row = sheet.getRow(rowNum);
 						if (row == null) {
 							continue;
@@ -79,7 +83,7 @@ public class excelRead {
 
 			}
 			System.out.println(ls);
-			getExcelInfo("",ls);
+			getExcelInfo(path,ls,sheetName);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -91,6 +95,7 @@ public class excelRead {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static String getCellValue(Cell cell, int cellType) {
 		switch (cellType) {
 		case Cell.CELL_TYPE_STRING: // 文本
@@ -131,45 +136,29 @@ public class excelRead {
 		}
 	}
 	
-	public static String getExcelInfo(String path , List<String> list)throws Exception {
+	@SuppressWarnings("resource")
+	public static String getExcelInfo(String path , List<String> list,String sheetName)throws Exception {
 		Workbook workbook = null;
 		try {
 			workbook = new XSSFWorkbook();// HSSFWorkbook();//WorkbookFactory.create(inputStream);
 			if (workbook != null) {
-				Sheet sheet = workbook.createSheet("错误数据");
-				Row row0 = sheet.createRow(0);
-				/*for (int i = 0; i < 19; i++) {
-					Cell cell_1 = row0.createCell(i, Cell.CELL_TYPE_STRING);
-					// CellStyle style = getStyle(workbook);
-					// cell_1.setCellStyle(style);
-					if (i == 0) {
-						cell_1.setCellValue("任务类型");
-					} else if (i == 1) {
-						cell_1.setCellValue("区/县");
-					} else if (i == 2) {
-						cell_1.setCellValue("乡/镇");
-					} else if (i == 3) {
-						cell_1.setCellValue("村");
-					} else if (i == 4) {
-						cell_1.setCellValue("内容");
-					}
-					sheet.autoSizeColumn(i);
-				}*/
-				
-				
-				
-				for (int rowNum = 1; rowNum <= list.size(); rowNum++) {
-					Row row = sheet.createRow(rowNum);
-					for (int i = 0; i < list.size(); i++) {
-						String[] arr =list.get(i).split(",");
-						for (String string : arr) {
-							Cell cell = row.createCell(i, Cell.CELL_TYPE_STRING);
-							sheet.setColumnWidth(i, 20 * 256);
-							cell.setCellValue(string);
-						}
+				Sheet sheet = workbook.createSheet(sheetName);
+				CellStyle cellStyle = workbook.createCellStyle(); 
+			    // 设置字体  
+		        Font font = workbook.createFont();  
+		        font.setFontHeightInPoints((short)13); //字体高度 
+		        cellStyle.setFont(font);
+				for(int k=0;k<list.size();k++) {
+					Row row0 = sheet.createRow(k);
+					String[] firstRow = list.get(k).split(",");
+					for (int i = 0; i < firstRow.length; i++) {
+						Cell cell_1 = row0.createCell(i, Cell.CELL_TYPE_STRING);
+						cell_1.setCellValue(firstRow[i]);
+						sheet.setColumnWidth(i,20 * 256);
+						sheet.autoSizeColumn(i);
 					}
 				}
-				FileOutputStream outputStream = new FileOutputStream("D:\\abc2.xlsx");
+				FileOutputStream outputStream = new FileOutputStream(path);
 				workbook.write(outputStream);
 				outputStream.flush();
 				outputStream.close();
@@ -181,7 +170,4 @@ public class excelRead {
 			throw e;
 		}
 	}
-	
-	
-	
 }

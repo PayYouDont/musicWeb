@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
@@ -20,13 +20,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import music.user.service.UploaderService;
 import music.util.ExcelUtil;
 import music.util.JsonWrapper;
 
 @Controller
 @RequestMapping("/uploaderAction")
 public class UploaderAction {
-	private String downpath;
+	@Resource(name = "uploaderService")
+	private UploaderService service;
 	@RequestMapping("/upload")
 	@ResponseBody
 	public HashMap<String, Object> upload(MultipartFile file,  String chunks,  String chunk,String name) throws Exception { 
@@ -34,7 +36,10 @@ public class UploaderAction {
 			 if (file!=null) {   
 				//判断上传的文件是否被分片  
                 if(null == chunks && null == chunk){  
-                	File destTempFile = new File(getTempFilePath1(), name);  
+                	File destTempFile = new File(getTempFilePath1(), name);
+                	if (!destTempFile.exists()) {  
+                		destTempFile.mkdirs();  
+                    } 
                 	file.transferTo(destTempFile);
                 	destTempFile.createNewFile();  
                     return JsonWrapper.successWrapper("上传完毕");
@@ -61,7 +66,10 @@ public class UploaderAction {
                 // 将所有分片文件合并到一个文件中  
                 if (uploadDone) {  
                 	synchronized (this) {  
-                		File destTempFile = new File(getTempFilePath1(), name);  
+                		File destTempFile = new File(getTempFilePath1(), name);
+                		if (!destTempFile.exists()) {  
+                    		destTempFile.mkdirs();  
+                        } 
                         for (int i = 0; i < Integer.parseInt(chunks); i++) {  
                             File partFile = new File(tempFileDir, name + "_" + i + ".part");  
                             FileOutputStream destTempfos = new FileOutputStream(destTempFile, true);  
@@ -80,42 +88,62 @@ public class UploaderAction {
 		}
 	}
 	
-	public void creatExcel(HttpServletRequest request,String sheetName,Sheet sheet) {
-		/*List<String> names = getFileName();
-		File file = new File(getTempFilePath1());*/
-		String ctxDir = request.getSession().getServletContext().getRealPath(String.valueOf(File.separatorChar));
-		String path="printExclFile\\newfile.xlsx";
-		String excelPath = ctxDir + path;
-		Workbook workbook = null;
+	@RequestMapping("/download")
+	@ResponseBody
+	public HashMap<String, Object> download(HttpServletRequest request,String sheetName) {
+		/*String ctxDir = request.getSession().getServletContext().getRealPath(String.valueOf(File.separatorChar));
+		String path="printExclFile"+File.separatorChar+"newExcel.xlsx";
+		String excelPath = ctxDir + path;*/
+		String newFileName = "newfile.xlsx";
+		String path= downLoadPath()+newFileName;
 		try {
-			workbook =  new XSSFWorkbook();
-			if (workbook != null) {
-				Sheet newsheet = workbook.createSheet(sheetName);
-				CellStyle cellStyle = workbook.createCellStyle(); 
-				//水平布局，居中
-				cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-			    // 设置字体  
-		        Font font = workbook.createFont();  
-		        font.setFontHeightInPoints((short)13); //字体高度 
-		        cellStyle.setFont(font);
-		        
-				Row row0 = sheet.createRow(0);
-				int maxCol = ExcelUtil.maxCol(sheet);
-				for (int i = 0; i < maxCol; i++) {
-					
+			service.createExcel(path, sheetName);
+			File destTempFile = new File(getTempFilePath1());//删除上传文件
+			if(destTempFile.isDirectory()) {
+				File[] files = destTempFile.listFiles();
+				for (File file : files) {
+					file.delete();
 				}
 			}
+        	if (destTempFile.exists()) {  
+        		destTempFile.delete();  
+            } 
+        	String OS = System.getProperty("os.name").toLowerCase();
+    		if(OS.toLowerCase().indexOf("windows")!=-1) {
+    			newFileName = "download\\"+newFileName;
+    		}else {
+    			newFileName = "download/"+newFileName;
+    		}
+			return JsonWrapper.successWrapper(newFileName);
 		}catch(Exception e) {
-			
+			e.printStackTrace();
+			return JsonWrapper.successWrapper("");
 		}
 	}
 	public static String getTempFilePath() {  
-       // return "C:\\Users\\Pay\\Desktop\\文档\\part";  
-		 return "L:\\part\\";  
+		String OS = System.getProperty("os.name").toLowerCase();
+		if(OS.toLowerCase().indexOf("windows")!=-1) {
+			return "D:\\upload\\part";
+		}else {
+			return "/usr/upload/part";
+		}
     }  
       
     public static String getTempFilePath1() {  
-        return "L:\\data\\";  
+    	String OS = System.getProperty("os.name").toLowerCase();
+		if(OS.toLowerCase().indexOf("windows")!=-1) {
+			return "D:\\upload\\";
+		}else {
+			return "/usr/upload/";
+		} 
+    }
+    public static String downLoadPath() {  
+    	String OS = System.getProperty("os.name").toLowerCase();
+		if(OS.toLowerCase().indexOf("windows")!=-1) {
+			return "D:\\download\\";
+		}else {
+			return "/usr/download/";
+		} 
     }
     //获取文件夹中的所有目录
     public static List<String> getFileName() {
@@ -133,11 +161,4 @@ public class UploaderAction {
     	 }
     	 return fnames;
     }
-	@RequestMapping("/download")
-	@ResponseBody
-	public HashMap<String,Object> download(HttpServletRequest request){
-		String path = "";
-		return JsonWrapper.successWrapper(path);
-	}
-	
 }

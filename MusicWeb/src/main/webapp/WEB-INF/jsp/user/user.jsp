@@ -28,10 +28,12 @@
 	    <div id="thelist" class="uploader-list"></div>
 	    <div class="btns">
 	        <div id="picker">选择文件</div>
+
 	        <button id="ctlBtn" class="btn btn-default" onclick="uploadTest()">开始上传</button>
 	    </div>
 	</div>
 	<div class="down">
+		<input type="text" style="width:260px" placeholder="输入sheet名(如:城市运营供应商汇总)" class="form-control" id="sheet"/>
 		<button id="getBtn" class="btn btn-default" style="display: none;" onclick="getFile()">生成文件</button>
 	</div>
 <script type="text/javascript" src="<%=basePath%>js/user/uploader.js"></script>

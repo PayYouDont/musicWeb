@@ -82,13 +82,22 @@ function uploadTest() {
     uploader.upload();
 }
 function getFile(){
+	var sheetName = $("#sheet").val();
+	if(sheetName.trim()==""){
+		alert("sheet名字不能为空!")
+		return;
+	}
 	$.ajax({
 		url:basePath + "rest/uploaderAction/download",
 		type:"post",
+		data:{sheetName:sheetName},
 		dataType:"json",
 		success:function(json){
 			if(json.success){
+				 $("#getBtn").hide();
 				var path = json.data;
+				path = basePath.substring(0,basePath.length-9)+path;
+				console.log(path);
 				$(".down").append("<a href='"+path+"'><button  class='btn btn-default' >下载</button></a>")
 			}
 		},

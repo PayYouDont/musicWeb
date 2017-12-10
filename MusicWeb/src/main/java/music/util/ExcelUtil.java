@@ -2,6 +2,7 @@ package music.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,10 +14,14 @@ import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import music.user.controller.UploaderAction;
 
 public class ExcelUtil {
 	/**
@@ -123,6 +128,7 @@ public class ExcelUtil {
 	 * @author peiyongdong
 	 * @date 2017年12月8日 下午3:51:03
 	 */
+	@SuppressWarnings("deprecation")
 	public static String getCellValue(Cell cell, int cellType) {
 		switch (cellType) {
 		case Cell.CELL_TYPE_STRING: // 文本
@@ -158,12 +164,61 @@ public class ExcelUtil {
 			return String.valueOf(cell.getBooleanCellValue());
 		case Cell.CELL_TYPE_BLANK: // 空白
 			return "";
-		/*
-		 * case Cell.CELL_TYPE_ERROR: //错误 cellValue = "错误"; break; case
-		 * Cell.CELL_TYPE_FORMULA: //公式 cellValue = "错误"; break;
-		 */
 		default:
 			return "";
+		}
+	}
+	/**
+	 * 合并excel
+	 * @param path
+	 * @param list
+	 * @param sheetName
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("resource")
+	public static String writeExcel(String path , List<String> list,String sheetName)throws Exception {
+		Workbook workbook = null;
+		try {
+			workbook = new XSSFWorkbook();// HSSFWorkbook();//WorkbookFactory.create(inputStream);
+			if (workbook != null) {
+				Sheet sheet = workbook.createSheet(sheetName);
+				CellStyle cellStyle = workbook.createCellStyle(); 
+			    // 设置字体  
+		        Font font = workbook.createFont();  
+		        font.setFontHeightInPoints((short)13); //字体高度 
+		        cellStyle.setFont(font);
+				for(int k=0;k<list.size();k++) {
+					Row row0 = sheet.createRow(k);
+					String[] firstRow = list.get(k).split(",");
+					for (int i = 0; i < firstRow.length; i++) {
+						Cell cell_1 = row0.createCell(i, Cell.CELL_TYPE_STRING);
+						cell_1.setCellValue(firstRow[i]);
+						sheet.setColumnWidth(i,15 * 256);
+						sheet.autoSizeColumn(i);
+						if(k==0) {
+							cell_1.setCellStyle(cellStyle);
+						}
+					}
+				}
+				File excl = new File(UploaderAction.downLoadPath());
+				if(!excl.exists()){
+					 excl.mkdirs();
+				}
+				File[] files = excl.listFiles();
+				for (File file : files) {
+					file.delete();
+				}
+				FileOutputStream outputStream = new FileOutputStream(path);
+				workbook.write(outputStream);
+				outputStream.flush();
+				outputStream.close();
+			}
+			System.out.println("写出完毕");
+			return path;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
 		}
 	}
 }
