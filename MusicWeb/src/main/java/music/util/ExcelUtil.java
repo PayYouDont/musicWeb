@@ -128,7 +128,6 @@ public class ExcelUtil {
 	 * @author peiyongdong
 	 * @date 2017年12月8日 下午3:51:03
 	 */
-	@SuppressWarnings("deprecation")
 	public static String getCellValue(Cell cell, int cellType) {
 		switch (cellType) {
 		case Cell.CELL_TYPE_STRING: // 文本
@@ -160,6 +159,15 @@ public class ExcelUtil {
 				}
 				return format.format(value);
 			}
+		case Cell.CELL_TYPE_FORMULA:
+			try {
+				double value = cell.getNumericCellValue();
+				DecimalFormat format = new DecimalFormat("0.00");
+				return format.format(value);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return cell.getStringCellValue().toString();
+			}
 		case Cell.CELL_TYPE_BOOLEAN: // 布尔型
 			return String.valueOf(cell.getBooleanCellValue());
 		case Cell.CELL_TYPE_BLANK: // 空白
@@ -176,7 +184,6 @@ public class ExcelUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("resource")
 	public static String writeExcel(String path , List<String> list,String sheetName)throws Exception {
 		Workbook workbook = null;
 		try {
@@ -214,7 +221,6 @@ public class ExcelUtil {
 				outputStream.flush();
 				outputStream.close();
 			}
-			System.out.println("写出完毕");
 			return path;
 		} catch (Exception e) {
 			e.printStackTrace();

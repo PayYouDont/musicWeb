@@ -87,22 +87,27 @@ function getFile(){
 		alert("sheet名字不能为空!")
 		return;
 	}
+	$("#getBtn").text("生成中...")
+	var index = layer.load()
 	$.ajax({
 		url:basePath + "rest/uploaderAction/download",
 		type:"post",
 		data:{sheetName:sheetName},
 		dataType:"json",
 		success:function(json){
+			layer.close(index);
 			if(json.success){
-				 $("#getBtn").hide();
+				$("#getBtn").text("生成文件").hide();
 				var path = json.data;
 				path = basePath.substring(0,basePath.length-9)+path;
 				console.log(path);
-				$(".down").append("<a href='"+path+"'><button  class='btn btn-default' >下载</button></a>")
+				$(".down").append("<a href='"+path+"'><button  class='btn btn-success' >下载</button></a>")
 			}
 		},
 		error : function(json) {
-			alert("error")
+			layer.colose(index);
+			$("#getBtn").text("生成文件").hide();
+			layer.alert("error")
 		}
 	});
 }

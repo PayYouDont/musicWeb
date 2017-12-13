@@ -21,11 +21,12 @@
 <script type="text/javascript" src="<%=basePath%>js/uploader/js/webuploader.nolog.js"></script>
 <!-- bootStrap -->
 <script type="text/javascript" src="<%=basePath%>js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/layer/layer.js"></script>
 </head>
 <body>
 	 <div id="uploader" class="wu-example">
 	    <!-- 用来存放文件信息 -->
-	    <div id="thelist" class="uploader-list"></div>
+	    <div id="thelist" class="uploader-list" style="height:200px;overflow-y: scroll;"></div>
 	    <div class="btns">
 	        <div id="picker">选择文件</div>
 

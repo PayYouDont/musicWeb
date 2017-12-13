@@ -25,6 +25,7 @@ public class UploaderService {
 		try {
 			int index = 0;
 			for(String fns:fileNames) {
+				ls.add(fns);
 				String filepath = UploaderAction.getTempFilePath1()+fns;
 				File sourcefile = new File(filepath);
 				is = new FileInputStream(sourcefile);
@@ -39,7 +40,6 @@ public class UploaderService {
 					int lastRowNum = sheet.getLastRowNum();
 					Row row = null; // 兼容
 					Cell cell = null; // 兼容
-					
 					for (int rowNum = index==1?1:2; rowNum <= lastRowNum; rowNum++) {
 						row = sheet.getRow(rowNum);
 						if (row == null) {
@@ -70,9 +70,7 @@ public class UploaderService {
 					}
 					break;
 				}
-
 			}
-			System.out.println(ls);
 			ExcelUtil.writeExcel(path,ls,sheetName);
 			return path;
 		} catch (Exception e) {
