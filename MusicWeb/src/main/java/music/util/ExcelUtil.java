@@ -22,6 +22,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import music.user.controller.UploaderAction;
+import music.user.entity.ExcelCellStyle;
 
 public class ExcelUtil {
 	/**
@@ -128,6 +129,7 @@ public class ExcelUtil {
 	 * @author peiyongdong
 	 * @date 2017年12月8日 下午3:51:03
 	 */
+	@SuppressWarnings("deprecation")
 	public static String getCellValue(Cell cell, int cellType) {
 		switch (cellType) {
 		case Cell.CELL_TYPE_STRING: // 文本
@@ -184,6 +186,7 @@ public class ExcelUtil {
 	 * @return
 	 * @throws Exception
 	 */
+	@SuppressWarnings("resource")
 	public static String writeExcel(String path , List<String> list,String sheetName)throws Exception {
 		Workbook workbook = null;
 		try {
@@ -207,6 +210,65 @@ public class ExcelUtil {
 							cell_1.setCellStyle(cellStyle);
 						}
 					}
+				}
+				File excl = new File(UploaderAction.downLoadPath());
+				if(!excl.exists()){
+					 excl.mkdirs();
+				}
+				File[] files = excl.listFiles();
+				for (File file : files) {
+					file.delete();
+				}
+				FileOutputStream outputStream = new FileOutputStream(path);
+				workbook.write(outputStream);
+				outputStream.flush();
+				outputStream.close();
+			}
+			return path;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	public static String writeExcel1(String path , List<ExcelCellStyle> list,String sheetName)throws Exception {
+		Workbook workbook = null;
+		try {
+			workbook = new XSSFWorkbook();// HSSFWorkbook();//WorkbookFactory.create(inputStream);
+			if (workbook != null) {
+				Sheet sheet = workbook.createSheet(sheetName);
+				/*CellStyle cellStyle = workbook.createCellStyle(); 
+			    // 设置字体  
+		        Font font = workbook.createFont();  
+		        font.setFontHeightInPoints((short)13); //字体高度 
+		        cellStyle.setFont(font);*/
+				for(int k=0;k<list.size();k++) {
+					Row row0 = sheet.createRow(k);
+					CellStyle rowStyle = list.get(k).getRowStyle();
+					row0.getRowStyle().cloneStyleFrom(rowStyle);
+					CellStyle[] cellStyles = list.get(k).getCellStyles();
+					String[] values = list.get(k).getValues();
+					for(int i=0;i<cellStyles.length;i++) {
+						String value = values[i];
+						CellStyle cellStyle = cellStyles[i];
+						Cell cell_1 = row0.createCell(i, Cell.CELL_TYPE_STRING);
+						cell_1.setCellValue(value);
+						/*sheet.setColumnWidth(i,15 * 256);
+						sheet.autoSizeColumn(i);*/
+						cell_1.getCellStyle().cloneStyleFrom(cellStyle);
+						/*if(k==0) {
+							cell_1.setCellStyle(cellStyle);
+						}*/
+					}
+					//String[] firstRow = list.get(k).split(",");
+					/*for (int i = 0; i < firstRow.length; i++) {
+						Cell cell_1 = row0.createCell(i, Cell.CELL_TYPE_STRING);
+						cell_1.setCellValue(firstRow[i]);
+						sheet.setColumnWidth(i,15 * 256);
+						sheet.autoSizeColumn(i);
+						if(k==0) {
+							cell_1.setCellStyle(cellStyle);
+						}
+					}*/
 				}
 				File excl = new File(UploaderAction.downLoadPath());
 				if(!excl.exists()){

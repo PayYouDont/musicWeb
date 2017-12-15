@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -36,6 +37,7 @@ public class UploaderService {
 					if (!sheetName.equals(sheet.getSheetName())) {
 						continue;
 					}
+					//sheet.getColumnStyle(int)
 					index++;
 					int lastRowNum = sheet.getLastRowNum();
 					Row row = null; // 兼容

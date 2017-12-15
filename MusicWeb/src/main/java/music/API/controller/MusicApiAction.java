@@ -39,6 +39,16 @@ public class MusicApiAction {
 			return JsonWrapper.failureWrapper("搜索失败");
 		}
 	}
+	/**
+	 * @Title: getlyr 
+	 * @Description: TODO(获取歌词) 
+	 * @param @param sid
+	 * @param @return    设定文件 
+	 * @return HashMap<String,Object>    返回类型 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2017年12月15日 下午2:27:15
+	 */
 	@RequestMapping("/getlyr")
 	@ResponseBody
 	public HashMap<String, Object> getlyr(String sid) {

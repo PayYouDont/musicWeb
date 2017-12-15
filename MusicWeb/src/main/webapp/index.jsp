@@ -81,220 +81,16 @@
 						<div class="scrollView">
 							<!-- <div class="scroll"></div> -->
 							<ul class="songUL">
-								<li class="songList">
-									<div class="songLMain">
-										<div class="check">
-											<input class="checkIn" type="checkbox" select="0">
-										</div>
-										<div class="start">
-											<em sonN="1">1</em>
-										</div>
-										<div class="songBd">
-											<div class="col colsn">盛夏光年</div>
-											<div class="col colcn">陈冰</div>
-											<div class="col">好声音第三季</div>
-										</div>
-										<div class="control">
-											<a class="cicon love"></a> <a class="cicon more"
-												style="display: none"></a> <a class="cicon dele"
-												style="display: none"></a>
-										</div>
-									</div>
-								</li>
-								<li class="songList">
-									<div class="songLmain">
-										<div class="check">
-											<input class="checkIn" type="checkbox" select="0">
-										</div>
-										<div class="start">
-											<em sonN="2">2</em>
-										</div>
-										<div class="songBd">
-											<div class="col colsn">漂洋过海来看你(Live)</div>
-											<div class="col colcn">刘明湘</div>
-											<div class="col">好声音第三季</div>
-										</div>
-										<div class="control">
-											<a class="cicon love"></a> <a class="cicon more"></a> <a
-												class="cicon dele"></a>
-										</div>
-									</div>
-								</li>
-								<li class="songList">
-									<div class="songLmain">
-										<div class="check">
-											<input class="checkIn" type="checkbox" select="0">
-										</div>
-										<div class="start">
-											<em sonN="3">3</em>
-										</div>
-										<div class="songBd">
-											<div class="col colsn">Autobots Reunite</div>
-											<div class="col colcn">Steve Jablonsky</div>
-											<div class="col">《变形金刚4：绝迹重生》</div>
-										</div>
-										<div class="control">
-											<a class="cicon love"></a> <a class="cicon more"></a> <a
-												class="cicon dele"></a>
-										</div>
-									</div>
-								</li>
-								<li class="songList">
-									<div class="songLmain">
-										<div class="check">
-											<input class="checkIn" type="checkbox" select="0">
-										</div>
-										<div class="start">
-											<em sonN="4">4</em>
-										</div>
-										<div class="songBd">
-											<div class="col colsn">Halo</div>
-											<div class="col colcn">Martin</div>
-											<div class="col">Halo Legends: Original Soundtrack</div>
-										</div>
-										<div class="control">
-											<a class="cicon love"></a> <a class="cicon more"></a> <a
-												class="cicon dele"></a>
-										</div>
-									</div>
-								</li>
-								<li class="songList">
-									<div class="songLmain">
-										<div class="check">
-											<input class="checkIn" type="checkbox" select="0">
-										</div>
-										<div class="start">
-											<em sonN="5">5</em>
-										</div>
-										<div class="songBd">
-											<div class="col colsn">Pearl White Story</div>
-											<div class="col colcn">S.E.N.S</div>
-											<div class="col">君に届け 2ND SEASON オリジナル・サウンドトラック</div>
-										</div>
-										<div class="control">
-											<a class="cicon love"></a> <a class="cicon more"></a> <a
-												class="cicon dele"></a>
-										</div>
-									</div>
-								</li>
-								<li class="songList">
-									<div class="songLmain">
-										<div class="check">
-											<input class="checkIn" type="checkbox" select="0">
-										</div>
-										<div class="start">
-											<em sonN="6">6</em>
-										</div>
-										<div class="songBd">
-											<div class="col colsn">break the sword of justice</div>
-											<div class="col colcn">梶浦由記</div>
-											<div class="col">NHKアニメーション ｢ツバサ・クロニクル｣ オリジナルサウンドトラック
-												Future Soundscape I</div>
-										</div>
-										<div class="control">
-											<a class="cicon love"></a> <a class="cicon more"></a> <a
-												class="cicon dele"></a>
-										</div>
-									</div>
-								</li>
-								<li class="songList">
-									<div class="songLmain">
-										<div class="check">
-											<input class="checkIn" type="checkbox" select="0">
-										</div>
-										<div class="start">
-											<em sonN="7">7</em>
-										</div>
-										<div class="songBd">
-											<div class="col colsn">The children</div>
-											<div class="col colcn">Ramin Djawadi</div>
-											<div class="col">《权力的游戏第四季》</div>
-										</div>
-										<div class="control">
-											<a class="cicon love"></a> <a class="cicon more"></a> <a
-												class="cicon dele"></a>
-										</div>
-									</div>
-								</li>
-								<li class="songList">
-									<div class="songLmain">
-										<div class="check">
-											<input class="checkIn" type="checkbox" select="0">
-										</div>
-										<div class="start">
-											<em sonN="8">8</em>
-										</div>
-										<div class="songBd">
-											<div class="col colsn">Pacific Rim</div>
-											<div class="col colcn">Ramin Djawadi</div>
-											<div class="col">《环太平洋》</div>
-										</div>
-										<div class="control">
-											<a class="cicon love"></a> <a class="cicon more"></a> <a
-												class="cicon dele"></a>
-										</div>
-									</div>
-								</li>
-								<li class="songList">
-									<div class="songLmain">
-										<div class="check">
-											<input class="checkIn" type="checkbox" select="0">
-										</div>
-										<div class="start">
-											<em sonN="9">9</em>
-										</div>
-										<div class="songBd">
-											<div class="col colsn">四つ葉のクローバー</div>
-											<div class="col colcn">林有三</div>
-											<div class="col">ハチミツとクローバー オリジナルサウンドトラック</div>
-										</div>
-										<div class="control">
-											<a class="cicon love"></a> <a class="cicon more"></a> <a
-												class="cicon dele"></a>
-										</div>
-									</div>
-								</li>
-								<li class="songList">
-									<div class="songLmain">
-										<div class="check">
-											<input class="checkIn" type="checkbox" select="0">
-										</div>
-										<div class="start">
-											<em sonN="10">10</em>
-										</div>
-										<div class="songBd">
-											<div class="col colsn">Icarus</div>
-											<div class="col colcn">Ivan Torrent</div>
-											<div class="col">Icarus</div>
-										</div>
-										<div class="control">
-											<a class="cicon love"></a> <a class="cicon more"></a> <a
-												class="cicon dele"></a>
-										</div>
-									</div>
-								</li>
-								<li class="songList">
-									<div class="songLmain">
-										<div class="check">
-											<input class="checkIn" type="checkbox" select="0">
-										</div>
-										<div class="start">
-											<em sonN="11">11</em>
-										</div>
-										<div class="songBd">
-											<div class="col colsn">th3 awak3n1ng</div>
-											<div class="col colcn">Ivan Torrent</div>
-											<div class="col">Icarus</div>
-										</div>
-										<div class="control">
-											<a class="cicon love"></a> <a class="cicon more"></a> <a
-												class="cicon dele"></a>
-										</div>
-									</div>
-								</li>
-								<li class="songList"></li>
+								
 							</ul>
 						</div>
+						
+						<!-- 分页 -->
+						<div class="pageQuery" id="pageQuery" style="margin-left: auto;">
+						<div style="text-align: center">
+							<ul id="pageLimit"></ul> 
+						</div>
+					</div>
 					</div>
 					<div class="playFt">
 						<div class="track">
@@ -318,7 +114,7 @@
 				</div>
 				<div class="mainOuther">
 					<div class="albumCover">
-						<a href="#"> <img src="images/2.jpg" id="canvas1">
+						<a href="#"> <img src="<%=basePath%>images/6.jpg" id="canvas1">
 						</a>
 					</div>
 					<div class="albumSale">
@@ -332,17 +128,19 @@
 		<div class="bottom">
 			<div class="playerWrap">
 				<div class="playerCon">
-					<a href="#" class="pbtn prevBtn"></a> <a href="#"
-						class="pbtn playBtn" isplay="0"></a> <a href="#"
-						class="pbtn nextBtn"></a> <a href="#" class="mode"></a>
+					<a href="#" class="pbtn prevBtn"></a>
+					<a href="#" class="pbtn playBtn" isplay="0"></a> 
+					<a href="#" class="pbtn nextBtn"></a> 
+					<a href="#" class="mode"></a>
 				</div>
 				<div class="playInfo">
 					<div class="trackInfo">
 						<a href="#" class="songName">漂洋过海来看你(Live)</a> - <a href="#"
 							class="songPlayer">刘明湘</a>
 						<div class="trackCon">
-							<a href="#" class="tc1"></a> <a href="#" class="tc2"></a> <a
-								href="#" class="tc3"></a>
+							<a href="#" class="tc1"></a> 
+							<a href="#" class="tc2"></a> 
+							<a href="#" class="tc3"></a>
 						</div>
 					</div>
 					<div class="playerLength">

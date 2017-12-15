@@ -89,8 +89,8 @@ a {
 	float: left;
 	margin-left: 16px;
 	display: block;
-	background: url("../css/images/T15QU5FXXmXXcUet2f-162-34.png") no-repeat
-		0 50%;
+	/* background: url("../css/images/T15QU5FXXmXXcUet2f-162-34.png") no-repeat
+		0 50%; */
 }
 
 .search {
@@ -150,7 +150,7 @@ a {
 	height: 100%;
 	display: block;
 	float: right;
-	background: url("../css/images/common.png") 0 -150px;
+	/* background: url("../css/images/common.png") 0 -150px; */
 }
 
 .leftBar {

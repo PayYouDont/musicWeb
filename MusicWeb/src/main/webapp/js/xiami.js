@@ -164,14 +164,14 @@ $(function() {
 		// alert(lytext[1]);
 	});
 	/* 切歌 */
-	$(".prevBtn").click(function() {
+	/*$(".prevBtn").click(function() {
 		var sid = parseInt(songIndex) - 1;
 		$(".start em[sonN=" + sid + "]").click();
 	});
 	$(".nextBtn").click(function() {
 		var sid = parseInt(songIndex) + 1;
 		$(".start em[sonN=" + sid + "]").click();
-	});
+	});*/
 
 });
 
@@ -200,21 +200,21 @@ function calcTime(time) {
 		second = '0' + second;
 	return minute + ":" + second;
 }
-function updateProgress(ev) {
-	/* 显示歌曲总长度 */
+/*function updateProgress(ev) {
+	 显示歌曲总长度 
 	var songTime = calcTime(Math.floor(audio.duration));
 	$(".duration").html(songTime);
-	/* 显示歌曲当前时间 */
+	 显示歌曲当前时间 
 	var curTime = calcTime(Math.floor(audio.currentTime));
 	$(".position").html(curTime);
-	/* 进度条 */
+	 进度条 
 	var lef = 678 * (Math.floor(audio.currentTime) / Math.floor(audio.duration));
 	var llef = Math.floor(lef).toString() + "px";
 	$(".dian").css("left", llef);
-}
+	
+}*/
 function audioPlay(ev) {
-	$(".iplay").css("background",
-			'url("css/images/T1oHFEFwGeXXXYdLba-18-18.gif") 0 0');
+	$(".iplay").css("background",'url("css/images/T1oHFEFwGeXXXYdLba-18-18.gif") 0 0');
 	$(".playBtn").css("background-position", "0 -30px");
 	$(".playBtn").attr("isplay", "1");
 }
@@ -335,8 +335,7 @@ function sToArray(str)// 解析如“[02:02][00:24]没想到是你”的字符�
 	if (left != 0) {
 		for (var i = 0; i < leftAr.length; i++) {
 			lytext[tflag] = str.substring(str.lastIndexOf("]"));// 放歌词
-			lytime[tflag] = conSeconds(str.substring(leftAr[i] + 1,
-					leftAr[i] + 6));// 放时间
+			lytime[tflag] = conSeconds(str.substring(leftAr[i] + 1,leftAr[i] + 6));// 放时间
 			tflag++;
 		}
 	}
