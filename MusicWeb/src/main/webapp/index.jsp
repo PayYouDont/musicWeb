@@ -11,15 +11,18 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="css/scroll.css">
-<link rel="stylesheet" type="text/css" href="css/xiami.css">
 <script>
 	var basePath  = '<%=basePath%>';
 </script>
+<link rel="stylesheet" type="text/css" href="<%=basePath%>js/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="<%=basePath%>css/scroll.css">
+<link rel="stylesheet" type="text/css" href="<%=basePath%>css/xiami.css">
+<!-- js -->
 <script type="text/javascript" src="<%=basePath%>js/jquery-1.10.2.js"></script>
-<script type="text/javascript" src="<%=basePath%>js/jquery.jsonp.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/bootstrap/js/bootstrap-paginator.js" ></script>
 <script type="text/javascript" src="<%=basePath%>js/jquery-ui.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/canvas.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/mousewheel.js"></script>
@@ -27,30 +30,53 @@
 <script type="text/javascript" src="<%=basePath%>js/xiami.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/index.js"></script>
 </head>
+<script type="text/javascript">
+ 	var height = document.documentElement.clientHeight-155;
+	var agent = window.navigator.userAgent;
+	$(function(){
+		if(agent.toLowerCase().indexOf("windows")!=-1){
+			$(".middle").css("height",height+"px");
+		}else{
+			$(".middle").css("height","");
+		}
+	}) 
+</script>
 <body>
 	<!--模糊画布-->
-	<div class="blur">
+	<!-- <div class="blur">
 		<canvas style="width: 1366px; height: 700px; opacity: 0;" width="1366"
 			height="700" id="canvas">
 	
-	</div>
-	<div class="playerMain">
-		<div class="top">
-			<a href="#" class="logo"></a>
-			<div class="search">
-				<div type="submit" class="searchBtn" onclick="searchMusic();"></div>
-				<input type="text" class="searchTxt">
-			</div>
-			<div class="mainNav">
-				<div class="tipLogin">
-					马上 <a href="#" class="loginA">登录</a>
+	</div> -->
+		<nav class="navbar navbar-default">
+			 <div class="container-fluid">
+			    <!-- Brand and toggle get grouped for better mobile display -->
+			    <div class="navbar-header">
+			      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+			        <span class="sr-only">Toggle navigation</span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			      </button>
+			      <a class="navbar-brand" href="#"></a>
+			    </div>
+				<div class="collapse navbar-collapse row" id="bs-example-navbar-collapse-1">
+					 <div class="col-md-2"></div>
+					 <div class="navbar-form navbar-left search col-xs-12 col-sm-12 col-md-4" role="search">
+					  	<div class="input-group">
+					      <span class="input-group-btn">
+					        <button class="btn btn-default searchBtn" type="button" onclick="searchMusic();">搜索</button>
+					      </span>
+					      <input type="text" class="form-control searchTxt" placeholder="歌名或歌手名">
+					    </div>
+					</div>
+					<button type="button" class="btn btn-default navbar-btn navbar-right">登陆</button>
 				</div>
-				<a href="#" class="myroom"></a>
 			</div>
-		</div>
+		</nav>
 		<div class="middle">
-			<div class="mainWrap">
-				<div class="leftBar">
+			<div class="mainWrap row">
+				<div class="leftBar col-xs-12 col-sm-12 col-md-2">
 					<ul class="menuUL">
 						<li class="menuLi cur"><a href="#"> <i class="icon iplay"></i>
 								正在播放
@@ -69,7 +95,7 @@
 					<audio id="audio"
 						src="http://zjdx1.sc.chinaz.com/Files/DownLoad/sound1/201507/6065.mp3"></audio>
 				</div>
-				<div class="mainBody">
+				<div class="mainBody col-xs-11 col-sm-11 col-md-8">
 					<div class="playHd">
 						<div class="phInner">
 							<div class="col">歌曲(50)</div>
@@ -84,13 +110,6 @@
 								
 							</ul>
 						</div>
-						
-						<!-- 分页 -->
-						<div class="pageQuery" id="pageQuery" style="margin-left: auto;">
-						<div style="text-align: center">
-							<ul id="pageLimit"></ul> 
-						</div>
-					</div>
 					</div>
 					<div class="playFt">
 						<div class="track">
@@ -111,8 +130,14 @@
 							</div>
 						</div>
 					</div>
+					<!-- 分页 -->
+					<div class="pageQuery" id="pageQuery" style="margin-left: auto;">
+						<div style="text-align: center">
+							<ul id="pageLimit"></ul> 
+						</div>
+					</div>
 				</div>
-				<div class="mainOuther">
+				<div class="mainOuther col-xs-1 col-sm-1 col-md-2">
 					<div class="albumCover">
 						<a href="#"> <img src="<%=basePath%>images/6.jpg" id="canvas1">
 						</a>
@@ -135,8 +160,8 @@
 				</div>
 				<div class="playInfo">
 					<div class="trackInfo">
-						<a href="#" class="songName">漂洋过海来看你(Live)</a> - <a href="#"
-							class="songPlayer">刘明湘</a>
+						<a href="#" class="songName">漂洋过海来看你(Live)</a> - 
+						<a href="#" class="songPlayer">刘明湘</a>
 						<div class="trackCon">
 							<a href="#" class="tc1"></a> 
 							<a href="#" class="tc2"></a> 
@@ -164,11 +189,9 @@
 					</div>
 				</div>
 			</div>
+			<!-- <div style="text-align: center; margin: 50px 0; font: normal 14px/24px 'MicroSoft YaHei';">
+				<p>适用浏览器：360、FireFox、Chrome、Safari、Opera、傲游、搜狗、世界之窗. 不支持IE8及以下浏览器。</p>
+			</div> -->
 		</div>
-	</div>
-	<div
-		style="text-align: center; margin: 50px 0; font: normal 14px/24px 'MicroSoft YaHei';">
-		<p>适用浏览器：360、FireFox、Chrome、Safari、Opera、傲游、搜狗、世界之窗. 不支持IE8及以下浏览器。</p>
-	</div>
 </body>
 </html>

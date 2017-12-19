@@ -1,5 +1,8 @@
+var totalPages = 1;//总共多少页
+var count = 10;//每页展示的数据条数
 var songArray = new Array();//当前歌曲id列表
 var songIndex;//当前歌曲
+var songList = new Array();
 $(function(){
 	initSongList();
 	searchMusicByKey();
@@ -20,35 +23,78 @@ function initSongList(){
 		  jsonpCallback: "JsonCallback",
 		  scriptCharset: 'GBK',//设置编码
 		  success: function(data) {
-			  data = JSON.parse(JSON.stringify(data)).songlist;
-			  var html = "";
-			  songArray = new Array();
-			  for(var i=0;i<data.length;i++){
-				  var id = data[i].id;
-				  songArray.push(id)
-				  var albumId = data[i].albumId;//专辑id
-				  var singerName = data[i].singerName;
-				  var songName = data[i].songName;
-				  var singerId = data[i].singerId;
-				  var albumName = data[i].albumName;//专辑名称
-				  var song = {
-						  songName:songName,
-						  albumName:albumName,
-						  songId:id,
-						  albumId:albumId,
-						  singerId:singerId,
-						  singer:singerName,
-				      }
-				  html += getSongHtml(song, i);
-			  }
-			  $(".songUL").html(html);
-				 start();
+			  songList = JSON.parse(JSON.stringify(data)).songlist;
+			  $("#audio").attr("src", 'http://ws.stream.qqmusic.qq.com/'+songList[0].id+'.m4a?fromtag=46');
+			  totalPages = Math.ceil(songList.length/count);
+			  QueryPage(songList,1)
+			  initPage(totalPages,songList);
+			  start();
 		  },
 		  error: function() {
 		    alert('fail');
 		  }
 		});
 }
+function QueryPage(list,page){
+	var data = getPageData(list,page);
+	var html = "";
+	  	songArray = new Array();
+	  	for(var i=0;i<data.length;i++){
+	  		var id = data[i].id;
+	  		songArray.push(id)
+	  		var albumId = data[i].albumId;//专辑id
+	  		var singerName = data[i].singerName;
+	  		var songName = data[i].songName;
+	  		var singerId = data[i].singerId;
+	  		var albumName = data[i].albumName;//专辑名称
+	  		var song = {
+					  songName:songName,
+					  albumName:albumName,
+					  songId:id,
+					  albumId:albumId,
+					  singerId:singerId,
+					  singer:singerName,
+		      	}
+	  		html += getSongHtml(song, i);
+	  	}
+	  	$(".songUL").html(html);
+}
+function getPageData(list,page){
+	var data = new Array();
+	var size = page*count<=list.length?page*count:list.length;
+	for(var i=(page-1)*count;i<size;i++){
+		data.push(list[i]);
+	}
+	return data;
+}
+//初始分页
+function initPage(totalPages,list,search){
+	$('#pageLimit').bootstrapPaginator({
+	      currentPage: 1,//当前的请求页面。
+	      totalPages: totalPages,//一共多少页。
+	      count:"normal",//页眉的大小。
+	      bootstrapMajorVersion: 3,//bootstrap的版本要求。
+	      alignment:"right",
+	      numberOfPages:5,//展示几个分页数量
+	      itemTexts: function (type, page, current) {
+	         switch (type) {
+	         case "first": return "首页";
+	         case "prev": return "上一页";
+	         case "next": return "下一页";
+	         case "last": return "末页";
+	         case "page": return page;
+	         }
+	     },
+	     onPageClicked: function (event,originalEvent,type,page){
+	    	 if(search){
+	    		 QueryPageToSearch(list,page)
+	    	 }else{
+	    		 QueryPage(list,page)
+	    	 }
+	    	 start();
+	    }
+	 });
+	}
 //登录
 function toLogin(){
 	$(".loginA").off("click").on("click",function(){
@@ -70,47 +116,54 @@ function searchMusic(){
 	if(searcMsg.trim()==""){
 		return;
 	}
+	searcMsg = encodeURI(searcMsg);
 	var url = basePath+"rest/musicApiAction/searchMusic";
 	$.ajax({
 		url:url,
 		type:"post",
-		data:{name:searcMsg,number:10},
+		data:{name:searcMsg,number:30},
 		dataType:"json", 
 		success:function(json){
 			if(json.success){
 				 var data = JSON.parse(json.data)
-				 var list = data.data.song.list;
-				 var html = "";
-				 songArray = new Array();
-				 for(var i=0;i<list.length;i++){
-					 var f = list[i].f;//歌曲信息(97773|晴天 (;)|4558|周杰伦|8220|叶惠美|2186317|269|9|1|0|10793267|4319991|320000|0|30143423|31518872|5871273|6308305|0|0039MnYb0qxYhV|0025NhlN2yWrP4|000MkMni19ClKG|0|4009)
-					 var fsinger = list[i].fsinger;//歌手名
-					 var fsong = list[i].fsong;//歌曲名
-					 var albumName = list[i].albumName_hilight;//专辑名称
-					 var infoArr = f.split("|");
-					 var songId = infoArr[0];//歌曲id
-					 songArray.push(songId);
-					 var albumId = infoArr[4];//专辑id
-					 var singerId = infoArr[2];//歌手id
-					 var song = {
-							 f:f,
-							 fsinger:fsinger,
-							 songName:fsong,
-							 albumName:albumName,
-							 songId:songId,
-							 albumId:albumId,
-							 singerId:singerId,
-							 singer:fsinger
-					 	}
-					 html += getSongHtml(song,i);
-				 }
-				 $(".songUL").html(html);
+				 songList = data.data.song.list;
+				 totalPages = Math.ceil(songList.length/count);
+				 QueryPageToSearch(songList,1)
+				 initPage(totalPages,songList,"search");
 				 start();
 			}else{
 				alert("没有搜索到")
 			}
 		}
 	})
+}
+function QueryPageToSearch(songList,page){
+	 var list = getPageData(songList,page)
+	 var html = "";
+	 songArray = new Array();
+	 for(var i=0;i<list.length;i++){
+		 var f = list[i].f;//歌曲信息(97773|晴天 (;)|4558|周杰伦|8220|叶惠美|2186317|269|9|1|0|10793267|4319991|320000|0|30143423|31518872|5871273|6308305|0|0039MnYb0qxYhV|0025NhlN2yWrP4|000MkMni19ClKG|0|4009)
+		 var fsinger = list[i].fsinger;//歌手名
+		 var fsong = list[i].fsong;//歌曲名
+		 var albumName = list[i].albumName_hilight;//专辑名称
+		 var infoArr = f.split("|");
+		 var songId = infoArr[0];//歌曲id
+		 songArray.push(songId);
+		 var albumId = infoArr[4];//专辑id
+		 var singerId = infoArr[2];//歌手id
+		 var song = {
+				 f:f,
+				 fsinger:fsinger,
+				 songName:fsong,
+				 albumName:albumName,
+				 songId:songId,
+				 albumId:albumId,
+				 singerId:singerId,
+				 singer:fsinger
+		 	}
+		 html += getSongHtml(song,i);
+	 }
+	 $(".songUL").html(html);
 }
 //获取音乐html
 function getSongHtml(song,index){
@@ -121,7 +174,7 @@ function getSongHtml(song,index){
 					'</div>'+
 					'<div class="start">'+
 						'<em sonN="'+song.songId+'">'+(index+1)+'</em>'+
-						'</div>'+
+					'</div>'+
 					'<div class="songBd">'+
 						'<div class="col colsn">'+song.songName+'</div>'+
 						'<div class="col colcn">'+song.singer+'</div>'+
@@ -302,6 +355,7 @@ function updateProgress(ev) {
 	var item = setInterval(function() {
 		if(songTime.toString()==curTime.toString()){
 			play(next);
+			songIndex = next;
 			clearInterval(item);
 		}
 	},1000)

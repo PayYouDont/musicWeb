@@ -1,17 +1,6 @@
-* {
-	padding: 0;
-	margin: 0;
-}
-
-body {
-	width: 100%;
-	height: 100%;
-	font-family: "Helvetica Neue", "Hiragino Sans GB", "Microsoft Yahei",
-		Helvetica, Arial, sans-serif;
-}
 
 li {
-	list-style: none;
+    list-style: none;
 }
 
 input {
@@ -23,15 +12,14 @@ input:focus {
 }
 
 html {
+	overflow-y: hidden;
 	overflow-x: hidden;
 }
 
 a {
 	text-decoration: none;
 }
-a:link,a:visited,a:active,a:hover{
-	text-decoration: none;
-}
+
 .clear:after {
 	content: '.';
 	clear: both;
@@ -61,16 +49,19 @@ a:link,a:visited,a:active,a:hover{
 }
 
 .top {
-	width: 100%;
 	height: 56px;
 	background: url("../css/images/T10MNqFzVXXXcu5FDa-20-20.png") repeat 0 0;
 }
+
 .middle {
+	/* top: 56px;
+	bottom: 80px;
 	background-color: #fff;
-	width: 100%;
+	width: 100%; */
 }
 
 .mainWrap {
+	/* padding: 0 310px 0 240px; */
 	height: 100%;
 }
 /*头部*/
@@ -83,6 +74,35 @@ a:link,a:visited,a:active,a:hover{
 	/* background: url("../css/images/T15QU5FXXmXXcUet2f-162-34.png") no-repeat
 		0 50%; */
 }
+
+.search {
+	position: absolute;
+	top: 13px;
+	left: 240px;
+	width: 230px;
+	height: 30px;
+	background: url("../css/images/search.png") no-repeat 0 0;
+}
+
+.searchBtn {
+	float: left;
+	width: 28px;
+	height: 28px;
+	padding: 1px 6px;
+	background: url("../css/images/sbtn.png") no-repeat 10px 50%;
+	cursor: pointer;
+}
+
+.searchTxt {
+	float: left;
+	width: 186px;
+	height: 30px;
+	padding: 3px;
+	vertical-align: middle;
+	background-color: transparent;
+	color: #fff;
+}
+
 .mainNav {
 	float: right;
 	width: 270px;
@@ -105,9 +125,6 @@ a:link,a:visited,a:active,a:hover{
 	padding: 0 5px;
 	color: #f60;
 	text-decoration: none;
-	background: url("../css/images/common.png") -200px -210px;
-	width: 148px;
-	height: 50px;
 }
 
 .myroom {
@@ -119,8 +136,8 @@ a:link,a:visited,a:active,a:hover{
 }
 
 .leftBar {
-	height: 100%;
-	padding: 0 10px;
+	/* height: 100%;
+	padding: 0 10px; */
 }
 
 .menuUL {
@@ -191,9 +208,9 @@ a:link,a:visited,a:active,a:hover{
 }
 
 .cellectList {
-	width: 185px;
+	width: 185px; 
 	height: 89px;
-	margin: 0 2.5px;
+	margin: 0 40px;
 	background-image: url("../css/images/T11aF_Fx4aXXcxTH6l-185-89.png");
 }
 
@@ -243,6 +260,9 @@ a:link,a:visited,a:active,a:hover{
 	width: 100%;
 	height: 36px;
 	line-height: 36px;
+	padding-top: 9px;
+	position: absolute;
+	top: 0;
 	border-bottom: 1px solid #ccc;
 }
 
@@ -265,39 +285,32 @@ a:link,a:visited,a:active,a:hover{
 }
 
 .playBd {
-	width: 100%;
+	
 }
 
 .scrollView {
 	height: 100%;
-	width: 100%;
-	position: relative;
 	outline: 0;
 	-webkit-user-drag: none;
 }
 
 .songUL {
-	width: 100%;
 	min-height: 50%;
 }
 
 .songList {
-	width: 100%;
 	color: #333;
 	border-bottom: 1px solid #ebebeb;
-	position: relative;
 }
 
 .check {
-	position: absolute;
+	/* position: absolute;
 	height: 16px;
 	width: 16px;
 	left: 0;
-	padding: 12px 5px 12px 10px;
+	padding: 12px 5px 12px 10px; */
 }
-.check .checkIn{
-	margin-bottom: 9px;
-}
+
 .checkIn, .checkAll {
 	width: 16px;
 	height: 16px;
@@ -310,11 +323,8 @@ a:link,a:visited,a:active,a:hover{
 .start {
 	line-height: 41px;
 	text-align: center;
-	position: absolute;
 	width: 36px;
 	height: 41px;
-	left: 31px;
-	top: 0;
 	text-align: center;
 }
 
@@ -334,7 +344,6 @@ a:link,a:visited,a:active,a:hover{
 .songBd .col {
 	color: #333;
 	line-height: 41px;
-	overflow: hidden;
 }
 
 .col {
@@ -342,9 +351,9 @@ a:link,a:visited,a:active,a:hover{
 }
 
 .control {
-	position: absolute;
+/* 	position: absolute;
 	top: 0;
-	right: 0;
+	right: 0; */
 	width: 110px;
 	height: 41px;
 }
@@ -389,7 +398,6 @@ a:link,a:visited,a:active,a:hover{
 }
 
 .playFt {
-	width: 100%;
 	height: 45px;
 	padding-top: 14px;
 	border-top: 1px solid #ccc;
@@ -397,15 +405,12 @@ a:link,a:visited,a:active,a:hover{
 
 .track {
 	height: 30px;
-	width: 100%;
 	line-height: 30px;
-	position: relative;
+	/* position: relative; */
 	padding-left: 38px;
 }
 
 .uiCheck {
-	position: absolute;
-	left: 0;
 	width: 16px;
 	height: 16px;
 	padding: 7px 10px;
@@ -472,9 +477,9 @@ a:link,a:visited,a:active,a:hover{
 }
 /*底部按键*/
 .bottom {
-	/* position: absolute;
+	position: absolute;
 	left: 0;
-	bottom: 0; */
+	bottom: 0;
 	width: 100%;
 	height: 80px;
 	background: url("../css/images/T10MNqFzVXXXcu5FDa-20-20.png") repeat;
@@ -633,8 +638,6 @@ a:link,a:visited,a:active,a:hover{
 	left: 40px;
 	right: 40px;
 	height: 18px;
-	background-color: #b1b1b1;
-	-webkit-box-shadow:none;
 }
 
 .pro1, .pro2 {
@@ -694,9 +697,9 @@ a:link,a:visited,a:active,a:hover{
 }
 
 .volControl {
-	position: absolute;
-	left: 24px;
-	width: 80px;
+	/* position: absolute;
+	left: 24px; */
+	/* width: 80px; */
 	height: 18px;
 	background: url("../css/images/pro.png") repeat-x 0 50%;
 }
@@ -738,8 +741,8 @@ a:link,a:visited,a:active,a:hover{
 .manyouA {
 	position: absolute;
 	display: block;
+	width: 88px;
 	height: 30px;
-	width:118px;
 	padding-left: 30px;
 	left: 72px;
 	top: 0;
@@ -748,9 +751,7 @@ a:link,a:visited,a:active,a:hover{
 	color: #fff;
 	background: url("../css/images/manyou.png");
 }
-.manyouA:hover{
-	color: #fff;
-}
+
 /*fadein动画*/
 @
 -webkit-keyframes fadeIn/* Safari 和 Chrome */
