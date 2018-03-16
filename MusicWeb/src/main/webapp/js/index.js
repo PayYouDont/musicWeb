@@ -372,8 +372,6 @@ function updateProgress(ev) {
 	},1000)
 }
 
-
-
 function test(){
 	//                                 (id)
 	//https://y.qq.com/n/yqq/song/003fgh3r4aSxY5.html
