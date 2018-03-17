@@ -4,15 +4,13 @@ var songArray = new Array();//当前歌曲id列表
 var songIndex;//当前歌曲
 var songList = new Array();
 $(function(){
-	//initSongList();
+	initSongList();
 	searchMusicByKey();
 	toLogin();
-	//playNext();
-	test();
 });
 //初始化歌单
 function initSongList(){
-	var newSongTopUrl = "http://music.qq.com/musicbox/shop/v3/data/hit/hit_newsong.js";
+	var newSongTopUrl = listUrl;
 	var allSongTopUrl = "http://music.qq.com/musicbox/shop/v3/data/hit/hit_all.js";
 	var songList = {newSong:newSongTopUrl,allSong:allSongTopUrl};
 	$.ajax({
@@ -21,11 +19,17 @@ function initSongList(){
 		  url: songList.newSong,
 		  dataType: "jsonp",
 		  jsonp: "callback",
-		  jsonpCallback: "JsonCallback",
-		  scriptCharset: 'GBK',//设置编码
+		  jsonpCallback: "MusicJsonCallbacktoplist",
+		  //scriptCharset: 'GBK',//设置编码
 		  success: function(data) {
 			  songList = JSON.parse(JSON.stringify(data)).songlist;
-			  $("#audio").attr("src", 'http://ws.stream.qqmusic.qq.com/'+songList[0].id+'.m4a?fromtag=46');
+			  startid = songList[0].data.songmid;
+			  //加载第一首歌曲
+			  $("#audio").attr("src", 'http://ws.stream.qqmusic.qq.com/C100'+startid+'.m4a?fromtag=0');
+			  //显示歌单数量
+			  $("#songCount").html("歌曲("+songList.length+")");
+			  $(".songName").html(songList[0].data.songname);
+			  $(".songPlayer").html(songList[0].data.singer[0].name);
 			  totalPages = Math.ceil(songList.length/count);
 			  QueryPage(songList,1)
 			  initPage(totalPages,songList);
@@ -42,13 +46,13 @@ function QueryPage(list,page){
 	var html = "";
 	  	songArray = new Array();
 	  	for(var i=0;i<data.length;i++){
-	  		var id = data[i].id;
-	  		songArray.push(id)
-	  		var albumId = data[i].albumId;//专辑id
-	  		var singerName = data[i].singerName;
-	  		var songName = data[i].songName;
-	  		var singerId = data[i].singerId;
-	  		var albumName = data[i].albumName;//专辑名称
+	  		var id = data[i].data.strMediaMid;
+	  		var albumId = data[i].data.albummid;//专辑id
+	  		var singerName = data[i].data.singer[0].name;
+	  		var songName = data[i].data.songname;
+	  		var singerId = data[i].data.singer[0].id;
+	  		var albumName = data[i].data.albumname;//专辑名称
+	  		var songImg = data[i].data.albummid;//专辑id
 	  		var song = {
 					  songName:songName,
 					  albumName:albumName,
@@ -56,7 +60,9 @@ function QueryPage(list,page){
 					  albumId:albumId,
 					  singerId:singerId,
 					  singer:singerName,
+					  songImg:songImg
 		      	}
+	  		songArray.push(song)
 	  		html += getSongHtml(song, i);
 	  	}
 	  	$(".songUL").html(html);
@@ -129,7 +135,6 @@ function searchMusic(){
 			if(json.success){
 				 var data = JSON.parse(json.data)
 				 songList = data.data.song.list;
-				 console.log(songList)
 				 totalPages = Math.ceil(songList.length/count);
 				 QueryPageToSearch(songList,1)
 				 initPage(totalPages,songList,"search");
@@ -173,6 +178,7 @@ function QueryPageToSearch(songList,page){
 }
 //获取音乐html
 function getSongHtml(song,index){
+	var url = 'http://ws.stream.qqmusic.qq.com/C100'+song.songId+'.m4a?fromtag=0';
 	var html = '<li class="songList" data-songinfo="'+song+'">'+
 				 '<div class="songLMain">'+
 					'<div class="check">'+
@@ -187,9 +193,10 @@ function getSongHtml(song,index){
 						'<div class="col">'+song.albumName+'</div>'+
 					'</div>'+
 					'<div class="control">'+
+						'<a class="cicon download" href='+url+' download=""><span class="glyphicon glyphicon-arrow-down"></span></a>'+
 						'<a class="cicon love"></a>'+ 
-						'<a class="cicon more" style="display: none"></a>'+
-						'<a class="cicon dele"style="display: none"></a>'+
+						'<a class="cicon more"></a>'+
+						'<a class="cicon dele"></a>'+
 					'</div>'+
 			   '</div>'+
 			'</li>';
@@ -307,6 +314,7 @@ function getReady1(sid){// 在显示歌词前做好准备工作
 	scrollBar();
 }
 function playPrev(){
+	
 	/* 切歌 */
 		var prev = 0;
 		for(var i=0;i<songArray.length;i++){
@@ -325,7 +333,6 @@ function playNext(){
 	//下一首
 	var next = 0;
 	for(var i=0;i<songArray.length;i++){
-		console.log(songArray[i])
 		if(songIndex==songArray[i].songId){
 			if(i!=songArray.length-1){
 				next = songArray[i+1].songId;
@@ -372,8 +379,3 @@ function updateProgress(ev) {
 	},1000)
 }
 
-function test(){
-	//                                 (id)
-	//https://y.qq.com/n/yqq/song/003fgh3r4aSxY5.html
-	//爬歌詞
-}

@@ -358,7 +358,22 @@ a:link,a:visited,a:active,a:hover{
 	top: 11px;
 	background: url("../css/images/T1bMh.FxNXXXb_r3IF-72-730.png") no-repeat;
 }
-
+.download{
+	right: 119px;
+	color:#d7d7d7;
+}
+.download:visited{
+	color:#d7d7d7;
+}
+.download:hover{
+	color:#d7d7d7;
+}
+.download:active {
+	color:#d7d7d7;
+} 
+.glyphicon-arrow-down{
+	top:-10px;
+}
 .love {
 	background-position: -28px -130px;
 	right: 86px;
@@ -371,7 +386,6 @@ a:link,a:visited,a:active,a:hover{
 .more {
 	background-position: 0 -473px;
 	right: 53px;
-	display: none;
 }
 
 .more:hover {
@@ -381,7 +395,6 @@ a:link,a:visited,a:active,a:hover{
 .dele {
 	background-position: 0 -491px;
 	right: 20px;
-	display: none;
 }
 
 .dele:hover {
@@ -475,6 +488,7 @@ a:link,a:visited,a:active,a:hover{
 	/* position: absolute;
 	left: 0;
 	bottom: 0; */
+	float: left;
 	width: 100%;
 	height: 80px;
 	background: url("../css/images/T10MNqFzVXXXcu5FDa-20-20.png") repeat;

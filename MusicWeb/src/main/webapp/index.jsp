@@ -12,7 +12,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>Insert title here</title>
+<title>PayMuiscWeb</title>
 <script>
 	var basePath  = '<%=basePath%>';
 </script>
@@ -24,6 +24,7 @@
 <script type="text/javascript" src="<%=basePath%>js/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/bootstrap/js/bootstrap-paginator.js" ></script>
 <script type="text/javascript" src="<%=basePath%>js/jquery-ui.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/interface.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/canvas.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/mousewheel.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/scroll.js"></script>
@@ -93,12 +94,12 @@
 					</div>
 					<div class="cellectList"></div>
 					<audio id="audio"
-						src="http://zjdx1.sc.chinaz.com/Files/DownLoad/sound1/201507/6065.mp3"></audio>
+						src=""></audio>
 				</div>
 				<div class="mainBody col-xs-11 col-sm-11 col-md-8">
 					<div class="playHd">
 						<div class="phInner">
-							<div class="col">歌曲(50)</div>
+							<div class="col" id="songCount">歌曲(50)</div>
 							<div class="col">演唱者</div>
 							<div class="col">专辑</div>
 						</div>
@@ -153,15 +154,15 @@
 		<div class="bottom">
 			<div class="playerWrap">
 				<div class="playerCon">
-					<a href="#" class="pbtn prevBtn"></a>
+					<a href="#" class="pbtn prevBtn" onclick="playPrev()"></a>
 					<a href="#" class="pbtn playBtn" isplay="0"></a> 
-					<a href="#" class="pbtn nextBtn"></a> 
+					<a href="#" class="pbtn nextBtn" onclick="playNext()"></a> 
 					<a href="#" class="mode"></a>
 				</div>
 				<div class="playInfo">
 					<div class="trackInfo">
-						<a href="#" class="songName">漂洋过海来看你(Live)</a> - 
-						<a href="#" class="songPlayer">刘明湘</a>
+						<a href="#" class="songName"></a> - 
+						<a href="#" class="songPlayer"></a>
 						<div class="trackCon">
 							<a href="#" class="tc1"></a> 
 							<a href="#" class="tc2"></a> 
