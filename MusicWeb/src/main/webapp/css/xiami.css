@@ -881,3 +881,9 @@ animation: .7s ease 0.1s normal both 1 fadeIn;
 	color: #333;
 	overflow: hidden;
 }
+.alert-warning{
+	float:left;
+	width:100%;
+	text-align: center;
+	margin-top: 10px;
+}
