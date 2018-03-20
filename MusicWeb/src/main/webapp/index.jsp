@@ -24,6 +24,7 @@
 <script type="text/javascript" src="<%=basePath%>js/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/bootstrap/js/bootstrap-paginator.js" ></script>
 <script type="text/javascript" src="<%=basePath%>js/jquery-ui.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/vue.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/canvas.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/mousewheel.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/scroll.js"></script>
