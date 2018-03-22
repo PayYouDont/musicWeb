@@ -25,6 +25,7 @@ function initSongList(){
 		  success: function(data) {
 			  songList = JSON.parse(JSON.stringify(data)).songlist;
 			  startid = songList[0].data.songmid;
+			  songIndex = startid;
 			  //加载第一首歌曲
 			  var src = 'http://ws.stream.qqmusic.qq.com/C100'+startid+'.m4a?fromtag=0';
 			  //显示歌单数量
@@ -60,13 +61,13 @@ function QueryPage(list,page){
 	  		var albumName = data[i].data.albumname;//专辑名称
 	  		var songImg = data[i].data.albummid;//专辑id
 	  		var song = {
-					  songName:songName,
-					  albumName:albumName,
-					  songId:id,
-					  albumId:albumId,
-					  singerId:singerId,
-					  singer:singerName,
-					  songImg:songImg
+				  songName:songName,
+				  albumName:albumName,
+				  songId:id,
+				  albumId:albumId,
+				  singerId:singerId,
+				  singer:singerName,
+				  songImg:songImg
 		      	}
 	  		songArray.push(song)
 	  		html += getSongHtml(song, i);
@@ -317,23 +318,21 @@ function getReady1(sid){// 在显示歌词前做好准备工作
 }
 //上一首
 function playPrev(){
-	
-	/* 切歌 */
-		var prev = 0;
-		for(var i=0;i<songArray.length;i++){
-			if(songIndex==songArray[i].songId){
-				if(i!=0){
-					prev = songArray[i-1].songId;
-				}else{
-					prev = songArray[songArray.length-1].songId;
-				}
-				break;
+	var prev = 0;
+	for(var i=0;i<songArray.length;i++){
+		if(songIndex==songArray[i].songId){
+			if(i!=0){
+				prev = songArray[i-1].songId;
+			}else{
+				prev = songArray[songArray.length-1].songId;
 			}
+			break;
 		}
-		$(".start em[sonN=" + prev + "]").click();
+	}
+	$(".start em[sonN=" + prev + "]").click();
 }
+//下一首
 function playNext(){
-	//下一首
 	var next = 0;
 	for(var i=0;i<songArray.length;i++){
 		if(songIndex==songArray[i].songId){
@@ -380,6 +379,6 @@ function updateProgress(ev) {
 			songIndex = next;
 			clearInterval(item);
 		}
-	},1000)
+	},1000);
 }
 
