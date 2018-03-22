@@ -200,6 +200,7 @@ function getSongHtml(song,index){
 					'</div>'+
 					'<div class="control" data-songid="'+song.songId+'">'+
 						'<a class="cicon download" href='+url+' download=""><span class="glyphicon glyphicon-arrow-down"></span></a>'+
+						'<a class="cicon download" href='+url+' download=""><span class="glyphicon glyphicon-arrow-down"></span></a>'+
 						'<a class="cicon love"></a>'+ 
 						'<a class="cicon more"></a>'+
 						'<a class="cicon dele" onclick="deleSong(this)"></a>'+
