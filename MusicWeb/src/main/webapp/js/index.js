@@ -7,11 +7,11 @@ $(function(){
 	initSongList();
 	searchMusicByKey();
 	toLogin();
-	playNext();
+	Warning(warning);
 });
 //初始化歌单
 function initSongList(){
-	var newSongTopUrl = "http://music.qq.com/musicbox/shop/v3/data/hit/hit_newsong.js";
+	var newSongTopUrl = listUrl;
 	var allSongTopUrl = "http://music.qq.com/musicbox/shop/v3/data/hit/hit_all.js";
 	var songList = {newSong:newSongTopUrl,allSong:allSongTopUrl};
 	$.ajax({
@@ -20,14 +20,25 @@ function initSongList(){
 		  url: songList.newSong,
 		  dataType: "jsonp",
 		  jsonp: "callback",
-		  jsonpCallback: "JsonCallback",
-		  scriptCharset: 'GBK',//设置编码
+		  jsonpCallback: "MusicJsonCallbacktoplist",
+		  //scriptCharset: 'GBK',//设置编码
 		  success: function(data) {
 			  songList = JSON.parse(JSON.stringify(data)).songlist;
-			  $("#audio").attr("src", 'http://ws.stream.qqmusic.qq.com/'+songList[0].id+'.m4a?fromtag=46');
+			  startid = songList[0].data.songmid;
+			  //加载第一首歌曲
+			  var src = 'http://ws.stream.qqmusic.qq.com/C100'+startid+'.m4a?fromtag=0';
+			  //显示歌单数量
+			  $("#songCount").html("歌曲("+songList.length+")");
+			  //下放播放器显示歌曲名字
+			  $(".songName").html(songList[0].data.songname);
+			  //下放播放器显示歌手名字
+			  $(".songPlayer").html(songList[0].data.singer[0].name);
 			  totalPages = Math.ceil(songList.length/count);
+			  //分页
 			  QueryPage(songList,1)
 			  initPage(totalPages,songList);
+			  //自动播放
+			  play(startid,songList[0].data.albummid);
 			  start();
 		  },
 		  error: function() {
@@ -35,18 +46,19 @@ function initSongList(){
 		  }
 		});
 }
+//查询结果分页
 function QueryPage(list,page){
 	var data = getPageData(list,page);
 	var html = "";
 	  	songArray = new Array();
 	  	for(var i=0;i<data.length;i++){
-	  		var id = data[i].id;
-	  		songArray.push(id)
-	  		var albumId = data[i].albumId;//专辑id
-	  		var singerName = data[i].singerName;
-	  		var songName = data[i].songName;
-	  		var singerId = data[i].singerId;
-	  		var albumName = data[i].albumName;//专辑名称
+	  		var id = data[i].data.strMediaMid;
+	  		var albumId = data[i].data.albummid;//专辑id
+	  		var singerName = data[i].data.singer[0].name;
+	  		var songName = data[i].data.songname;
+	  		var singerId = data[i].data.singer[0].id;
+	  		var albumName = data[i].data.albumname;//专辑名称
+	  		var songImg = data[i].data.albummid;//专辑id
 	  		var song = {
 					  songName:songName,
 					  albumName:albumName,
@@ -54,7 +66,9 @@ function QueryPage(list,page){
 					  albumId:albumId,
 					  singerId:singerId,
 					  singer:singerName,
+					  songImg:songImg
 		      	}
+	  		songArray.push(song)
 	  		html += getSongHtml(song, i);
 	  	}
 	  	$(".songUL").html(html);
@@ -148,32 +162,36 @@ function QueryPageToSearch(songList,page){
 		 var albumName = list[i].albumName_hilight;//专辑名称
 		 var infoArr = f.split("|");
 		 var songId = infoArr[0];//歌曲id
-		 songArray.push(songId);
 		 var albumId = infoArr[4];//专辑id
 		 var singerId = infoArr[2];//歌手id
+		 var newid = f.split("|")[20];//新接口歌曲id
+		 var songImg = f.split("|")[22];//歌曲封面
 		 var song = {
 				 f:f,
 				 fsinger:fsinger,
 				 songName:fsong,
 				 albumName:albumName,
-				 songId:songId,
+				 songId:newid,
 				 albumId:albumId,
 				 singerId:singerId,
-				 singer:fsinger
+				 singer:fsinger,
+				 songImg:songImg
 		 	}
+		 songArray.push(song);
 		 html += getSongHtml(song,i);
 	 }
 	 $(".songUL").html(html);
 }
 //获取音乐html
 function getSongHtml(song,index){
+	var url = 'http://ws.stream.qqmusic.qq.com/C100'+song.songId+'.m4a?fromtag=0';
 	var html = '<li class="songList" data-songinfo="'+song+'">'+
 				 '<div class="songLMain">'+
 					'<div class="check">'+
 						'<input class="checkIn" type="checkbox" select="0">'+
 					'</div>'+
 					'<div class="start">'+
-						'<em sonN="'+song.songId+'">'+(index+1)+'</em>'+
+						'<em sonN="'+song.songId+'" data-songimg='+song.songImg+'>'+(index+1)+'</em>'+
 					'</div>'+
 					'<div class="songBd">'+
 						'<div class="col colsn">'+song.songName+'</div>'+
@@ -181,9 +199,10 @@ function getSongHtml(song,index){
 						'<div class="col">'+song.albumName+'</div>'+
 					'</div>'+
 					'<div class="control">'+
+						'<a class="cicon download" href='+url+' download=""><span class="glyphicon glyphicon-arrow-down"></span></a>'+
 						'<a class="cicon love"></a>'+ 
-						'<a class="cicon more" style="display: none"></a>'+
-						'<a class="cicon dele"style="display: none"></a>'+
+						'<a class="cicon more"></a>'+
+						'<a class="cicon dele"></a>'+
 					'</div>'+
 			   '</div>'+
 			'</li>';
@@ -195,24 +214,28 @@ function start(){
 	$(".start em").click(function() {
 		/* 开始放歌 */
 			var sid = $(this).attr("sonN");
+			var songImg = $(this).data("songimg");
 			songIndex = sid;
-			play(sid)
+			play(sid,songImg)
 		});
 }
-function play(sid){
-	$("#audio").attr("src", 'http://ws.stream.qqmusic.qq.com/'+sid+'.m4a?fromtag=46');
-	audio = document.getElementById("audio");// 获得音频元素
+function play(sid,songImg){
+	//添加歌曲源
+	$("#audio").attr("src", 'http://ws.stream.qqmusic.qq.com/C100'+sid+'.m4a?fromtag=0');
+	// 获得音频元素
+	audio = document.getElementById("audio");
 	 /*显示歌曲总长度 */
 	if (audio.paused) {
 		audio.play();
-	} else
+	} else{
 		audio.pause();
+	}
 	audio.addEventListener('timeupdate', updateProgress,false);
 	audio.addEventListener('play', audioPlay, false);
 	audio.addEventListener('pause', audioPause, false);
 	audio.addEventListener('ended', audioEnded, false);
 	/* 播放歌词 */
-	getReady1(sid);// 准备播放
+	//getReady1(sid);// 准备播放
 	mPlay();// 显示歌词
 	// 对audio元素监听pause事件
 	/* 外观改变 */
@@ -220,10 +243,7 @@ function play(sid){
 	html += '<div class="manyou">';
 	html += '	<a href="#" class="manyouA">漫游相似歌曲</a>';
 	html += '</div>';
-	$(".start em").css({
-		"background" : "",
-		"color" : ""
-	});
+	$(".start em").css({"background" : "","color" : ""});
 	$(".manyou").remove();
 	$(".songList").css("background-color", "#f5f5f5");
 	var ems = $(".start em");
@@ -235,10 +255,7 @@ function play(sid){
 			break;
 		}
 	}
-	$(em).css({
-				"background" : 'url("css/images/T1X4JEFq8qXXXaYEA_-11-12.gif") no-repeat',
-				"color" : "transparent"
-				});
+	$(em).css({"background" : 'url("css/images/T1X4JEFq8qXXXaYEA_-11-12.gif") no-repeat',"color" : "transparent"});
 	$(em).parent().parent().parent().append(html);
 	$(em).parent().parent().parent().css("background-color", "#f0f0f0");
 
@@ -248,16 +265,17 @@ function play(sid){
 	$(".songName").html(songName);
 	$(".songPlayer").html(singerName);
 	/* 换右侧图片 */
-	var url = 'http://imgcache.qq.com/music/photo/album_300/'+(sid%100)+'/300_albumpic_'+sid+'_0.jpg';
-	$("#canvas1").attr("src", url);
+	var url = "";
+	if(songImg){
+		url = 'https://y.gtimg.cn/music/photo_new/T002R300x300M000'+songImg+'.jpg?max_age=2592000';
+		$("#canvas1").attr("src", url);
+	}
 	$("#canvas1").load(function() {
-		loadBG();
+		//loadBG();
 	});
 	// setTimeout('loadBG()',100);
 	$(".blur").css("opacity", "0");
-	$(".blur").animate({
-		opacity : "1"
-	}, 1000);
+	$(".blur").animate({opacity : "1"}, 1000);
 }
 function getReady1(sid){// 在显示歌词前做好准备工作
 	var ly = "";
@@ -296,39 +314,39 @@ function getReady1(sid){// 在显示歌词前做好准备工作
 	sortAr();
 	scrollBar();
 }
-function playNext(){
+//上一首
+function playPrev(){
+	
 	/* 切歌 */
-	$(".prevBtn").click(function() {
 		var prev = 0;
 		for(var i=0;i<songArray.length;i++){
-			if(songIndex==songArray[i]){
+			if(songIndex==songArray[i].songId){
 				if(i!=0){
-					prev = songArray[i-1];
+					prev = songArray[i-1].songId;
 				}else{
-					prev = songArray[songArray.length-1];
+					prev = songArray[songArray.length-1].songId;
 				}
 				break;
 			}
 		}
 		$(".start em[sonN=" + prev + "]").click();
-	});
-	//下一首
-	$(".nextBtn").click(function() {
-		var next = 0;
-		for(var i=0;i<songArray.length;i++){
-			if(songIndex==songArray[i]){
-				if(i!=songArray.length-1){
-					next = songArray[i+1];
-				}else{
-					next = songArray[0];
-				}
-				break;
-			}
-		}
-		$(".start em[sonN=" + next + "]").click();
-	});
-
 }
+function playNext(){
+	//下一首
+	var next = 0;
+	for(var i=0;i<songArray.length;i++){
+		if(songIndex==songArray[i].songId){
+			if(i!=songArray.length-1){
+				next = songArray[i+1].songId;
+			}else{
+				next = songArray[0].songId;
+			}
+			break;
+		}
+	}
+	$(".start em[sonN=" + next + "]").click();
+}
+//更新歌曲进度条
 function updateProgress(ev) {
 	/* 显示歌曲总长度 */
 	var songTime = calcTime(Math.floor(audio.duration));
@@ -342,21 +360,25 @@ function updateProgress(ev) {
 	$(".dian").css("left", llef);
 	//自动播放下一首
 	var next = 0;
+	var nextImg = "";
 	for(var i=0;i<songArray.length;i++){
-		if(songIndex==songArray[i]){
+		if(songIndex==songArray[i].songId){
 			if(i!=songArray.length-1){
-				next = songArray[i+1];
+				next = songArray[i+1].songId;
+				nextImg = songArray[i+1].songImg;
 			}else{
-				next = songArray[0];
+				next = songArray[0].songId;
+				nextImg = songArray[0].songImg;
 			}
 			break;
 		}
 	}
 	var item = setInterval(function() {
 		if(songTime.toString()==curTime.toString()){
-			play(next);
+			play(next,nextImg);
 			songIndex = next;
 			clearInterval(item);
 		}
 	},1000)
 }
+
