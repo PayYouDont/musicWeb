@@ -142,7 +142,7 @@
 				<a href="#" class="pbtn prevBtn" onclick="playPrev()"></a>
 				<a href="#" class="pbtn playBtn" isplay="0"></a> 
 				<a href="#" class="pbtn nextBtn" onclick="playNext()"></a> 
-				<a href="#" class="mode"></a>
+				<a href="#" class="mode" data-circle="0" onclick="circle(this)"></a>
 			</div>
 			<div class="playInfo">
 				<div class="trackInfo">

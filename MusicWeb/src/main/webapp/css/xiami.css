@@ -360,19 +360,10 @@ a:link,a:visited,a:active,a:hover{
 }
 .download{
 	right: 119px;
-	color:#d7d7d7;
-}
-.download:visited{
-	color:#d7d7d7;
+	background-position: 0 -527px;
 }
 .download:hover{
-	color:#d7d7d7;
-}
-.download:active {
-	color:#d7d7d7;
-} 
-.glyphicon-arrow-down{
-	top:-10px;
+	background-position: 0 -635px;
 }
 .love {
 	background-position: -28px -130px;
