@@ -1,19 +1,18 @@
 package music.API.service;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Service;
-
-import music.util.JsonWrapper;
 
 @Service("musicApiService")
 public class MusicApiService {
@@ -59,47 +58,35 @@ public class MusicApiService {
 	    in.close();
 		return sb;
 	}
-	public synchronized String downLoad(HttpServletRequest request,String urlStr) {
-		String reportName = "";
-		String reportDir = "printdocs" + File.separatorChar;
-		reportName = "song.m4a";
-		String projectDic = request.getSession().getServletContext().getRealPath("")+File.separatorChar;
-		File saveDir = new File(projectDic+reportDir);
-		if(!saveDir.exists()){
-			 saveDir.mkdirs();
+	public synchronized void downLoad(HttpServletRequest request,HttpServletResponse response,String urlStr,String songName) {
+		songName = songName+".m4a";
+		@SuppressWarnings("deprecation")
+		File folder = new File(request.getRealPath("/") + "export");
+		if (!folder.exists()) {
+			folder.mkdirs();
 		}
-		InputStream in = null;
-		OutputStream out = null;
 		try {
+			response.setContentType("application/x-download");
+			//下载名转成中文
+			songName = new String(songName.getBytes(), "ISO-8859-1");
+			response.setHeader("Content-Disposition", "attachment; filename="+songName);
 			URL url = new URL(urlStr);
-			in = url.openStream();
-			out = new FileOutputStream(projectDic+reportDir+reportName);
-			//IO 操作  
-	        byte[] buffer = new byte[1024]; 
-	        int len = -1;
-	        while((len = in.read(buffer)) != -1){ 
-	            out.write(buffer, 0, len);  
-	        }  
-		} catch (Exception e) {
+			InputStream inputStream = url.openStream();
+			BufferedOutputStream out = new BufferedOutputStream(response.getOutputStream());
+
+			byte[] buffer = new byte[inputStream.available()];
+			int length = 0;
+			while ((length = inputStream.read(buffer)) != -1) {
+				out.write(buffer, 0, length);
+			}
+
+			inputStream.close();
+			out.close();
+			out.flush();
+
+		} catch (IOException e) {
 			e.printStackTrace();
-			return "";
 		}
-		finally {
-			if(in!=null) {
-				try {
-					in.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			if(out!=null){
-				try {
-					out.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return reportDir+reportName; // 返回下载路径
+
 	}
 }

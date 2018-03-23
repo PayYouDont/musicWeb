@@ -223,7 +223,7 @@ function getSongHtml(song,index){
 						'<div class="col">'+song.albumName+'</div>'+
 					'</div>'+
 					'<div class="control">'+
-						'<a class="cicon download" href='+url+' title="下载" download='+song.songName+'></a>'+
+						'<a data-songid="'+song.songId+'" data-songname="'+song.songName+'" class="cicon download" title="下载" onclick="toDownLoad(this);"></a>'+
 						'<a class="cicon love" title="收藏"></a>'+ 
 						'<a class="cicon more" title="更多"></a>'+
 						'<a class="cicon dele" title="删除"></a>'+
@@ -458,4 +458,11 @@ function circle(a) {
 	var bg = circleType[circle].background;
 	$(a).css("background-position-y", bg);
 	circleIndex = circle;
+}
+//下载
+function toDownLoad(a){
+	var songid = $(a).data("songid");
+	var songName = $(a).data("songname");
+	
+	window.location.href = basePath + "rest/musicApiAction/toDownLoad?sid="+songid+"&songName="+encodeURI(songName);
 }

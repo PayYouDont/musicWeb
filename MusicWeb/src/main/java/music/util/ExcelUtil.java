@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
@@ -135,7 +136,7 @@ public class ExcelUtil {
 		case Cell.CELL_TYPE_STRING: // 文本
 			return cell.getStringCellValue().toString();
 		case Cell.CELL_TYPE_NUMERIC: // 数字、日期
-			if (HSSFDateUtil.isCellDateFormatted(cell)) {// 处理日期格式、时间格式
+			if (HSSFDateUtil.isCellDateFormatted((HSSFCell) cell)) {// 处理日期格式、时间格式
 				SimpleDateFormat sdf = null;
 				if (cell.getCellStyle().getDataFormat() == HSSFDataFormat.getBuiltinFormat("h:mm")) {
 					sdf = new SimpleDateFormat("HH:mm");
@@ -186,7 +187,6 @@ public class ExcelUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("resource")
 	public static String writeExcel(String path , List<String> list,String sheetName)throws Exception {
 		Workbook workbook = null;
 		try {
@@ -244,7 +244,7 @@ public class ExcelUtil {
 				for(int k=0;k<list.size();k++) {
 					Row row0 = sheet.createRow(k);
 					CellStyle rowStyle = list.get(k).getRowStyle();
-					row0.getRowStyle().cloneStyleFrom(rowStyle);
+					((ExcelCellStyle) row0).getRowStyle().cloneStyleFrom(rowStyle);
 					CellStyle[] cellStyles = list.get(k).getCellStyles();
 					String[] values = list.get(k).getValues();
 					for(int i=0;i<cellStyles.length;i++) {

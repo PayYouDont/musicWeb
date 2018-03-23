@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
@@ -101,7 +102,7 @@ public class excelRead {
 		case Cell.CELL_TYPE_STRING: // 文本
 			return cell.getStringCellValue().toString();
 		case Cell.CELL_TYPE_NUMERIC: // 数字、日期
-			if (HSSFDateUtil.isCellDateFormatted(cell)) {// 处理日期格式、时间格式
+			if (HSSFDateUtil.isCellDateFormatted((HSSFCell) cell)) {// 处理日期格式、时间格式
 				SimpleDateFormat sdf = null;
 				if (cell.getCellStyle().getDataFormat() == HSSFDataFormat.getBuiltinFormat("h:mm")) {
 					sdf = new SimpleDateFormat("HH:mm");

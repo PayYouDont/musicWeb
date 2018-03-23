@@ -1,18 +1,11 @@
 package music.API.controller;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
 import java.util.HashMap;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.sound.sampled.AudioInputStream;
+import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.output.WriterOutputStream;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -63,9 +56,6 @@ public class MusicApiAction {
 	public HashMap<String, Object> getlyr(String sid) {
 		StringBuffer sb = new StringBuffer();
 		String urlStr = "http://music.qq.com/miniportal/static/lyric/"+(new Integer(sid)%100)+"/"+sid+".xml";
-		//https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric.fcg
-		//https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric.fcg?nobase64=1&musicid=212877900&callback=jsonp1&g_tk=5381&jsonpCallback=jsonp1&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0
-
 		try {
 			sb = service.search(urlStr,"GB2312");
 			return JsonWrapper.successWrapper(sb);
@@ -74,14 +64,19 @@ public class MusicApiAction {
 			return JsonWrapper.failureWrapper("获取失败");
 		}
 	}
-	@RequestMapping("/down")
+	/**
+	 * 下载歌曲
+	 * @param request
+	 * @param response
+	 * @param sid
+	 * @param songName
+	 * @return
+	 */
+	@RequestMapping("/toDownLoad")
 	@ResponseBody
-	public HashMap<String, Object> down(HttpServletRequest request,String sid) {
+	public HashMap<String, Object> downLoad(HttpServletRequest request,HttpServletResponse response,String sid,String songName) {
 		String urlStr = "http://ws.stream.qqmusic.qq.com/C100"+sid+".m4a?fromtag=0";
-		String path = this.service.downLoad(request, urlStr);
-		if("".equals(path)) {
-			return JsonWrapper.failureWrapper("失败");
-		}
-		return JsonWrapper.successWrapper(path);
+		this.service.downLoad(request,response,urlStr,songName);
+		return JsonWrapper.successWrapper(null,"下载成功");
 	}
 }
