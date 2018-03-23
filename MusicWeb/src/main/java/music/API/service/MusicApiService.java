@@ -1,10 +1,19 @@
 package music.API.service;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.URL;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Service;
+
+import music.util.JsonWrapper;
 
 @Service("musicApiService")
 public class MusicApiService {
@@ -49,5 +58,48 @@ public class MusicApiService {
     	}
 	    in.close();
 		return sb;
+	}
+	public synchronized String downLoad(HttpServletRequest request,String urlStr) {
+		String reportName = "";
+		String reportDir = "printdocs" + File.separatorChar;
+		reportName = "song.m4a";
+		String projectDic = request.getSession().getServletContext().getRealPath("")+File.separatorChar;
+		File saveDir = new File(projectDic+reportDir);
+		if(!saveDir.exists()){
+			 saveDir.mkdirs();
+		}
+		InputStream in = null;
+		OutputStream out = null;
+		try {
+			URL url = new URL(urlStr);
+			in = url.openStream();
+			out = new FileOutputStream(projectDic+reportDir+reportName);
+			//IO 操作  
+	        byte[] buffer = new byte[1024]; 
+	        int len = -1;
+	        while((len = in.read(buffer)) != -1){ 
+	            out.write(buffer, 0, len);  
+	        }  
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+		finally {
+			if(in!=null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if(out!=null){
+				try {
+					out.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return reportDir+reportName; // 返回下载路径
 	}
 }

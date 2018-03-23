@@ -223,10 +223,10 @@ function getSongHtml(song,index){
 						'<div class="col">'+song.albumName+'</div>'+
 					'</div>'+
 					'<div class="control">'+
-						'<a class="cicon download" href='+url+' download=""></a>'+
-						'<a class="cicon love"></a>'+ 
-						'<a class="cicon more"></a>'+
-						'<a class="cicon dele"></a>'+
+						'<a class="cicon download" href='+url+' title="下载" download='+song.songName+'></a>'+
+						'<a class="cicon love" title="收藏"></a>'+ 
+						'<a class="cicon more" title="更多"></a>'+
+						'<a class="cicon dele" title="删除"></a>'+
 					'</div>'+
 			   '</div>'+
 			'</li>';

@@ -1,9 +1,18 @@
 package music.API.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.HashMap;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.sound.sampled.AudioInputStream;
 
+import org.apache.commons.io.output.WriterOutputStream;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -64,5 +73,15 @@ public class MusicApiAction {
 			e.printStackTrace();
 			return JsonWrapper.failureWrapper("获取失败");
 		}
+	}
+	@RequestMapping("/down")
+	@ResponseBody
+	public HashMap<String, Object> down(HttpServletRequest request,String sid) {
+		String urlStr = "http://ws.stream.qqmusic.qq.com/C100"+sid+".m4a?fromtag=0";
+		String path = this.service.downLoad(request, urlStr);
+		if("".equals(path)) {
+			return JsonWrapper.failureWrapper("失败");
+		}
+		return JsonWrapper.successWrapper(path);
 	}
 }
