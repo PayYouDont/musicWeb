@@ -1,7 +1,7 @@
 var date = new Date().getTime()-2*24*60*60*1000;
 date = new Date(date)
 date = FormatDate("yyyy-MM-dd",date);
-date = "2018-03-16";
+date = "2018-03-21";
 //歌曲列表接口
 var listUrl = "https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg?" +
 		"tpl=3&page=detail&date="+date+"&topid=4&type=top&" +
