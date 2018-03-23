@@ -58,7 +58,7 @@ public class MusicApiService {
 	    in.close();
 		return sb;
 	}
-	public synchronized void downLoad(HttpServletRequest request,HttpServletResponse response,String urlStr,String songName) {
+	public void downLoad(HttpServletRequest request,HttpServletResponse response,String urlStr,String songName) {
 		songName = songName+".m4a";
 		@SuppressWarnings("deprecation")
 		File folder = new File(request.getRealPath("/") + "export");

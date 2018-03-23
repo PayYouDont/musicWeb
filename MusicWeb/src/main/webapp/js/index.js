@@ -13,48 +13,47 @@ $(function() {
 	searchMusicByKey();
 	toLogin();
 	Warning(warning);
+	jumpTime();
 });
 // 初始化歌单
 function initSongList() {
-	var newSongTopUrl = listUrl;
-	var allSongTopUrl = "http://music.qq.com/musicbox/shop/v3/data/hit/hit_all.js";
-	var songList = {
-		newSong : newSongTopUrl,
-		allSong : allSongTopUrl
-	};
-	$.ajax({
-		type : "get",
-		async : false,
-		url : songList.newSong,
-		dataType : "jsonp",
-		jsonp : "callback",
-		jsonpCallback : "MusicJsonCallbacktoplist",
-		// scriptCharset: 'GBK',//设置编码
-		success : function(data) {
-			songList = JSON.parse(JSON.stringify(data)).songlist;
-			startid = songList[0].data.songmid;
-			songIndex = startid;
-			// 加载第一首歌曲
-			var src = 'http://ws.stream.qqmusic.qq.com/C100' + startid
-					+ '.m4a?fromtag=0';
-			// 显示歌单数量
-			$("#songCount").html("歌曲(" + songList.length + ")");
-			// 下放播放器显示歌曲名字
-			$(".songName").html(songList[0].data.songname);
-			// 下放播放器显示歌手名字
-			$(".songPlayer").html(songList[0].data.singer[0].name);
-			totalPages = Math.ceil(songList.length / count);
-			// 分页
-			QueryPage(songList, 1)
-			initPage(totalPages, songList);
-			// 自动播放
-			play(startid, songList[0].data.albummid);
-			start();
-		},
-		error : function() {
-			alert('fail');
-		}
-	});
+	try{
+		$.ajax({
+			type : "get",
+			async : false,
+			url : listUrl,
+			dataType : "jsonp",
+			jsonp : "callback",
+			jsonpCallback : "MusicJsonCallbacktoplist",
+			// scriptCharset: 'GBK',//设置编码
+			success : function(data) {
+				songList = JSON.parse(JSON.stringify(data)).songlist;
+				startid = songList[0].data.songmid;
+				songIndex = startid;
+				// 加载第一首歌曲
+				var src = 'http://ws.stream.qqmusic.qq.com/C100' + startid
+						+ '.m4a?fromtag=0';
+				// 显示歌单数量
+				$("#songCount").html("歌曲(" + songList.length + ")");
+				// 下放播放器显示歌曲名字
+				$(".songName").html(songList[0].data.songname);
+				// 下放播放器显示歌手名字
+				$(".songPlayer").html(songList[0].data.singer[0].name);
+				totalPages = Math.ceil(songList.length / count);
+				// 分页
+				QueryPage(songList, 1)
+				initPage(totalPages, songList);
+				// 自动播放
+				play(startid, songList[0].data.albummid);
+				start();
+			},
+			error : function() {
+				alert('fail');
+			}
+		});
+	}catch(e){
+		console.log("aaaaaa"+e)
+	}
 }
 // 查询结果分页
 function QueryPage(list, page) {
@@ -465,4 +464,14 @@ function toDownLoad(a){
 	var songName = $(a).data("songname");
 	
 	window.location.href = basePath + "rest/musicApiAction/toDownLoad?sid="+songid+"&songName="+encodeURI(songName);
+}
+function jumpTime(){
+	$(".progress").off("click").on("click",function(e){
+		var width = $(".progress").width();
+		var x = e.offsetX;
+		//audio.duration 总时间
+		var audio = document.getElementById("audio");
+		var duration = audio.duration;//总时间
+		audio.currentTime = duration*(Math.floor(x)/Math.floor(width));
+	})
 }
