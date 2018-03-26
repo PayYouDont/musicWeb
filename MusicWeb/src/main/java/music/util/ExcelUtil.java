@@ -23,7 +23,6 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import music.user.controller.UploaderAction;
-import music.user.entity.ExcelCellStyle;
 
 public class ExcelUtil {
 	/**
@@ -230,17 +229,17 @@ public class ExcelUtil {
 			throw e;
 		}
 	}
-	public static String writeExcel1(String path , List<ExcelCellStyle> list,String sheetName)throws Exception {
+	/*public static String writeExcel1(String path , List<ExcelCellStyle> list,String sheetName)throws Exception {
 		Workbook workbook = null;
 		try {
 			workbook = new XSSFWorkbook();// HSSFWorkbook();//WorkbookFactory.create(inputStream);
 			if (workbook != null) {
 				Sheet sheet = workbook.createSheet(sheetName);
-				/*CellStyle cellStyle = workbook.createCellStyle(); 
+				CellStyle cellStyle = workbook.createCellStyle(); 
 			    // 设置字体  
 		        Font font = workbook.createFont();  
 		        font.setFontHeightInPoints((short)13); //字体高度 
-		        cellStyle.setFont(font);*/
+		        cellStyle.setFont(font);
 				for(int k=0;k<list.size();k++) {
 					Row row0 = sheet.createRow(k);
 					CellStyle rowStyle = list.get(k).getRowStyle();
@@ -252,15 +251,15 @@ public class ExcelUtil {
 						CellStyle cellStyle = cellStyles[i];
 						Cell cell_1 = row0.createCell(i, Cell.CELL_TYPE_STRING);
 						cell_1.setCellValue(value);
-						/*sheet.setColumnWidth(i,15 * 256);
-						sheet.autoSizeColumn(i);*/
+						sheet.setColumnWidth(i,15 * 256);
+						sheet.autoSizeColumn(i);
 						cell_1.getCellStyle().cloneStyleFrom(cellStyle);
-						/*if(k==0) {
+						if(k==0) {
 							cell_1.setCellStyle(cellStyle);
-						}*/
+						}
 					}
 					//String[] firstRow = list.get(k).split(",");
-					/*for (int i = 0; i < firstRow.length; i++) {
+					for (int i = 0; i < firstRow.length; i++) {
 						Cell cell_1 = row0.createCell(i, Cell.CELL_TYPE_STRING);
 						cell_1.setCellValue(firstRow[i]);
 						sheet.setColumnWidth(i,15 * 256);
@@ -268,7 +267,7 @@ public class ExcelUtil {
 						if(k==0) {
 							cell_1.setCellStyle(cellStyle);
 						}
-					}*/
+					}
 				}
 				File excl = new File(UploaderAction.downLoadPath());
 				if(!excl.exists()){
@@ -288,5 +287,5 @@ public class ExcelUtil {
 			e.printStackTrace();
 			throw e;
 		}
-	}
+	}*/
 }
