@@ -1,4 +1,4 @@
-package music.util;
+/*package music.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,7 +25,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import music.user.controller.UploaderAction;
 
 public class ExcelUtil {
-	/**
+	*//**
 	 * 
 	 * @Title: hasDatas 
 	 * @Description: TODO(判断某个sheet是否有数据) 
@@ -35,14 +35,14 @@ public class ExcelUtil {
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2017年12月8日 下午3:48:34
-	 */
+	 *//*
 	public static boolean hasDatas(Sheet sheet) {
 		if (sheet.getLastRowNum() == 0 && sheet.getPhysicalNumberOfRows() == 0) {
 			return false;
 		}
 		return true;
 	}
-	/***
+	*//***
 	 * 
 	 * @Title: getSheetName 
 	 * @Description: TODO(获取excel中数据不为空sheet表的名称) 
@@ -54,7 +54,7 @@ public class ExcelUtil {
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2017年12月8日 下午3:48:59
-	 */
+	 *//*
 	public static List<String> getSheetName(Workbook workbook, String path) throws Exception {
 		List<String> list_name = new ArrayList<String>();
 		FileInputStream is = null;
@@ -82,7 +82,7 @@ public class ExcelUtil {
 			}
 		}
 	}
-	/**
+	*//**
 	 * 
 	 * @Title: maxCol 
 	 * @Description: TODO(获取最大的列数) 
@@ -92,7 +92,7 @@ public class ExcelUtil {
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2017年12月8日 下午3:49:50
-	 */
+	 *//*
 	public static int maxCol(Sheet sheet) {
 		int rowCount = sheet.getPhysicalNumberOfRows(); // 获取总行数
 		if (rowCount == 0) {
@@ -117,7 +117,7 @@ public class ExcelUtil {
 		int maxCol = arr[arr.length - 1];
 		return maxCol;
 	}
-	/**
+	*//**
 	 * 
 	 * @Title: getCellValue 
 	 * @Description: TODO(获取excel中每个单元格的数据) 
@@ -128,7 +128,7 @@ public class ExcelUtil {
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2017年12月8日 下午3:51:03
-	 */
+	 *//*
 	@SuppressWarnings("deprecation")
 	public static String getCellValue(Cell cell, int cellType) {
 		switch (cellType) {
@@ -178,14 +178,14 @@ public class ExcelUtil {
 			return "";
 		}
 	}
-	/**
+	*//**
 	 * 合并excel
 	 * @param path
 	 * @param list
 	 * @param sheetName
 	 * @return
 	 * @throws Exception
-	 */
+	 *//*
 	public static String writeExcel(String path , List<String> list,String sheetName)throws Exception {
 		Workbook workbook = null;
 		try {
@@ -229,7 +229,7 @@ public class ExcelUtil {
 			throw e;
 		}
 	}
-	/*public static String writeExcel1(String path , List<ExcelCellStyle> list,String sheetName)throws Exception {
+	public static String writeExcel1(String path , List<ExcelCellStyle> list,String sheetName)throws Exception {
 		Workbook workbook = null;
 		try {
 			workbook = new XSSFWorkbook();// HSSFWorkbook();//WorkbookFactory.create(inputStream);
@@ -287,5 +287,6 @@ public class ExcelUtil {
 			e.printStackTrace();
 			throw e;
 		}
-	}*/
+	}
 }
+*/

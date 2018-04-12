@@ -16,7 +16,7 @@ import music.util.JsonWrapper;
 @Controller
 @RequestMapping("/musicApiAction")
 public class MusicApiAction {
-	@Resource(name = "musicApiService")
+	@Resource
 	private MusicApiService service;
 	/**
 	 * @Title: searchMusic 
