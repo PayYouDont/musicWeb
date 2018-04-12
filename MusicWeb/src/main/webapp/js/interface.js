@@ -26,13 +26,16 @@ function Warning(msg){
 }
 
 
+var songListObj;
 
-
-
-
-
-
-
+var getSongListObj = function(songArray){
+	songListObj = {};//清空当前数据
+	for(var i=0;i<songArray.length;i++){
+		var song = songArray[i];
+		var songid = song.songId;
+		songListObj[songid] = song;
+	}
+}
 
 
 function FormatDate(fmt,date)   

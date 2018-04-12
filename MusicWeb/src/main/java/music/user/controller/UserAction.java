@@ -3,6 +3,7 @@ package music.user.controller;
 import java.util.HashMap;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,5 +39,10 @@ public class UserAction {
 			loger.error(e.getMessage(),e);
 			return JsonWrapper.failureWrapper("网络异常");
 		}
+	}
+	
+	public HashMap<String,Object> regist(HttpServletRequest request,User user){
+		
+		return null;
 	}
 }

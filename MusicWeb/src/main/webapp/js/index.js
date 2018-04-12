@@ -17,43 +17,38 @@ $(function() {
 });
 // 初始化歌单
 function initSongList() {
-	try{
-		$.ajax({
-			type : "get",
-			async : false,
-			url : listUrl,
-			dataType : "jsonp",
-			jsonp : "callback",
-			jsonpCallback : "MusicJsonCallbacktoplist",
-			// scriptCharset: 'GBK',//设置编码
-			success : function(data) {
-				songList = JSON.parse(JSON.stringify(data)).songlist;
-				startid = songList[0].data.songmid;
-				songIndex = startid;
-				// 加载第一首歌曲
-				var src = 'http://ws.stream.qqmusic.qq.com/C100' + startid
-						+ '.m4a?fromtag=0';
-				// 显示歌单数量
-				$("#songCount").html("歌曲(" + songList.length + ")");
-				// 下放播放器显示歌曲名字
-				$(".songName").html(songList[0].data.songname);
-				// 下放播放器显示歌手名字
-				$(".songPlayer").html(songList[0].data.singer[0].name);
-				totalPages = Math.ceil(songList.length / count);
-				// 分页
-				QueryPage(songList, 1)
-				initPage(totalPages, songList);
-				// 自动播放
-				play(startid, songList[0].data.albummid);
-				start();
-			},
-			error : function() {
-				alert('fail');
-			}
-		});
-	}catch(e){
-		console.log("aaaaaa"+e)
-	}
+	$.ajax({
+		type : "get",
+		async : false,
+		url : listUrl,
+		dataType : "jsonp",
+		jsonp : "callback",
+		jsonpCallback : "MusicJsonCallbacktoplist",
+		// scriptCharset: 'GBK',//设置编码
+		success : function(data) {
+			songList = JSON.parse(JSON.stringify(data)).songlist;
+			startid = songList[0].data.strMediaMid;
+			songIndex = startid;
+			// 加载第一首歌曲
+			var src = 'http://ws.stream.qqmusic.qq.com/C100' + startid + '.m4a?fromtag=0';
+			// 显示歌单数量
+			$("#songCount").html("歌曲(" + songList.length + ")");
+			// 下放播放器显示歌曲名字
+			$(".songName").html(songList[0].data.songname);
+			// 下放播放器显示歌手名字
+			$(".songPlayer").html(songList[0].data.singer[0].name);
+			totalPages = Math.ceil(songList.length / count);
+			// 分页
+			QueryPage(songList, 1)
+			initPage(totalPages, songList);
+			// 自动播放
+			play(startid, songList[0].data.albummid);
+			start();
+		},
+		error : function() {
+			alert('fail');
+		}
+	});
 }
 // 查询结果分页
 function QueryPage(list, page) {
@@ -61,23 +56,27 @@ function QueryPage(list, page) {
 	var html = "";
 	songArray = new Array();
 	for (var i = 0; i < data.length; i++) {
-		var id = data[i].data.strMediaMid;
+		var songid = data[i].data.strMediaMid;//歌曲播放id
 		var albumId = data[i].data.albummid;// 专辑id
 		var singerName = data[i].data.singer[0].name;
 		var songName = data[i].data.songname;
 		var singerId = data[i].data.singer[0].id;
 		var albumName = data[i].data.albumname;// 专辑名称
 		var songImg = data[i].data.albummid;// 专辑id
+		var musicId = data[i].data.songid;//歌曲id(歌词id);
 		var song = {
 			songName : songName,
 			albumName : albumName,
-			songId : id,
+			songId : songid,
 			albumId : albumId,
 			singerId : singerId,
 			singer : singerName,
-			songImg : songImg
+			songImg : songImg,
+			musicId:musicId
 		}
-		songArray.push(song)
+		//addToSongListObj(song)
+		songArray.push(song);
+		getSongListObj(songArray);
 		html += getSongHtml(song, i);
 	}
 	$(".songUL").html(html);
@@ -155,7 +154,7 @@ function searchMusic() {
 		type : "post",
 		data : {
 			name : searcMsg,
-			number : 30
+			number : 50
 		},
 		dataType : "json",
 		success : function(json) {
@@ -174,7 +173,7 @@ function searchMusic() {
 	})
 }
 function QueryPageToSearch(songList, page) {
-	var list = getPageData(songList, page)
+	var list = getPageData(songList, page);
 	var html = "";
 	songArray = new Array();
 	for (var i = 0; i < list.length; i++) {
@@ -184,10 +183,10 @@ function QueryPageToSearch(songList, page) {
 		var fsong = list[i].fsong;// 歌曲名
 		var albumName = list[i].albumName_hilight;// 专辑名称
 		var infoArr = f.split("|");
-		var songId = infoArr[0];// 歌曲id
+		var musicId = infoArr[0];// 歌曲id
 		var albumId = infoArr[4];// 专辑id
 		var singerId = infoArr[2];// 歌手id
-		var newid = f.split("|")[20];// 新接口歌曲id
+		var newid = f.split("|")[20];//歌曲播放id
 		var songImg = f.split("|")[22];// 歌曲封面
 		var song = {
 			f : f,
@@ -198,9 +197,12 @@ function QueryPageToSearch(songList, page) {
 			albumId : albumId,
 			singerId : singerId,
 			singer : fsinger,
-			songImg : songImg
+			songImg : songImg,
+			musicId:musicId//歌曲单独id(歌词展示需要)
 		}
+		//addToSongListObj(song)
 		songArray.push(song);
+		getSongListObj(songArray);
 		html += getSongHtml(song, i);
 	}
 	$(".songUL").html(html);
@@ -239,7 +241,7 @@ function start() {
 		var sid = $(this).attr("sonN");
 		var songImg = $(this).data("songimg");
 		songIndex = sid;
-		play(sid, songImg)
+		play(sid, songImg);
 	});
 }
 function play(sid, songImg) {
@@ -259,7 +261,8 @@ function play(sid, songImg) {
 	audio.addEventListener('pause', audioPause, false);
 	audio.addEventListener('ended', audioEnded, false);
 	/* 播放歌词 */
-	// getReady1(sid);// 准备播放
+	var musicId = songListObj[sid].musicId;
+	getReady1(musicId);// 准备播放
 	//mPlay();// 显示歌词
 	// 对audio元素监听pause事件
 	/* 外观改变 */
@@ -320,16 +323,30 @@ function getReady1(sid) {// 在显示歌词前做好准备工作
 		async : false,
 		success : function(json) {
 			if (json.success) {
-				ly = json.data.toString();// 得到歌词
-			} else {
-				ly = "";
+				var data = json.data;
+				data = data.substring(7,data.length-1);
+				data = JSON.parse(data);
+				var lrc = data.lyric;
+				ly = lrc.replace(/&#(\d+);/g, (str, match) => String.fromCharCode(match));
 			}
 		}
 	});
 	if (ly == "") {
+		$("#lyr").html("本歌暂无歌词！");
+		return;
+	}
+	var ly = getLy(s);// 得到歌词
+	// alert(ly);
+	// lytext.length=0;
+	// lytime.length=0;
+	// lytext = new Array();
+	// lytime = new Array();
+	if (ly == "") {
 		$("#lry").html("本歌暂无歌词！");
 	}
+	;
 	var arrly = ly.split(".");// 转化成数组
+	// alert(arrly[1]);
 	tflag = 0;
 	for (var i = 0; i < lytext.length; i++) {
 		lytext[i] = "";
@@ -337,12 +354,9 @@ function getReady1(sid) {// 在显示歌词前做好准备工作
 	for (var i = 0; i < lytime.length; i++) {
 		lytime[i] = "";
 	}
-	$("#lry").html(" ");
 	document.getElementById("lyr").scrollTop = 0;
-
-	for (var i = 0; i < arrly.length; i++) {
+	for (var i = 0; i < arrly.length; i++)
 		sToArray(arrly[i]);
-	}
 	sortAr();
 	scrollBar();
 }

@@ -6,13 +6,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Service;
+
 
 @Service("musicApiService")
 public class MusicApiService {
@@ -49,7 +51,14 @@ public class MusicApiService {
 	 */
 	public StringBuffer search(String urlStr,String encoding) throws Exception{
 		URL url = new URL(urlStr);
-		BufferedReader in = new BufferedReader( new InputStreamReader(url.openStream(),encoding) );   
+		//初始化一个链接到那个url的连接
+		 HttpURLConnection connection = (HttpURLConnection) url.openConnection();// 打开连接  
+		//设置User-Agent 加上下面这句后便可进行爬取
+		connection.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36");
+		connection.setRequestProperty("referer","https://y.qq.com/portal/playlist.html");
+		connection.connect();// 连接会话 
+		
+		BufferedReader in = new BufferedReader( new InputStreamReader(connection.getInputStream(),"utf-8"));   
 		StringBuffer sb = new StringBuffer(); 
 	    String str = null;
 	    while((str = in.readLine()) != null) {
