@@ -331,34 +331,25 @@ function getReady1(sid) {// 在显示歌词前做好准备工作
 			}
 		}
 	});
-	if (ly == "") {
-		$("#lyr").html("本歌暂无歌词！");
-		return;
+	var arrly=ly.split(".");//转化成数组
+  	//alert(arrly[1]);
+  	tflag=0;
+  	for( var i=0;i<lytext.length;i++)
+	{
+		lytext[i]="";
 	}
-	var ly = getLy(s);// 得到歌词
-	// alert(ly);
-	// lytext.length=0;
-	// lytime.length=0;
-	// lytext = new Array();
-	// lytime = new Array();
-	if (ly == "") {
-		$("#lry").html("本歌暂无歌词！");
+	for( var i=0;i<lytime.length;i++)
+	{
+		lytime[i]="";
 	}
-	;
-	var arrly = ly.split(".");// 转化成数组
-	// alert(arrly[1]);
-	tflag = 0;
-	for (var i = 0; i < lytext.length; i++) {
-		lytext[i] = "";
+	console.log(ly)
+  	$("#lry").html(" ");
+  	document.getElementById("lyr").scrollTop=0;
+	for(var i=0;i<arrly.length;i++) {
+	  	sToArray(arrly[i]);
 	}
-	for (var i = 0; i < lytime.length; i++) {
-		lytime[i] = "";
-	}
-	document.getElementById("lyr").scrollTop = 0;
-	for (var i = 0; i < arrly.length; i++)
-		sToArray(arrly[i]);
 	sortAr();
-	scrollBar();
+	scrollBar(); 
 }
 // 上一首
 function playPrev() {
@@ -405,6 +396,7 @@ function updateProgress(ev) {
 	$(".duration").html(songTime);
 	/* 显示歌曲当前时间 */
 	var curTime = calcTime(Math.floor(audio.currentTime));
+	console.log(audio.currentTime)
 	$(".position").html(curTime);
 	/* 进度条 */
 	var count = $(".progress").width();

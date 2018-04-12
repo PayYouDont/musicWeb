@@ -307,6 +307,7 @@ function getReady(s)// 在显示歌词前做好准备工作
 	for (var i = 0; i < lytime.length; i++) {
 		lytime[i] = "";
 	}
+	$("#lry").html(" ");
 	document.getElementById("lyr").scrollTop = 0;
 	for (var i = 0; i < arrly.length; i++)
 		sToArray(arrly[i]);
