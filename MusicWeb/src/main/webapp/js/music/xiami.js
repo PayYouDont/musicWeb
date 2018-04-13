@@ -230,7 +230,7 @@ function audioEnded(ev) {
 	$(".start em[sonN=" + sid + "]").click();
 }
 
-/* 显示歌词部分 */
+/* 显示歌词部分 
 var scrollt = 0;
 var tflag = 0;// 存放时间和歌词的数组的下标
 var lytext = new Array();// 放存汉字的歌词
@@ -238,8 +238,8 @@ var lytime = new Array();// 存放时间
 var delay = 10;
 var line = 0;
 var scrollh = 0;
-var songIndex = 2;
-function getLy(s)// 取得歌词
+var songIndex = 2;*/
+/*function getLy(s)// 取得歌词
 {
 	var ly = "";
 	if (s == "2") {
@@ -255,8 +255,8 @@ function getLy(s)// 取得歌词
 	}
 	;
 	return ly;
-}
-function show(t)// 显示歌词
+}*/
+/*function show(t)// 显示歌词
 {
 	var div1 = document.getElementById("lyr");// 取得层
 	document.getElementById("lyr").innerHTML = " ";// 每次调用清空以前的一次
@@ -277,16 +277,16 @@ function show(t)// 显示歌词
 		div1.innerHTML += "<font color=red style=font-weight:bold>"
 				+ lytext[lytext.length - 1] + "</font><br>";
 	}
-}
-function scrollBar()// 设置滚动条的滚动
+}*/
+/*function scrollBar()// 设置滚动条的滚动
 {
 	if (document.getElementById("lyr").scrollTop <= scrollh)
 		document.getElementById("lyr").scrollTop += 1;
 	if (document.getElementById("lyr").scrollTop >= scrollh + 50)
 		document.getElementById("lyr").scrollTop -= 1;
 	window.setTimeout("scrollBar()", delay);
-}
-function getReady(s)// 在显示歌词前做好准备工作
+}*/
+/*function getReady(s)// 在显示歌词前做好准备工作
 {
 	var ly = getLy(s);// 得到歌词
 	// alert(ly);
@@ -320,8 +320,8 @@ function getReady(s)// 在显示歌词前做好准备工作
 	// document.getElementById("lyr").innerHTML+=lytime[j]+lytext[j]+"<br>";
 	// }
 	scrollBar();
-}
-function sToArray(str)// 解析如“[02:02][00:24]没想到是你”的字符串前放入数组
+}*/
+/*function sToArray(str)// 解析如“[02:02][00:24]没想到是你”的字符串前放入数组
 {
 
 	var left = 0;// "["的个数
@@ -340,8 +340,8 @@ function sToArray(str)// 解析如“[02:02][00:24]没想到是你”的字符�
 		}
 	}
 	// alert(str.substring(leftAr[0]+1,leftAr[0]+6));
-}
-function sortAr()// 按时间重新排序时间和歌词的数组
+}*/
+/*function sortAr()// 按时间重新排序时间和歌词的数组
 {
 	var temp = null;
 	var temp1 = null;
@@ -357,8 +357,8 @@ function sortAr()// 按时间重新排序时间和歌词的数组
 			}
 		}
 	}
-}
-function conSeconds(t)// 把形如：01：25的时间转化成秒；
+}*/
+/*function conSeconds(t)// 把形如：01：25的时间转化成秒；
 {
 	var m = t.substring(0, t.indexOf(":"));
 	var s = t.substring(t.indexOf(":") + 1);
@@ -370,7 +370,7 @@ function conSeconds(t)// 把形如：01：25的时间转化成秒；
 	// if(isNaN(totalt)) return 0;
 
 	return totalt;
-}
+}*/
 // function getSeconds()//得到当前播放器播放位置的时间
 // { var t=getPosition(); t=t.toString();//数字转换成字符串
 // var s=t.substring(0,t.lastIndexOf("."));//得到当前的秒
@@ -383,7 +383,7 @@ function conSeconds(t)// 把形如：01：25的时间转化成秒；
 // //alert(mmt);
 // return mm.CurrentPosition;
 // }
-function mPlay()// 开始播放
+/*function mPlay()// 开始播放
 {
 	// var ms=parseInt(getSeconds());
 	// if(isNaN(ms)) show(0);
@@ -391,7 +391,7 @@ function mPlay()// 开始播放
 	var ms = audio.currentTime;
 	show(ms);
 	window.setTimeout("mPlay()", 100)
-}
+}*/
 /*function fPlay() {
 	$(".start em[sonN=" + songIndex + "]").click();
 }*/

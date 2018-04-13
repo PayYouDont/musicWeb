@@ -56,14 +56,14 @@ function QueryPage(list, page) {
 	var html = "";
 	songArray = new Array();
 	for (var i = 0; i < data.length; i++) {
-		var songid = data[i].data.strMediaMid;//歌曲播放id
+		var songid = data[i].data.strMediaMid;// 歌曲播放id
 		var albumId = data[i].data.albummid;// 专辑id
 		var singerName = data[i].data.singer[0].name;
 		var songName = data[i].data.songname;
 		var singerId = data[i].data.singer[0].id;
 		var albumName = data[i].data.albumname;// 专辑名称
 		var songImg = data[i].data.albummid;// 专辑id
-		var musicId = data[i].data.songid;//歌曲id(歌词id);
+		var musicId = data[i].data.songid;// 歌曲id(歌词id);
 		var song = {
 			songName : songName,
 			albumName : albumName,
@@ -74,7 +74,7 @@ function QueryPage(list, page) {
 			songImg : songImg,
 			musicId:musicId
 		}
-		//addToSongListObj(song)
+		// addToSongListObj(song)
 		songArray.push(song);
 		getSongListObj(songArray);
 		html += getSongHtml(song, i);
@@ -186,7 +186,7 @@ function QueryPageToSearch(songList, page) {
 		var musicId = infoArr[0];// 歌曲id
 		var albumId = infoArr[4];// 专辑id
 		var singerId = infoArr[2];// 歌手id
-		var newid = f.split("|")[20];//歌曲播放id
+		var newid = f.split("|")[20];// 歌曲播放id
 		var songImg = f.split("|")[22];// 歌曲封面
 		var song = {
 			f : f,
@@ -198,9 +198,9 @@ function QueryPageToSearch(songList, page) {
 			singerId : singerId,
 			singer : fsinger,
 			songImg : songImg,
-			musicId:musicId//歌曲单独id(歌词展示需要)
+			musicId:musicId// 歌曲单独id(歌词展示需要)
 		}
-		//addToSongListObj(song)
+		// addToSongListObj(song)
 		songArray.push(song);
 		getSongListObj(songArray);
 		html += getSongHtml(song, i);
@@ -263,7 +263,7 @@ function play(sid, songImg) {
 	/* 播放歌词 */
 	var musicId = songListObj[sid].musicId;
 	getReady1(musicId);// 准备播放
-	//mPlay();// 显示歌词
+	mPlay();// 显示歌词
 	// 对audio元素监听pause事件
 	/* 外观改变 */
 	var html = "";
@@ -310,14 +310,14 @@ function play(sid, songImg) {
 		opacity : "1"
 	}, 1000);
 }
-function getReady1(sid) {// 在显示歌词前做好准备工作
+function getReady1(musicId) {// 在显示歌词前做好准备工作
 	var ly = "";
 	var url = basePath + "rest/musicApiAction/getlyr";
 	$.ajax({
 		url : url,
 		type : "post",
 		data : {
-			sid : sid
+			sid : musicId
 		},
 		dataType : "json",
 		async : false,
@@ -331,22 +331,20 @@ function getReady1(sid) {// 在显示歌词前做好准备工作
 			}
 		}
 	});
-	var arrly=ly.split(".");//转化成数组
-  	//alert(arrly[1]);
+	var arrly=ly.split("\n");// 转化成数组
+  	// alert(arrly[1]);
   	tflag=0;
-  	for( var i=0;i<lytext.length;i++)
-	{
+  	for( var i=0;i<lytext.length;i++){
 		lytext[i]="";
 	}
-	for( var i=0;i<lytime.length;i++)
-	{
+	for( var i=0;i<lytime.length;i++){
 		lytime[i]="";
 	}
-	console.log(ly)
   	$("#lry").html(" ");
   	document.getElementById("lyr").scrollTop=0;
 	for(var i=0;i<arrly.length;i++) {
-	  	sToArray(arrly[i]);
+		var str = arrly[i];
+	  	sToArray(str);
 	}
 	sortAr();
 	scrollBar(); 
@@ -396,7 +394,6 @@ function updateProgress(ev) {
 	$(".duration").html(songTime);
 	/* 显示歌曲当前时间 */
 	var curTime = calcTime(Math.floor(audio.currentTime));
-	console.log(audio.currentTime)
 	$(".position").html(curTime);
 	/* 进度条 */
 	var count = $(".progress").width();
@@ -464,7 +461,7 @@ function circle(a) {
 	$(a).css("background-position-y", bg);
 	circleIndex = circle;
 }
-//下载
+// 下载
 function toDownLoad(a){
 	var songid = $(a).data("songid");
 	var songName = $(a).data("songname");
@@ -475,9 +472,102 @@ function jumpTime(){
 	$(".progress").off("click").on("click",function(e){
 		var width = $(".progress").width();
 		var x = e.offsetX;
-		//audio.duration 总时间
+		// audio.duration 总时间
 		var audio = document.getElementById("audio");
-		var duration = audio.duration;//总时间
+		var duration = audio.duration;// 总时间
 		audio.currentTime = duration*(Math.floor(x)/Math.floor(width));
 	})
+}
+
+
+/****************************************************************/
+/* 显示歌词部分 */
+var scrollt = 0;
+var tflag = 0;// 存放时间和歌词的数组的下标
+var lytext = new Array();// 放存汉字的歌词
+var lytime = new Array();// 存放时间
+var delay = 10;
+var line = 0;
+var scrollh = 0;
+var songIndex = 2;
+// 开始播放
+function mPlay(){
+	var ms = audio.currentTime;
+	show(ms);
+	window.setTimeout("mPlay()", 100)
+}
+
+// 显示歌词
+function show(t){
+	var div1 = document.getElementById("lyr");// 取得层
+	document.getElementById("lyr").innerHTML = " ";// 每次调用清空以前的一次
+	if (t < lytime[lytime.length - 1]){// 先舍弃数组的最后一个
+		for (var k = 0; k < lytext.length; k++) {
+			if (lytime[k] <= t && t < lytime[k + 1]) {
+				scrollh = k * 25;// 让当前的滚动条的顶部改变一行的高度
+				div1.innerHTML += "<font color=#f60 style=font-weight:bold>"
+						+ lytext[k] + "</font><br>";
+			} else if (t < lytime[lytime.length - 1])// 数组的最后一个要舍弃
+				div1.innerHTML += lytext[k] + "<br>";
+		}
+	} else{// 加上数组的最后一个
+		for (var j = 0; j < lytext.length - 1; j++){
+			div1.innerHTML += lytext[j] + "<br>";
+		}
+		div1.innerHTML += "<font color=red style=font-weight:bold>"+ lytext[lytext.length - 1] + "</font><br>";
+	}
+}
+
+// 设置滚动条的滚动
+function scrollBar(){
+	if (document.getElementById("lyr").scrollTop <= scrollh)
+		document.getElementById("lyr").scrollTop += 1;
+	if (document.getElementById("lyr").scrollTop >= scrollh + 50)
+		document.getElementById("lyr").scrollTop -= 1;
+	window.setTimeout("scrollBar()", delay);
+}
+
+//按时间重新排序时间和歌词的数组
+function sortAr(){
+	var temp = null;
+	var temp1 = null;
+	for (var k = 0; k < lytime.length; k++) {
+		for (var j = 0; j < lytime.length - k; j++) {
+			if (lytime[j] > lytime[j + 1]) {
+				temp = lytime[j];
+				temp1 = lytext[j];
+				lytime[j] = lytime[j + 1];
+				lytext[j] = lytext[j + 1];
+				lytime[j + 1] = temp;
+				lytext[j + 1] = temp1;
+			}
+		}
+	}
+}
+
+//解析如“[02:02][00:24]没想到是你”的字符串前放入数组
+function sToArray(str){
+	var left = 0;// "["的个数
+	var leftAr = new Array();
+	for (var k = 0; k < str.length; k++) {
+		if (str.charAt(k) == "[") {
+			leftAr[left] = k;
+			left++;
+		}
+	}
+	if (left != 0) {
+		for (var i = 0; i < leftAr.length; i++) {
+			lytext[tflag] = str.substring(str.lastIndexOf("]")+1);// 放歌词
+			lytime[tflag] = conSeconds(str.substring(leftAr[i] + 1,leftAr[i] + 6));// 放时间
+			tflag++;
+		}
+	}
+}
+//把形如：01：25的时间转化成秒；
+function conSeconds(t){
+	var m = t.substring(0, t.indexOf(":"));
+	var s = t.substring(t.indexOf(":") + 1);
+	m = parseInt(m.replace(/0/, ""));
+	var totalt = parseInt(m) * 60 + parseInt(s);
+	return totalt;
 }

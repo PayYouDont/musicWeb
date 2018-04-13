@@ -20,17 +20,17 @@
 <link rel="stylesheet" type="text/css" href="<%=basePath%>css/scroll.css">
 <link rel="stylesheet" type="text/css" href="<%=basePath%>css/xiami.css">
 <!-- js -->
-<script type="text/javascript" src="<%=basePath%>js/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/core/jquery-1.10.2.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/bootstrap/js/bootstrap-paginator.js" ></script>
-<script type="text/javascript" src="<%=basePath%>js/jquery-ui.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/core/jquery-ui.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/layer/layer.js"></script>
-<script type="text/javascript" src="<%=basePath%>js/interface.js"></script>
-<script type="text/javascript" src="<%=basePath%>js/canvas.js"></script>
-<script type="text/javascript" src="<%=basePath%>js/mousewheel.js"></script>
-<script type="text/javascript" src="<%=basePath%>js/scroll.js"></script>
-<script type="text/javascript" src="<%=basePath%>js/xiami.js"></script>
-<script type="text/javascript" src="<%=basePath%>js/index.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/music/interface.js"></script>
+<%-- <script type="text/javascript" src="<%=basePath%>js/canvas.js"></script> --%>
+<script type="text/javascript" src="<%=basePath%>js/music/mousewheel.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/music/scroll.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/music/xiami.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/music/index.js"></script>
 </head>
 <script type="text/javascript"> 
 </script>
