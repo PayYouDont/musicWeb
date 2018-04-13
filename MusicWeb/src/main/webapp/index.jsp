@@ -139,19 +139,19 @@
 	<div class="bottom">
 		<div class="playerWrap">
 			<div class="playerCon">
-				<a href="#" class="pbtn prevBtn" onclick="playPrev()"></a>
-				<a href="#" class="pbtn playBtn" isplay="0"></a> 
-				<a href="#" class="pbtn nextBtn" onclick="playNext()"></a> 
-				<a href="#" class="mode" data-circle="0" onclick="circle(this)"></a>
+				<a class="pbtn prevBtn" onclick="playPrev()"></a>
+				<a class="pbtn playBtn" isplay="0"></a> 
+				<a class="pbtn nextBtn" onclick="playNext()"></a> 
+				<a class="mode" data-circle="0" onclick="circle(this)"></a>
 			</div>
 			<div class="playInfo">
 				<div class="trackInfo">
-					<a href="#" class="songName"></a> - 
-					<a href="#" class="songPlayer"></a>
+					<a class="songName"></a> - 
+					<a class="songPlayer"></a>
 					<div class="trackCon">
-						<a href="#" class="tc1"></a> 
-						<a href="#" class="tc2"></a> 
-						<a href="#" class="tc3"></a>
+						<a class="tc1"></a> 
+						<a class="tc2"></a> 
+						<a class="tc3"></a>
 					</div>
 				</div>
 				<div class="playerLength">
