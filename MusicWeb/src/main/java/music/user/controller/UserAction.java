@@ -24,6 +24,12 @@ public class UserAction {
 	
 	private Logger loger = LoggerFactory.getLogger(this.getClass());
 	
+	@RequestMapping("/toLogin")
+	public String toLogin(HttpServletRequest request) {
+		
+		return "user/login";
+	}
+	
 	@RequestMapping("/fidnById")
 	@ResponseBody
 	public HashMap<String,Object> fidnById(Integer id){

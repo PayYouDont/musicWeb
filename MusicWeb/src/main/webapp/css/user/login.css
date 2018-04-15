@@ -1,0 +1,10 @@
+.body{
+	background-color:#ccc;
+}
+.main{
+	margin-left:calc((100% - (400px))/2);
+	margin-top:200px;
+	border:1px solid #c1c1c1;
+	width:400px;
+	height: 500px;
+}
