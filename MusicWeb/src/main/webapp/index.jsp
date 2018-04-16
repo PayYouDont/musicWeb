@@ -179,6 +179,10 @@
 			<p>适用浏览器：360、FireFox、Chrome、Safari、Opera、傲游、搜狗、世界之窗. 不支持IE8及以下浏览器。</p>
 		</div> -->
 	</div>
+	  <ul class="dropdown-menu" id="down-menu" style="position:absolute;min-width:0px;">
+	    <li><a onclick="toDownLoad(this)">普通下载</a></li>
+	    <li><a onclick="toDownLoad(this)">高品质下载</a></li>
+	  </ul>
 	<div class="alert alert-warning" role="alert">
 		本网站仅个人学习、研究使用，请勿用于商业用途。网站内容均来自互联网，如有侵权请联系删除!!
 	</div>

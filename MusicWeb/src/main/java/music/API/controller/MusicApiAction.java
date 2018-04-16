@@ -1,5 +1,6 @@
 package music.API.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import javax.annotation.Resource;
@@ -84,11 +85,22 @@ public class MusicApiAction {
 	 */
 	@RequestMapping("/toDownLoad")
 	@ResponseBody
-	public HashMap<String, Object> downLoad(HttpServletRequest request, HttpServletResponse response, String sid,
-			String songName) {
-		String urlStr = "http://ws.stream.qqmusic.qq.com/C100" + sid + ".m4a?fromtag=0";
-		this.service.downLoad(request, response, urlStr, songName);
-		return JsonWrapper.successWrapper(null, "下载成功");
+	public HashMap<String, Object> downLoad(HttpServletRequest request, HttpServletResponse response,String songmid,String vkey,String songName,int type) {
+		String mp3Url = "http://dl.stream.qqmusic.qq.com/M500"+songmid+".mp3?vkey="+vkey+"&guid=8604243058&uin=0&fromtag=53";
+		String mp3ProUrl = "http://dl.stream.qqmusic.qq.com/M800"+songmid+".mp3?vkey="+vkey+"&guid=8604243058&uin=0&fromtag=53";
+		String url = "";
+		if(type==0) {
+			url = mp3Url;
+		}else if(type==1) {
+			url = mp3ProUrl;
+		}
+		try {
+			this.service.downLoad(request, response, url, songName);
+			return JsonWrapper.successWrapper(null, "下载成功");
+		} catch (IOException e) {
+			e.printStackTrace();
+			return JsonWrapper.failureWrapper("下载失败");
+		}
 	}
 
 	@RequestMapping("/getVkey")

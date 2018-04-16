@@ -66,35 +66,30 @@ public class MusicApiService {
 	    in.close();
 		return sb;
 	}
-	public void downLoad(HttpServletRequest request,HttpServletResponse response,String urlStr,String songName) {
-		songName = songName+".m4a";
+	public void downLoad(HttpServletRequest request,HttpServletResponse response,String urlStr,String songName) throws IOException {
+		songName = songName+".mp3";
 		@SuppressWarnings("deprecation")
 		File folder = new File(request.getRealPath("/") + "export");
 		if (!folder.exists()) {
 			folder.mkdirs();
 		}
-		try {
-			response.setContentType("application/x-download");
-			//下载名转成中文
-			songName = new String(songName.getBytes(), "ISO-8859-1");
-			response.setHeader("Content-Disposition", "attachment; filename="+songName);
-			URL url = new URL(urlStr);
-			InputStream inputStream = url.openStream();
-			BufferedOutputStream out = new BufferedOutputStream(response.getOutputStream());
+		response.setContentType("application/x-download");
+		//下载名转成中文
+		songName = new String(songName.getBytes(), "ISO-8859-1");
+		response.setHeader("Content-Disposition", "attachment; filename="+songName);
+		URL url = new URL(urlStr);
+		InputStream inputStream = url.openStream();
+		BufferedOutputStream out = new BufferedOutputStream(response.getOutputStream());
 
-			byte[] buffer = new byte[inputStream.available()];
-			int length = 0;
-			while ((length = inputStream.read(buffer)) != -1) {
-				out.write(buffer, 0, length);
-			}
-
-			inputStream.close();
-			out.close();
-			out.flush();
-
-		} catch (IOException e) {
-			e.printStackTrace();
+		byte[] buffer = new byte[inputStream.available()];
+		int length = 0;
+		while ((length = inputStream.read(buffer)) != -1) {
+			out.write(buffer, 0, length);
 		}
+
+		inputStream.close();
+		out.close();
+		out.flush();
 
 	}
 	public StringBuffer getVkey(String urlStr) throws Exception{

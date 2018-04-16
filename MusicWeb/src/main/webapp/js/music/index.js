@@ -8,6 +8,9 @@ var songArray = new Array();
 var songIndex;
 // 歌曲总列表
 var songList = new Array();
+//是否高品质播放（0:普通、1:高品质）
+var type = 1;
+
 $(function() {
 	initSongList();
 	searchMusicByKey();
@@ -69,14 +72,13 @@ function QueryPage(list, page) {
 		var song = {
 			songName : songName,
 			albumName : albumName,
-			songId : songmid,
+			songmid : songmid,
 			albumId : albumId,
 			singerId : singerId,
 			singer : singerName,
 			songImg : songImg,
 			musicId:musicId
 		}
-		// addToSongListObj(song)
 		songArray.push(song);
 		getSongListObj(songArray);
 		html += getSongHtml(song, i);
@@ -195,7 +197,7 @@ function QueryPageToSearch(songList, page) {
 			fsinger : fsinger,
 			songName : fsong,
 			albumName : albumName,
-			songId : songmid,
+			songmid : songmid,
 			albumId : albumId,
 			singerId : singerId,
 			singer : fsinger,
@@ -211,14 +213,14 @@ function QueryPageToSearch(songList, page) {
 }
 // 获取音乐html
 function getSongHtml(song,index){
-	var url = 'http://ws.stream.qqmusic.qq.com/C100'+song.songId+'.m4a?fromtag=0';
+	var url = 'http://ws.stream.qqmusic.qq.com/C100'+song.songmid+'.m4a?fromtag=0';
 	var html = '<li class="songList" data-songinfo="'+song+'">'+
 				 '<div class="songLMain">'+
 					'<div class="check">'+
 						'<input class="checkIn" type="checkbox" select="0">'+
 					'</div>'+
 					'<div class="start">'+
-						'<em sonN="'+song.songId+'" data-songimg='+song.songImg+'>'+(index+1)+'</em>'+
+						'<em sonN="'+song.songmid+'" data-songimg='+song.songImg+'>'+(index+1)+'</em>'+
 					'</div>'+
 					'<div class="songBd">'+
 						'<div class="col colsn">'+song.songName+'</div>'+
@@ -226,7 +228,7 @@ function getSongHtml(song,index){
 						'<div class="col">'+song.albumName+'</div>'+
 					'</div>'+
 					'<div class="control">'+
-						'<a data-songid="'+song.songId+'" data-songname="'+song.songName+'" class="cicon download" title="下载" onclick="toDownLoad(this);"></a>'+
+						'<a data-songmid="'+song.songmid+'" data-songname="'+song.songName+'" class="cicon download" title="下载" onclick="downShow(this);"></a>'+
 						'<a class="cicon love" title="收藏"></a>'+ 
 						'<a class="cicon more" title="更多"></a>'+
 						'<a class="cicon dele" title="删除"></a>'+
@@ -264,13 +266,14 @@ function start() {
 		var sid = $(this).attr("sonN");
 		var songImg = $(this).data("songimg");
 		songIndex = sid;
-		play(sid, songImg);
+		play(sid,songImg);
 	});
 }
 function play(sid, songImg) {
-	var vkey = getVkey(sid)
+	var vkey = getVkey(sid);
+	var playUrl = getM4a(sid,vkey);
 	// 添加歌曲源
-	$("#audio").attr("src",'http://dl.stream.qqmusic.qq.com/C400'+sid+'.m4a?vkey='+vkey+'&guid=8604243058&uin=0&fromtag=66');
+	$("#audio").attr("src",playUrl);
 	// 获得音频元素
 	audio = document.getElementById("audio");
 	/* 显示歌曲总长度 */
@@ -486,11 +489,27 @@ function circle(a) {
 }
 // 下载
 function toDownLoad(a){
-	var songid = $(a).data("songid");
-	var songName = $(a).data("songname");
-	
-	window.location.href = basePath + "rest/musicApiAction/toDownLoad?sid="+songid+"&songName="+encodeURI(songName);
+	var text = $(a).text();
+	type = text=="普通下载"?0:1;
+	$(".dropdown-menu").hide();
+	var songmid = $(downElem).data("songmid");
+	var songName = $(downElem).data("songname");
+	var vkey = getVkey(songmid);
+	window.location.href = basePath + "rest/musicApiAction/toDownLoad?songmid="+songmid+"&vkey="+vkey+"&songName="+encodeURI(songName)+"&type="+type;
 }
+//点击下载的标签
+var downElem;
+function downShow(a){
+	var left = $(a).offset().left-50+"px";
+	var top = $(a).offset().top+18+"px";
+	$(".dropdown-menu").css({
+		"top":top,
+		"left":left
+	}).show();
+	downElem = a;
+	hideElement("download","down-menu")
+}
+//跳转到指定时间
 function jumpTime(){
 	$(".progress").off("click").on("click",function(e){
 		var width = $(".progress").width();
