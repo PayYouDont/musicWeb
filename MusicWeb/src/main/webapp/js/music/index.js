@@ -271,7 +271,12 @@ function start() {
 }
 function play(sid, songImg) {
 	var vkey = getVkey(sid);
-	var playUrl = getM4a(sid,vkey);
+	var playUrl;
+	if(type==0){
+		playUrl = getM4a(sid,vkey);
+	}else if(type==1){
+		playUrl = getMp3Pro(sid,vkey);
+	}
 	// 添加歌曲源
 	$("#audio").attr("src",playUrl);
 	// 获得音频元素
@@ -380,11 +385,11 @@ function playPrev() {
 	var prev = 0;
 	if (circleIndex < 2) {// 不是随机播放
 		for (var i = 0; i < songArray.length; i++) {
-			if (songIndex == songArray[i].songId) {
+			if (songIndex == songArray[i].songmid) {
 				if (i != 0) {
-					prev = songArray[i - 1].songId;
+					prev = songArray[i - 1].songmid;
 				} else {
-					prev = songArray[songArray.length - 1].songId;
+					prev = songArray[songArray.length - 1].songmid;
 				}
 				break;
 			}
@@ -399,11 +404,11 @@ function playNext() {
 	var next = 0;
 	if (circleIndex < 2) {// 不是随机播放
 		for (var i = 0; i < songArray.length; i++) {
-			if (songIndex == songArray[i].songId) {
+			if (songIndex == songArray[i].songmid) {
 				if (i != songArray.length - 1) {
-					next = songArray[i + 1].songId;
+					next = songArray[i + 1].songmid;
 				} else {
-					next = songArray[0].songId;
+					next = songArray[0].songmid;
 				}
 				break;
 			}
@@ -438,12 +443,12 @@ var circleType = {
 			var next = 0;
 			var nextImg = "";
 			for (var i = 0; i < songArray.length; i++) {
-				if (songIndex == songArray[i].songId) {
+				if (songIndex == songArray[i].songmid) {
 					if (i != songArray.length - 1) {
-						next = songArray[i + 1].songId;
+						next = songArray[i + 1].songmid;
 						nextImg = songArray[i + 1].songImg;
 					} else {
-						next = songArray[0].songId;
+						next = songArray[0].songmid;
 						nextImg = songArray[0].songImg;
 					}
 					break;
@@ -466,7 +471,7 @@ var circleType = {
 		background : "-221px",
 		circlePlay : function() {
 			var rand = parseInt(Math.random() * songArray.length);
-			var next = songArray[rand].songId;
+			var next = songArray[rand].songmid;
 			var nextImg = songArray[rand].songImg;
 			play(next, nextImg);
 			songIndex = next;
@@ -521,7 +526,33 @@ function jumpTime(){
 	})
 }
 
-
+//播放高品质音乐
+function playHighQuality(a){
+	var status = $(a).data("status");
+	if(status==0){
+		var index = 0;
+		var iter = setInterval(() => {
+			index++;
+			$(".pinBtn").css("background-position-y",-index*32+"px");
+			if(index>24){
+				clearInterval(iter);
+				$(a).data("status","1");
+				type = 1;
+			}
+		},10);
+	}else{
+		var index = 24;
+		var iter = setInterval(() => {
+			index--;
+			$(".pinBtn").css("background-position-y",-index*32+"px");
+			if(index<=0){
+				clearInterval(iter);
+				$(a).data("status","0");
+				type = 0;
+			}
+		},10);
+	}
+}
 /****************************************************************/
 /* 显示歌词部分 */
 var scrollt = 0;
