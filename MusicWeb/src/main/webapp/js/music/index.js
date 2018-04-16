@@ -50,13 +50,15 @@ function initSongList() {
 		}
 	});
 }
+
+
 // 查询结果分页
 function QueryPage(list, page) {
 	var data = getPageData(list, page);
 	var html = "";
 	songArray = new Array();
 	for (var i = 0; i < data.length; i++) {
-		var songid = data[i].data.strMediaMid;// 歌曲播放id
+		var songmid = data[i].data.strMediaMid;// 歌曲播放id
 		var albumId = data[i].data.albummid;// 专辑id
 		var singerName = data[i].data.singer[0].name;
 		var songName = data[i].data.songname;
@@ -67,7 +69,7 @@ function QueryPage(list, page) {
 		var song = {
 			songName : songName,
 			albumName : albumName,
-			songId : songid,
+			songId : songmid,
 			albumId : albumId,
 			singerId : singerId,
 			singer : singerName,
@@ -186,14 +188,14 @@ function QueryPageToSearch(songList, page) {
 		var musicId = infoArr[0];// 歌曲id
 		var albumId = infoArr[4];// 专辑id
 		var singerId = infoArr[2];// 歌手id
-		var newid = f.split("|")[20];// 歌曲播放id
+		var songmid = f.split("|")[20];// 歌曲播放id
 		var songImg = f.split("|")[22];// 歌曲封面
 		var song = {
 			f : f,
 			fsinger : fsinger,
 			songName : fsong,
 			albumName : albumName,
-			songId : newid,
+			songId : songmid,
 			albumId : albumId,
 			singerId : singerId,
 			singer : fsinger,
@@ -234,6 +236,27 @@ function getSongHtml(song,index){
 	return html
 }
 
+function getVkey(songmid){
+	var url = basePath + "rest/musicApiAction/getVkey";
+	var vkey = "";
+	$.ajax({
+		url:url,
+		type:"post",
+		data:{songmid:songmid},
+		async : false,
+		dataType : "json",
+		success:function(json){
+			if(json.success){
+				var data = json.data;
+				data = data.substring(data.indexOf("(")+1,data.length-1);
+				data = JSON.parse(data);
+				vkey = data.data.items["0"].vkey;
+			}
+		}
+	})
+	return vkey;
+}
+
 function start() {
 	/* 点击列表播放按钮 */
 	$(".start em").click(function() {
@@ -245,9 +268,9 @@ function start() {
 	});
 }
 function play(sid, songImg) {
+	var vkey = getVkey(sid)
 	// 添加歌曲源
-	$("#audio").attr("src",
-			'http://ws.stream.qqmusic.qq.com/C100' + sid + '.m4a?fromtag=0');
+	$("#audio").attr("src",'http://dl.stream.qqmusic.qq.com/C400'+sid+'.m4a?vkey='+vkey+'&guid=8604243058&uin=0&fromtag=66');
 	// 获得音频元素
 	audio = document.getElementById("audio");
 	/* 显示歌曲总长度 */

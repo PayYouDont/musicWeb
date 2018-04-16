@@ -15,6 +15,8 @@ var listUrl = "https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg?" +
 //'https://y.gtimg.cn/music/photo_new/T002R300x300M000'+songImg+'.jpg?max_age=2592000';
 
 
+//http://dl.stream.qqmusic.qq.com/C400000edAg12jLBrN.m4a?vkey=B96E257FBFE7C4DAC213D6C322839B6C8F21D4D3B9FC2A181A2DDB78CBB88870B37CE373376C77A6F7209102251C2AF09F9286B1C583AA40&guid=8604243058&uin=0&fromtag=66
+
 var warning = "本网站仅个人学习、研究使用，请勿用于商业用途。" +
 			  "网站内容均来自互联网，如有侵权请联系删除!!";
 

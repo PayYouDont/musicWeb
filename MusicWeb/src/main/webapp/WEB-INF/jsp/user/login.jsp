@@ -24,8 +24,43 @@
 </head>
 <body>
 	<div class="main">
-		<div class="login"></div>
-		<div class="regst">
+		<div class="go-btn tologin">
+			
+		</div>
+		<div class="go-btn toregist">
+			
+		</div>
+		<div class="login">
+			<form class="form-horizontal" action="">
+				  <div class="form-group">
+				    <label class="col-sm-2 control-label">账号:</label>
+				    <div class="col-sm-9">
+				      <input type="text" class="form-control" id="account" placeholder="账号">
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <label class="col-sm-2 control-label">密码:</label>
+				    <div class="col-sm-9">
+				      <input type="password" class="form-control" id="password" placeholder="密码">
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <div class="col-sm-offset-2 col-sm-10">
+				      <div class="checkbox">
+				        <label>
+				          <input type="checkbox">记住我
+				        </label>
+				      </div>
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <div class="col-sm-offset-2 col-sm-10">
+				      <button type="submit" class="btn btn-default">登录</button>
+				    </div>
+				  </div>
+			</form>
+		</div>
+		<div class="regist">
 			<form action="">
 				
 			</form>
