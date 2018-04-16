@@ -166,7 +166,7 @@
 				</div>
 			</div>
 			<div class="vol">
-				<a href="#" class="pinBtn" data-status="0" onclick="playHighQuality(this);"></a>
+				<a href="#" class="pinBtn" onclick="playHighQuality();"></a>
 				<div class="volm">
 					<div class="volSpeaker"></div>
 					<div class="volControl">

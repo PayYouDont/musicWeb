@@ -9,7 +9,7 @@ var songIndex;
 // 歌曲总列表
 var songList = new Array();
 //是否高品质播放（0:普通、1:高品质）
-var type = 1;
+var HIGHQUALITY = 0;
 
 $(function() {
 	initSongList();
@@ -30,10 +30,11 @@ function initSongList() {
 		// scriptCharset: 'GBK',//设置编码
 		success : function(data) {
 			songList = JSON.parse(JSON.stringify(data)).songlist;
-			startid = songList[0].data.strMediaMid;
-			songIndex = startid;
+			console.log(songList)
+			songmid = songList[0].data.songmid;
+			songIndex = songmid;
 			// 加载第一首歌曲
-			var src = 'http://ws.stream.qqmusic.qq.com/C100' + startid + '.m4a?fromtag=0';
+			var src = 'http://ws.stream.qqmusic.qq.com/C100' + songmid + '.m4a?fromtag=0';
 			// 显示歌单数量
 			$("#songCount").html("歌曲(" + songList.length + ")");
 			// 下放播放器显示歌曲名字
@@ -45,7 +46,7 @@ function initSongList() {
 			QueryPage(songList, 1)
 			initPage(totalPages, songList);
 			// 自动播放
-			play(startid, songList[0].data.albummid);
+			play(songmid, songList[0].data.albummid);
 			start();
 		},
 		error : function() {
@@ -61,7 +62,7 @@ function QueryPage(list, page) {
 	var html = "";
 	songArray = new Array();
 	for (var i = 0; i < data.length; i++) {
-		var songmid = data[i].data.strMediaMid;// 歌曲播放id
+		var songmid = data[i].data.songmid;// 歌曲播放id
 		var albumId = data[i].data.albummid;// 专辑id
 		var singerName = data[i].data.singer[0].name;
 		var songName = data[i].data.songname;
@@ -272,9 +273,9 @@ function start() {
 function play(sid, songImg) {
 	var vkey = getVkey(sid);
 	var playUrl;
-	if(type==0){
+	if(HIGHQUALITY==0){
 		playUrl = getM4a(sid,vkey);
-	}else if(type==1){
+	}else if(HIGHQUALITY==1){
 		playUrl = getMp3Pro(sid,vkey);
 	}
 	// 添加歌曲源
@@ -495,12 +496,12 @@ function circle(a) {
 // 下载
 function toDownLoad(a){
 	var text = $(a).text();
-	type = text=="普通下载"?0:1;
+	HIGHQUALITY = text=="普通下载"?0:1;
 	$(".dropdown-menu").hide();
 	var songmid = $(downElem).data("songmid");
 	var songName = $(downElem).data("songname");
 	var vkey = getVkey(songmid);
-	window.location.href = basePath + "rest/musicApiAction/toDownLoad?songmid="+songmid+"&vkey="+vkey+"&songName="+encodeURI(songName)+"&type="+type;
+	window.location.href = basePath + "rest/musicApiAction/toDownLoad?songmid="+songmid+"&vkey="+vkey+"&songName="+encodeURI(songName)+"&type="+HIGHQUALITY;
 }
 //点击下载的标签
 var downElem;
@@ -528,8 +529,7 @@ function jumpTime(){
 
 //播放高品质音乐
 function playHighQuality(a){
-	var status = $(a).data("status");
-	if(status==0){
+	if(HIGHQUALITY==0){
 		var index = 0;
 		var iter = setInterval(() => {
 			index++;
@@ -537,7 +537,7 @@ function playHighQuality(a){
 			if(index>24){
 				clearInterval(iter);
 				$(a).data("status","1");
-				type = 1;
+				HIGHQUALITY = 1;
 			}
 		},10);
 	}else{
@@ -548,7 +548,7 @@ function playHighQuality(a){
 			if(index<=0){
 				clearInterval(iter);
 				$(a).data("status","0");
-				type = 0;
+				HIGHQUALITY = 0;
 			}
 		},10);
 	}
