@@ -11,7 +11,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>注册</title>
+<title>登录</title>
 <link rel="stylesheet" href="<%=basePath%>js/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="<%=basePath%>css/user/login.css">
 <script>
@@ -21,6 +21,7 @@
 <!-- bootStrap -->
 <script type="text/javascript" src="<%=basePath%>js/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/layer/layer.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/user/login.js"></script>
 </head>
 <body>
 	<div class="main">
@@ -31,17 +32,17 @@
 			
 		</div>
 		<div class="login">
-			<form class="form-horizontal" action="">
+			<form class="form-horizontal login-form">
 				  <div class="form-group">
 				    <label class="col-sm-2 control-label">账号:</label>
 				    <div class="col-sm-9">
-				      <input type="text" class="form-control" id="account" placeholder="账号">
+				      <input type="text" class="form-control" name="account" id="account" placeholder="账号">
 				    </div>
 				  </div>
 				  <div class="form-group">
 				    <label class="col-sm-2 control-label">密码:</label>
 				    <div class="col-sm-9">
-				      <input type="password" class="form-control" id="password" placeholder="密码">
+				      <input type="password" class="form-control" name="password" id="password" placeholder="密码">
 				    </div>
 				  </div>
 				  <div class="form-group">
@@ -53,12 +54,12 @@
 				      </div>
 				    </div>
 				  </div>
-				  <div class="form-group">
-				    <div class="col-sm-offset-2 col-sm-10">
-				      <button type="submit" class="btn btn-default">登录</button>
-				    </div>
-				  </div>
 			</form>
+			<div class="form-group">
+			    <div class="col-sm-offset-2 col-sm-10">
+			      <button type="submit" class="btn btn-default" onclick="toLogin()">登录</button>
+			    </div>
+			</div>
 		</div>
 		<div class="regist">
 			<form action="">

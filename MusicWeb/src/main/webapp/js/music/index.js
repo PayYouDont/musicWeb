@@ -18,6 +18,10 @@ $(function() {
 	Warning(warning);
 	jumpTime();
 });
+function Login(){
+	console.log("a")
+	window.location.href = basePath + "rest/userAction/toLogin";
+}
 // 初始化歌单
 function initSongList() {
 	$.ajax({
@@ -30,7 +34,6 @@ function initSongList() {
 		// scriptCharset: 'GBK',//设置编码
 		success : function(data) {
 			songList = JSON.parse(JSON.stringify(data)).songlist;
-			console.log(songList)
 			songmid = songList[0].data.songmid;
 			songIndex = songmid;
 			// 加载第一首歌曲

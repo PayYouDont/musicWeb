@@ -57,7 +57,7 @@
 				      <input type="text" class="form-control searchTxt" placeholder="歌名或歌手名">
 				    </div>
 				</div>
-				<button type="button" class="btn btn-default navbar-btn navbar-right">登录</button>
+				<button type="button" class="btn btn-default navbar-btn navbar-right" onclick="Login()">登录</button>
 			</div>
 		</div>
 	</nav>

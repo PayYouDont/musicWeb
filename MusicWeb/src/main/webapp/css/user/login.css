@@ -1,12 +1,16 @@
-.body{
-	background-color:#ccc;
+body{
+	/* background-color:#ccc; */
+	background: url("../images/bg4.jpg") no-repeat 0 0;
+	background-size:100%;
 }
 .main{
 	margin-left:calc((100% - (400px))/2);
 	margin-top:200px;
 	border:1px solid #c1c1c1;
+    background-color:rgba(255,255,255,0.8);
 	width:400px;
 	height: 300px;
+	
 }
 .login{
 	margin-top: 50px;
