@@ -16,4 +16,9 @@ public class UserService {
 		User user = dao.selectByPrimaryKey(id);
 		return user;
 	}
+	
+	public User findByAccount(String account) {
+		User user = dao.findByAccount(account);
+		return user;
+	}
 }

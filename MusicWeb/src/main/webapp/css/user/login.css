@@ -1,18 +1,42 @@
 body{
 	/* background-color:#ccc; */
 	background: url("../images/bg4.jpg") no-repeat 0 0;
-	background-size:100%;
 }
 .main{
-	margin-left:calc((100% - (400px))/2);
 	margin-top:200px;
-	border:1px solid #c1c1c1;
-    background-color:rgba(255,255,255,0.8);
-	width:400px;
-	height: 300px;
-	
 }
 .login{
+	margin-left:calc((100% - (400px))/2);
+	width:400px;
+	height: 300px;
+	border:1px solid #c1c1c1;
+	background-color:rgba(255,255,255,0.8);
+}
+.login-form,.regist-form{
 	margin-top: 50px;
-	/* border:1px solid #c1c1c1; */
+}
+#login-alert{
+	display: none;
+	text-align: center;
+}
+.login-btn{
+	height: 40px;
+}
+.to-regist{
+	margin-left:330px;
+}
+.regist{
+	margin-left:calc((100% - (800px))/2);
+	width:800px;
+	height: 350px;
+	border:1px solid #c1c1c1;
+	background-color:rgba(255,255,255,0.8);
+}
+.regist-form .form-group{
+	width:350px;
+	margin-left:33px;
+	margin-top: 10px;
+}
+.regist-form .form-control{
+	width:calc(100% - (50px));
 }

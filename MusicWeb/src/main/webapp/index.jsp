@@ -125,7 +125,7 @@
 			</div>
 			<div class="mainOuther col-xs-1 col-sm-1 col-md-2">
 				<div class="albumCover">
-					<a href="#"> <img src="<%=basePath%>images/6.jpg" id="canvas1">
+					<a href="#"> <img src="" id="canvas1">
 					</a>
 				</div>
 				<div class="albumSale">

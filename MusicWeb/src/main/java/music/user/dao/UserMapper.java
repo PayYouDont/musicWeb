@@ -1,5 +1,7 @@
 package music.user.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import music.user.entity.User;
 
 public interface UserMapper {
@@ -14,4 +16,6 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+    
+    User findByAccount(@Param("account")String account);
 }
