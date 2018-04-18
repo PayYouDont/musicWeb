@@ -14,7 +14,7 @@ public class User {
     private String phone;
 
     private Integer status;
-    
+
     private String email;
 
     public Integer getId() {
@@ -73,18 +73,11 @@ public class User {
         this.status = status;
     }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", account=" + account + ", password=" + password + ", nick=" + nick + ", name="
-				+ name + ", phone=" + phone + ", status=" + status + ", email=" + email + "]";
-	}
-    
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

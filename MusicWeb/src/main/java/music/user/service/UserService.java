@@ -12,7 +12,7 @@ public class UserService {
 	@Resource
 	private UserMapper dao;
 	
-	public User findById(Integer id) throws Exception{
+	public User findById(Integer id){
 		User user = dao.selectByPrimaryKey(id);
 		return user;
 	}
@@ -20,5 +20,14 @@ public class UserService {
 	public User findByAccount(String account) {
 		User user = dao.findByAccount(account);
 		return user;
+	}
+	
+	public int saveUser(User user) throws Exception{
+		String account = user.getAccount();
+		User result = dao.findByAccount(account);
+		if(result!=null) {
+			return dao.updateByPrimaryKeySelective(user);
+		}
+		return dao.insertSelective(user);
 	}
 }

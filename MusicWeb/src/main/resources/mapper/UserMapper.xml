@@ -29,10 +29,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into user (id, account, password, 
-      nick, name, phone,status,email)
+      nick, name, phone, 
+      status, email)
     values (#{id,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{nick,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER},#{email,jdbcType=VARCHAR})
+      #{status,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="music.user.entity.User">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -83,7 +84,7 @@
       <if test="status != null">
         #{status,jdbcType=INTEGER},
       </if>
-      <if test="status != null">
+      <if test="email != null">
         #{email,jdbcType=VARCHAR},
       </if>
     </trim>
@@ -110,7 +111,7 @@
         status = #{status,jdbcType=INTEGER},
       </if>
       <if test="email != null">
-        status = #{email,jdbcType=VARCHAR},
+        email = #{email,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -130,6 +131,6 @@
     select 
     <include refid="Base_Column_List" />
     from user
-    where account = #{account,jdbcType=INTEGER}
+    where account = #{account,jdbcType=VARCHAR}
   </select>
 </mapper>

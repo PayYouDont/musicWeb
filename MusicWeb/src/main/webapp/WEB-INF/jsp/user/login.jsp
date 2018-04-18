@@ -21,6 +21,7 @@
 </script>
 <script type="text/javascript" src="<%=basePath%>js/core/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/core/jquery.cookie.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/core/gt.js"></script>
 <!-- bootStrap -->
 <script type="text/javascript" src="<%=basePath%>js/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/layer/layer.js"></script>
@@ -31,66 +32,102 @@
 		<div class="login">
 			<form class="form-horizontal login-form">
 				  <div class="form-group">
-				    <label class="col-sm-2 control-label">账号:</label>
-				    <div class="col-sm-9">
+				    <label class="col-sm-3 control-label">账号:</label>
+				    <div class="col-sm-8">
 				      <input type="text" class="form-control" name="account" id="account" placeholder="账号">
 				    </div>
 				  </div>
 				  <div class="form-group">
-				    <label class="col-sm-2 control-label">密码:</label>
-				    <div class="col-sm-9">
+				    <label class="col-sm-3 control-label">密码:</label>
+				    <div class="col-sm-8">
 				      <input type="password" class="form-control" name="password" id="password" placeholder="密码">
 				    </div>
 				  </div>
-				  <div class="to-regist">
-				  	<a href="<%=basePath%>rest/userAction/toRegist">去注册>></a>
+				  <div class="form-group">
+				    <label class="col-sm-3 control-label">验证码:</label>
+				    <div class="col-sm-4" id="captcha-login">
+				       <p class="wait">正在加载验证码......</p>
+				    </div>
 				  </div>
 				  <div class="form-group">
-				    <div class="col-sm-offset-2 col-sm-10">
+				    <div class="col-sm-offset-3 col-sm-10">
 				      <div class="checkbox">
 				        <label>
 				          <input type="checkbox" id="reme">记住我
+				          <a style="margin-left: 150px" href="<%=basePath%>rest/userAction/toRegist">去注册>></a>
 				        </label>
 				      </div>
 				    </div>
 				  </div>
 			</form>
 			<div class="form-group login-btn">
-			    <div class="col-sm-offset-2 col-sm-10">
-			      	<button class="btn btn-default" onclick="toLogin()">登录</button>
+			    <div class="col-sm-offset-3 col-sm-10">
+			      	<button class="btn btn-default" id="login-btn" onclick="toLogin()">登录</button>
 			    </div>
 			</div>
-			<div class="alert alert-danger" role="alert" id="login-alert">
+			<div class="alert alert-warning" role="alert" id="login-alert">
 				<strong>登录失败：</strong><span id="login-msg">账号或密码错误</span>
 			</div>
 		</div>
 		<div class="regist">
-			<form  class="form-inline regist-form">
+			<form  class="form-horizontal regist-form">
 			   <div class="form-group">
-			     <label>账号:</label>
-			     <input type="text" class="form-control" name="account" placeholder="账号">
+			     <label class="col-sm-3 control-label">账号:</label>
+			      <div class="col-sm-8">
+			     	<input type="text" class="form-control" id="account-regist" name="account" placeholder="账号(必填)">
+			   	 </div>	
 			   </div>
 			   <div class="form-group">
-			     <label>Email</label>
-			     <input type="email" class="form-control" name="email" placeholder="邮箱">
+			     <label class="col-sm-3 control-label">Email:</label>
+			      <div class="col-sm-8">
+			     	<input type="email" class="form-control" id="email-regist" name="email" placeholder="邮箱(必填,用于找回密码)">
+			   	 </div>
 			   </div>
 			   <div class="form-group">
-			     <label>密码:</label>
-			     <input type="text" class="form-control" name="password" placeholder="密码">
+			     <label class="col-sm-3 control-label">密码:</label>
+			      <div class="col-sm-8">	
+			     	<input type="password" class="form-control" id="password-regist" name="password" placeholder="密码(必填,6位以上)">
+			   	 </div>	
 			   </div>
 			   <div class="form-group">
-			     <label>昵 称:</label>
-			     <input type="text" class="form-control" name="nick" placeholder="昵称">
+			     <label class="col-sm-3 control-label">确认密码:</label>
+			      <div class="col-sm-8">	
+			     	<input type="password" class="form-control" id="confirmPwd" name="confirmPwd" placeholder="确认密码(必填)">
+			   	 </div>	
 			   </div>
 			   <div class="form-group">
-			     <label>姓名:</label>
-			     <input type="text" class="form-control" name="name" placeholder="姓名">
+			     <label class="col-sm-3 control-label">昵 称 :</label>
+			      <div class="col-sm-8">
+			     	<input type="text" class="form-control" name="nick" placeholder="昵称(必填)">
+			   	 </div>
 			   </div>
 			   <div class="form-group">
-			     <label>电 话:</label>
-			     <input type="text" class="form-control" name="phone" placeholder="电话">
+			      <label class="col-sm-3 control-label">姓名:</label>
+			      <div class="col-sm-8">	
+			     	<input type="text" class="form-control" name="name" placeholder="姓名(选填)">
+			   	 </div>
 			   </div>
+			   <div class="form-group">
+			     <label class="col-sm-3 control-label">电 话 :</label>
+			      <div class="col-sm-8">   
+			        <input type="text" class="form-control" name="phone" placeholder="电话(选填)">
+			   	  </div>	 
+			   </div>
+			   <div class="form-group">
+			   	<label class="col-sm-3 control-label">验证码 :</label>
+				    <div class="col-sm-8" id="captcha-regist">
+				    	 <p class="wait">正在加载验证码......</p>
+				    </div> 
+				</div>
 			</form>
+			<div class="form-group regist-btn">
+			    <div class="col-sm-offset-5 col-sm-10">
+			      	<button class="btn btn-default" id="login-btn" onclick="toRegist()">注册</button>
+			    </div>
+			</div>
+			<div class="alert alert-warning" role="alert" id="regist-alert">
+				<strong>注册失败：</strong><span id="regist-msg"></span>
+			</div>
 		</div>
 	</div>
 </body>

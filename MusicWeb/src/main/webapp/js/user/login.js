@@ -18,8 +18,10 @@ $(function () {
 	  $(".regist").show();
 	  $(".login").hide();
   } 
+  initVerify();
 })
 
+var verifyCode = -1;
 //登录
 function toLogin(){
 	var account = $("#account").val().trim();
@@ -36,6 +38,15 @@ function toLogin(){
 	}else{
 		$('#password').tooltip('destroy');
 	}
+	if(verifyCode==-1){
+		tooltip("captcha-login","请点击验证码验证")
+		return;
+	}else if(verifyCode==0){
+		tooltip("captcha-login","验证不正确")
+		return;
+	}else{
+		$('#captcha-login').tooltip('destroy');
+	}
 	submitLogin();
 }
 //提示框
@@ -45,6 +56,39 @@ function tooltip(id,msg){
 		"placement":"top",
 		"title":msg
 	}).tooltip('show');
+}
+//初始化验证码
+function initVerify(){
+	$.ajax({
+	    url:basePath + "rest/userAction/initVerify?t=" + (new Date()).getTime(), // 加随机数防止缓存",
+	    type: "get",
+	    dataType: "json",
+	    success: function (json) {
+	    	if(json.success){
+	    	var data = json.data;
+	    	data = JSON.parse(data);
+	        //请检测data的数据结构， 保证data.gt, data.challenge, data.success有值
+	        initGeetest({
+	            // 以下配置参数来自服务端 SDK
+	            gt: data.gt,
+	            challenge: data.challenge,
+	            new_captcha: data.new_captcha, // 用于宕机时表示是新验证码的宕机
+                offline: !data.success, // 表示用户后台检测极验服务器是否宕机，一般不需要关注
+	            width: "281px",
+	            new_captcha: true
+	        },function (captchaObj) {
+	        	 captchaObj.appendTo("#captcha-"+action); //将验证按钮插入到宿主页面中captchaBox元素内
+	        	 captchaObj.onReady(function(){
+	 	        	$(".wait").hide();
+	        	    }).onSuccess(function(){
+	        	    	verifyCode = 1;
+	        	    }).onError(function(){
+	        	    	verifyCode = 0;
+	        	    })
+	        });
+	      }
+	    }
+	})
 }
 
 function submitLogin(){
@@ -162,5 +206,67 @@ rememberPassword.prototype = {
         $.cookie('user', JSON.stringify(temp));
     }
 }
-/*********************Regist*****************************/
+/********************************************************/
 
+/*********************Regist*****************************/
+function toRegist(){
+	var account = $("#account-regist").val().trim();
+	if(account==""){
+		tooltip("account-regist","账号不能为空")
+		return;
+	}else{
+		$('#account-regist').tooltip('destroy');
+	}
+	var email = $("#email-regist").val().trim();
+	if(email==""){
+		tooltip("email-regist","邮箱不能为空")
+		return;
+	}else{
+		$('#email-regist').tooltip('destroy');
+	}
+	var password = $("#password-regist").val().trim();
+	if(password==""){
+		tooltip("password-regist","密码不能为空")
+		return;
+	}else{
+		$('#password-regist').tooltip('destroy');
+	}
+	var confirmPwd = $("#confirmPwd").val().trim();
+	if(confirmPwd!=password){
+		tooltip("confirmPwd","密码输入不一致")
+	}else{
+		$('#confirmPwd').tooltip('destroy');
+	}
+	if(verifyCode==-1){
+		tooltip("captcha-regist","请点击验证码验证")
+		return;
+	}else if(verifyCode==0){
+		tooltip("captcha-regist","验证不正确")
+		return;
+	}else{
+		$('#captcha-regist').tooltip('destroy');
+	}
+	submitRegist();
+}
+function submitRegist(){
+	var data = $(".regist-form").serializeArray();
+	var url = basePath + "rest/userAction/regist";
+	$.ajax({
+		url:url,
+		dataType:"json",
+		type:"post",
+		data:data,
+		success:function(json){
+			if(json.success){
+				var msg = json.data;
+				if(msg!="注册成功"){
+					$("#regist-alert").show();
+					$("#regist-msg").html(msg);
+					console.log(msg)
+				}else{
+					window.location.href = basePath;
+				}
+			}
+		}
+	});
+}

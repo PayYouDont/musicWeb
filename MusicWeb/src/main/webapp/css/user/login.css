@@ -3,40 +3,29 @@ body{
 	background: url("../images/bg4.jpg") no-repeat 0 0;
 }
 .main{
-	margin-top:200px;
+	margin-left:calc((100% - (440px))/2);
 }
 .login{
-	margin-left:calc((100% - (400px))/2);
-	width:400px;
-	height: 300px;
+	margin-top:200px;
+	width:440px; 
+	height: 350px;
 	border:1px solid #c1c1c1;
 	background-color:rgba(255,255,255,0.8);
 }
 .login-form,.regist-form{
 	margin-top: 50px;
 }
-#login-alert{
+#login-alert,#regist-alert{
 	display: none;
 	text-align: center;
 }
-.login-btn{
+.login-btn,.regist-btn{
 	height: 40px;
 }
-.to-regist{
-	margin-left:330px;
-}
 .regist{
-	margin-left:calc((100% - (800px))/2);
-	width:800px;
-	height: 350px;
+	margin-top:100px;
+	width:440px;
+	height: 561px;
 	border:1px solid #c1c1c1;
 	background-color:rgba(255,255,255,0.8);
-}
-.regist-form .form-group{
-	width:350px;
-	margin-left:33px;
-	margin-top: 10px;
-}
-.regist-form .form-control{
-	width:calc(100% - (50px));
 }
