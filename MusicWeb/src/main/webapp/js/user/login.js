@@ -282,8 +282,11 @@ function submitRegist(){
 		data:data,
 		success:function(json){
 			if(json.success){
-				var msg = json.data;
+				var data = json.data;
+				var msg = json.msg;
+				console.log(json)
 				if(msg!="注册成功"){
+					tooltip(data,msg)
 					$("#regist-alert").show();
 					$("#regist-msg").html(msg);
 					console.log(msg)

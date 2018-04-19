@@ -18,4 +18,6 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
     
     User findByAccount(@Param("account")String account);
+    
+    User findByEmail(@Param("email")String email);
 }

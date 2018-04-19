@@ -1,5 +1,7 @@
 package music.user.entity;
 
+import java.util.Date;
+
 public class User {
     private Integer id;
 
@@ -13,9 +15,17 @@ public class User {
 
     private String phone;
 
-    private Integer status;
+    private Byte status;
 
     private String email;
+
+    private String token;
+
+    private Date activatetime;
+
+    private Date createdate;
+
+    private Date updatedate;
 
     public Integer getId() {
         return id;
@@ -65,11 +75,11 @@ public class User {
         this.phone = phone;
     }
 
-    public Integer getStatus() {
+    public Byte getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Byte status) {
         this.status = status;
     }
 
@@ -81,10 +91,43 @@ public class User {
         this.email = email;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Date getActivatetime() {
+        return activatetime;
+    }
+
+    public void setActivatetime(Date activatetime) {
+        this.activatetime = activatetime;
+    }
+
+    public Date getCreatedate() {
+        return createdate;
+    }
+
+    public void setCreatedate(Date createdate) {
+        this.createdate = createdate;
+    }
+
+    public Date getUpdatedate() {
+        return updatedate;
+    }
+
+    public void setUpdatedate(Date updatedate) {
+        this.updatedate = updatedate;
+    }
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", account=" + account + ", password=" + password + ", nick=" + nick + ", name="
-				+ name + ", phone=" + phone + ", status=" + status + ", email=" + email + "]";
+				+ name + ", phone=" + phone + ", status=" + status + ", email=" + email + ", token=" + token
+				+ ", activatetime=" + activatetime + ", createdate=" + createdate + ", updatedate=" + updatedate + "]";
 	}
     
 }

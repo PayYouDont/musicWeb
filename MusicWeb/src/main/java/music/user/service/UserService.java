@@ -37,6 +37,10 @@ public class UserService {
 		return dao.insertSelective(user);
 	}
 	
+	public User findByEmail(String email) {
+		User user = dao.findByEmail(email);
+		return user;
+	}
 	public Integer checkValidate(HttpServletRequest request) {
 		GeetestLib gtSdk = new GeetestLib(GeetestConfig.getGeetest_id(), GeetestConfig.getGeetest_key(), 
 		GeetestConfig.isnewfailback());

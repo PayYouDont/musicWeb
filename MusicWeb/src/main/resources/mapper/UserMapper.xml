@@ -8,11 +8,16 @@
     <result column="nick" jdbcType="VARCHAR" property="nick" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="status" jdbcType="TINYINT" property="status" />
     <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="token" jdbcType="VARCHAR" property="token" />
+    <result column="activatetime" jdbcType="TIMESTAMP" property="activatetime" />
+    <result column="createdate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="updatedate" jdbcType="TIMESTAMP" property="updatedate" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, account, password, nick, name, phone, status, email
+    id, account, password, nick, name, phone, status, email, token, activatetime, createdate, 
+    updatedate
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -30,10 +35,14 @@
     </selectKey>
     insert into user (id, account, password, 
       nick, name, phone, 
-      status, email)
+      status, email, token, 
+      activatetime, createdate, updatedate
+      )
     values (#{id,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{nick,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR})
+      #{status,jdbcType=TINYINT}, #{email,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, 
+      #{activatetime,jdbcType=TIMESTAMP}, #{createdate,jdbcType=TIMESTAMP}, #{updatedate,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="music.user.entity.User">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -63,6 +72,18 @@
       <if test="email != null">
         email,
       </if>
+      <if test="token != null">
+        token,
+      </if>
+      <if test="activatetime != null">
+        activatetime,
+      </if>
+      <if test="createdate != null">
+        createdate,
+      </if>
+      <if test="updatedate != null">
+        updatedate,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       #{id,jdbcType=INTEGER},
@@ -82,10 +103,22 @@
         #{phone,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        #{status,jdbcType=INTEGER},
+        #{status,jdbcType=TINYINT},
       </if>
       <if test="email != null">
         #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null">
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="activatetime != null">
+        #{activatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedate != null">
+        #{updatedate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -108,10 +141,22 @@
         phone = #{phone,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        status = #{status,jdbcType=INTEGER},
+        status = #{status,jdbcType=TINYINT},
       </if>
       <if test="email != null">
         email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null">
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="activatetime != null">
+        activatetime = #{activatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdate != null">
+        createdate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedate != null">
+        updatedate = #{updatedate,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -123,8 +168,12 @@
       nick = #{nick,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
-      status = #{status,jdbcType=INTEGER},
-      email = #{email,jdbcType=VARCHAR}
+      status = #{status,jdbcType=TINYINT},
+      email = #{email,jdbcType=VARCHAR},
+      token = #{token,jdbcType=VARCHAR},
+      activatetime = #{activatetime,jdbcType=TIMESTAMP},
+      createdate = #{createdate,jdbcType=TIMESTAMP},
+      updatedate = #{updatedate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="findByAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -132,5 +181,11 @@
     <include refid="Base_Column_List" />
     from user
     where account = #{account,jdbcType=VARCHAR}
+  </select>
+  <select id="findByEmail" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where email = #{email,jdbcType=VARCHAR}
   </select>
 </mapper>
