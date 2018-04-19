@@ -13,6 +13,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.SimpleEmail;
+
 import music.user.entity.User;
 
 public class EmailUtil {
@@ -26,7 +29,7 @@ public class EmailUtil {
     public static final String HOST = "smtp.163.com";
     public static final String SMTP = "smtp";
     
-    public static User activateMail(HttpServletRequest request,User user) throws AddressException, NoSuchAlgorithmException, MessagingException{
+    public static User activateMail(HttpServletRequest request,User user) throws EmailException{
     	//注册邮箱
         String to  = user.getEmail();
         //当前时间戳
@@ -41,9 +44,11 @@ public class EmailUtil {
         //项目主页
         String path = request.getContextPath();
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()+ path + "/";
-        String content = "<p>您好<br><br>欢迎注册you-music!<br><br>帐户需要激活才能使用，赶紧激活成为you-music正式的一员吧:)<br><br>请在24小时内点击下面的链接立即激活帐户："
-                +"<br><a href='"+basePath+"/rest/userAction/activatemail/?token="+token+"&email="+to+"'>"
-                +basePath+"/rest/userAction/activatemail/?token="+token+"&email="+to+"</a></p>";
+        String content = "您好"
+        		+ "欢迎注册you-music!"
+        		+ "帐户需要激活才能使用，赶紧激活成为you-music正式的一员吧:)"
+        		+ "请在24小时内点击下面的链接立即激活帐户:"
+        		+ basePath+"rest/userAction/activatemail/?token="+token+"&email="+to+"";
        //调用发送邮箱服务
         sendMail(to, TITLE, content);
         return user;
@@ -61,7 +66,7 @@ public class EmailUtil {
      * @author peiyongdong
      * @date 2018年4月19日 下午2:49:14
      */
-    public static void sendMail(String to,String title,String content) throws AddressException, MessagingException {
+    public static void send163Mail(String to,String title,String content) throws AddressException, MessagingException {
     	//加载一个配置文件  
         Properties props = new Properties(); 
         // 使用smtp：简单邮件传输协议  
@@ -96,5 +101,27 @@ public class EmailUtil {
         //发送邮件,其中第二个参数是所有已设好的收件人地址  
         transport.sendMessage(message, message.getAllRecipients());
         transport.close();  
+    }
+    public static void sendMail(String to,String title,String content) throws EmailException{
+    	SimpleEmail mail = new SimpleEmail();  
+    	 //设置邮箱服务器信息  
+        mail.setSslSmtpPort("25");
+        mail.setHostName(HOST);  
+        //设置密码验证器  
+        mail.setAuthentication(FROM,PWD);  
+        // 设置邮件发送者  
+        mail.setFrom(FROM);
+        // 设置邮件接收者  
+        mail.addTo(to); 
+        // 设置邮件编码  
+        mail.setCharset("UTF-8");  
+        // 设置邮件主题  
+        mail.setSubject(title);  
+        // 设置邮件内容  
+        mail.setMsg(content); 
+    	// 设置邮件发送时间  
+        mail.setSentDate(new Date()); 
+        // 发送邮件  
+        mail.send();
     }
 }
