@@ -880,3 +880,6 @@ animation: .7s ease 0.1s normal both 1 fadeIn;
 	text-align: center;
 	margin-top: 10px;
 }
+.user-menu{
+	min-width: 0;
+}

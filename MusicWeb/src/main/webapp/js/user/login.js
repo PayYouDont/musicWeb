@@ -97,8 +97,10 @@ function initVerify(){
 	    }
 	})
 }
-
+//提交登录
 function submitLogin(){
+	// 加载层
+	var index = layer.load(); // 0代表加载的风格，支持0-2
 	var data = $(".login-form").serializeArray();
 	var geetest_challenge = validateObj.geetest_challenge;
 	var geetest_validate = validateObj.geetest_validate;
@@ -116,18 +118,21 @@ function submitLogin(){
 		data:data,
 		success:function(json){
 			if(json.success){
-				var msg = json.data;
-				console.log(msg)
+				var data = json.data;
+				var msg = json.msg;
 				if(msg!="登录成功"){
+					tooltip(data,msg)
 					$("#login-alert").show();
 					$("#login-msg").html(msg);
+					layer.close(index);
 				}else{
 					var ischeck = $("#reme").is(":checked");
 					if(ischeck){
 						var cookie = new rememberPassword();
 					    cookie.cookieRemeber();
 					}
-					window.location.href = basePath;
+					var nick = data.nick
+					window.location.href = basePath+"?nick="+nick;
 				}
 			}
 		}
@@ -288,12 +293,10 @@ function submitRegist(){
 			if(json.success){
 				var data = json.data;
 				var msg = json.msg;
-				console.log(json)
 				if(msg!="注册成功"){
 					tooltip(data,msg)
 					$("#regist-alert").show();
 					$("#regist-msg").html(msg);
-					console.log(msg)
 					layer.close(index);
 				}else{
 					window.location.href = basePath;

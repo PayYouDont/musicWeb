@@ -1,8 +1,10 @@
+<%@page import="music.util.SessionUtils"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
+	boolean isLogin = SessionUtils.getUser(request)==null?false:true;
 %>
 <!DOCTYPE HTML>
 <html lang="zh-CN">
@@ -15,6 +17,7 @@
 <title>you-music(有音乐)</title>
 <script>
 	var basePath  = '<%=basePath%>';
+	var isLogin = <%=isLogin%>;
 </script>
 <link rel="stylesheet" type="text/css" href="<%=basePath%>js/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="<%=basePath%>css/scroll.css">
@@ -57,7 +60,21 @@
 				      <input type="text" class="form-control searchTxt" placeholder="歌名或歌手名">
 				    </div>
 				</div>
-				<button type="button" class="btn btn-default navbar-btn navbar-right" onclick="Login()">登录</button>
+				<button type="button" id="login-btn" class="btn btn-default navbar-btn navbar-right" onclick="Login()">登录</button>
+				<div class="dropdown navbar-right" id="dropdown">
+					您好:
+				  <button class="btn btn-default navbar-btn dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+				    <span id="usernick"></span>
+				    <span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu user-menu" aria-labelledby="dropdownMenu1">
+				    <li><a href="#">个人中心</a></li>
+				    <li><a href="#">我的歌单</a></li>
+				    <li><a href="#">我喜欢的</a></li>
+				    <li role="separator" class="divider"></li>
+				    <li><a onclick="toLogout()">注销</a></li>
+				  </ul>
+				</div>
 			</div>
 		</div>
 	</nav>

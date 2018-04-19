@@ -12,6 +12,15 @@ var songList = new Array();
 var HIGHQUALITY = 0;
 
 $(function() {
+	if(isLogin){
+		var nick = getUrlParam("nick");
+		$("#login-btn").hide();
+		$("#dropdown").show();
+		$("#usernick").text(nick);
+	}else{
+		$("#login-btn").show();
+		$("#dropdown").hide();
+	}
 	initSongList();
 	searchMusicByKey();
 	toLogin();
@@ -136,6 +145,28 @@ function toLogin() {
 		window.location.href = basePath + "rest/userAction/toLogin";
 	})
 }
+
+//注销
+function toLogout(){
+	layer.confirm('确定要退出吗？', {
+		  btn: ['确定','取消'] //按钮
+		}, function(){
+			var url = basePath + "rest/userAction/toLogout";
+			$.ajax({
+				url : url,
+				type : "post",
+				dataType : "json",
+				success : function(json) {
+					if(json.success){
+						layer.msg('已退出', {icon: 1},function(){
+							window.location.href = basePath;
+						});
+					}
+				}
+			});
+		});
+}
+
 // 键盘回车搜索
 function searchMusicByKey() {
 	$(".searchTxt").keydown(function(e) {

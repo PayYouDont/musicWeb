@@ -89,7 +89,7 @@ public class UserAction {
 			return JsonWrapper.successWrapper("fail","该账号已被禁用");
 		}
 		SessionUtils.setUser(request, result);
-		return JsonWrapper.successWrapper("success","登录成功");
+		return JsonWrapper.successWrapper(result,"登录成功");
 	}
 	
 	@RequestMapping("/regist")
@@ -199,6 +199,11 @@ public class UserAction {
 			e.printStackTrace();
 			return JsonWrapper.successWrapper("网络异常,请稍后再试");
 		}
-		
+	}
+	@RequestMapping("/toLogout")
+	@ResponseBody
+	public HashMap<String,Object> toLogout(HttpServletRequest request){
+		SessionUtils.removeUser(request);
+		return JsonWrapper.successWrapper("退出成功");
 	}
 }
