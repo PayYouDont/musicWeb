@@ -1,6 +1,5 @@
 package music.util;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Properties;
 
@@ -44,18 +43,19 @@ public class EmailUtil {
         //项目主页
         String path = request.getContextPath();
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()+ path + "/";
-        String content = "您好"
-        		+ "欢迎注册you-music!"
-        		+ "帐户需要激活才能使用，赶紧激活成为you-music正式的一员吧:)"
-        		+ "请在24小时内点击下面的链接立即激活帐户:"
-        		+ basePath+"rest/userAction/activatemail/?token="+token+"&email="+to+"";
+        String content = "<p><b>您好</b><br><br>欢迎注册you-music!<br><br>"
+        		+ "帐户需要激活才能使用，赶紧激活成为you-music正式的一员吧:)<br><br>"
+        		+ "请在24小时内点击下面的链接立即激活帐户：<br>"
+        		+ "<a href='"+basePath+"rest/userAction/activatemail/?token="+token+"&email="+to+"'>"
+        		+ basePath+"rest/userAction/activatemail/?token="+token+"&email="+to+"</a><br><br>"
+        		+ "<b>系统邮件，请勿回复!</b></p>";
        //调用发送邮箱服务
         sendMail(to, TITLE, content);
         return user;
     }
     /**
      * @Title: sendMail 
-     * @Description: TODO(发送邮件) 
+     * @Description: TODO(发送163邮件) 
      * @param @param to
      * @param @param title
      * @param @param content
@@ -102,6 +102,14 @@ public class EmailUtil {
         transport.sendMessage(message, message.getAllRecipients());
         transport.close();  
     }
+    
+    /**
+     * 发送邮件
+     * @param to
+     * @param title
+     * @param content
+     * @throws EmailException
+     */
     public static void sendMail(String to,String title,String content) throws EmailException{
     	SimpleEmail mail = new SimpleEmail();  
     	 //设置邮箱服务器信息  
@@ -118,7 +126,7 @@ public class EmailUtil {
         // 设置邮件主题  
         mail.setSubject(title);  
         // 设置邮件内容  
-        mail.setMsg(content); 
+        mail.setContent(content,"text/html;charset=utf-8");
     	// 设置邮件发送时间  
         mail.setSentDate(new Date()); 
         // 发送邮件  

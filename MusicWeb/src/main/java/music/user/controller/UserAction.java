@@ -171,6 +171,9 @@ public class UserAction {
         if(status==-1) {
         	return JsonWrapper.successWrapper("该账号已被禁用");
         }
+        if(status==1) {
+        	return JsonWrapper.successWrapper("该账号已激活");
+        }
         Long activatetime = user.getActivatetime().getTime();
         if(time-activatetime>0) {//激活时间大于一天
         	try {
