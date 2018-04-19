@@ -131,6 +131,7 @@ public class UserAction {
 			EmailUtil.activateMail(request, user);
 		} catch (Exception e) {
 			e.printStackTrace();
+			loger.error(e.getMessage(),e);
 			return JsonWrapper.successWrapper("email-regist","邮箱验证失败");
 		}
 		password = Md5Util.MD5(password);

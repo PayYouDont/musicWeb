@@ -22,12 +22,14 @@ public class EmailUtil {
 	public static final String FROM = "you_music@163.com";
 	//发件人密码--邮箱密码
     public static final String PWD = "px72131020";
+    public static final String PORT = "465";
+    public static final String HOST ="smtp.163.com";
     //激活邮件过期时间24小时
     public static final int TIMELIMIT = 1000*60*60*24; 
+   
     public static final String TITLE = "you-music账户激活邮件";
-    public static final String HOST = "smtp.163.com";
-    public static final String SMTP = "smtp";
     
+    public static final String SMTP = "SMTP";
     public static User activateMail(HttpServletRequest request,User user) throws EmailException{
     	//注册邮箱
         String to  = user.getEmail();
@@ -50,7 +52,7 @@ public class EmailUtil {
         		+ basePath+"rest/userAction/activatemail/?token="+token+"&email="+to+"</a><br><br>"
         		+ "<b>系统邮件，请勿回复!</b></p>";
        //调用发送邮箱服务
-        sendMail(to, TITLE, content);
+        EmailUtil.sendMail(to, TITLE, content);
         return user;
     }
     /**
@@ -97,7 +99,7 @@ public class EmailUtil {
         //发送邮件  
         Transport transport = session.getTransport(SMTP);  
         //Transport transport = session.getTransport();  
-        transport.connect(FROM, PWD);
+        transport.connect(FROM,PWD);
         //发送邮件,其中第二个参数是所有已设好的收件人地址  
         transport.sendMessage(message, message.getAllRecipients());
         transport.close();  
@@ -113,12 +115,13 @@ public class EmailUtil {
     public static void sendMail(String to,String title,String content) throws EmailException{
     	SimpleEmail mail = new SimpleEmail();  
     	 //设置邮箱服务器信息  
-        mail.setSslSmtpPort("25");
+        mail.setSmtpPort(465);
+        mail.setSSLOnConnect(true);
         mail.setHostName(HOST);  
         //设置密码验证器  
         mail.setAuthentication(FROM,PWD);  
         // 设置邮件发送者  
-        mail.setFrom(FROM);
+        mail.setFrom(EmailUtil.FROM);
         // 设置邮件接收者  
         mail.addTo(to); 
         // 设置邮件编码  

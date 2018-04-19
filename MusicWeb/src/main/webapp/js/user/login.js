@@ -265,6 +265,10 @@ function toRegist(){
 	submitRegist();
 }
 function submitRegist(){
+	// 加载层
+	var index = layer.load(0, {
+		shade : false
+	}); // 0代表加载的风格，支持0-2
 	var data = $(".regist-form").serializeArray();
 	var geetest_challenge = validateObj.geetest_challenge;
 	var geetest_validate = validateObj.geetest_validate;
@@ -290,10 +294,14 @@ function submitRegist(){
 					$("#regist-alert").show();
 					$("#regist-msg").html(msg);
 					console.log(msg)
+					layer.close(index);
 				}else{
 					window.location.href = basePath;
 				}
 			}
+		},error:function(){
+			alert("网络异常，请稍后再试");
+			layer.close(index);
 		}
 	});
 }
