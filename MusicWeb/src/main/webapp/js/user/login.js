@@ -22,6 +22,7 @@ $(function () {
 })
 
 var verifyCode = -1;
+var validateObj;
 //登录
 function toLogin(){
 	var account = $("#account").val().trim();
@@ -81,6 +82,12 @@ function initVerify(){
 	        	 captchaObj.onReady(function(){
 	 	        	$(".wait").hide();
 	        	    }).onSuccess(function(){
+	        	    	var result = captchaObj.getValidate();
+	        	    	validateObj = {
+        	    			geetest_challenge: result.geetest_challenge,
+        	                geetest_validate: result.geetest_validate,
+        	                geetest_seccode: result.geetest_seccode
+	        	    	}
 	        	    	verifyCode = 1;
 	        	    }).onError(function(){
 	        	    	verifyCode = 0;
@@ -93,6 +100,14 @@ function initVerify(){
 
 function submitLogin(){
 	var data = $(".login-form").serializeArray();
+	var geetest_challenge = validateObj.geetest_challenge;
+	var geetest_validate = validateObj.geetest_validate;
+	var geetest_seccode = validateObj.geetest_seccode;
+	data.push({
+		geetest_challenge:geetest_challenge,
+		geetest_validate:geetest_validate,
+		geetest_seccode:geetest_seccode
+		});
 	var url = basePath + "rest/userAction/login";
 	$.ajax({
 		url:url,
@@ -102,6 +117,7 @@ function submitLogin(){
 		success:function(json){
 			if(json.success){
 				var msg = json.data;
+				console.log(msg)
 				if(msg!="登录成功"){
 					$("#login-alert").show();
 					$("#login-msg").html(msg);
@@ -250,6 +266,14 @@ function toRegist(){
 }
 function submitRegist(){
 	var data = $(".regist-form").serializeArray();
+	var geetest_challenge = validateObj.geetest_challenge;
+	var geetest_validate = validateObj.geetest_validate;
+	var geetest_seccode = validateObj.geetest_seccode;
+	data.push({
+		geetest_challenge:geetest_challenge,
+		geetest_validate:geetest_validate,
+		geetest_seccode:geetest_seccode
+		});
 	var url = basePath + "rest/userAction/regist";
 	$.ajax({
 		url:url,

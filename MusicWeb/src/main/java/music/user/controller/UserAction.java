@@ -14,9 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import music.user.entity.User;
 import music.user.service.UserService;
-import music.util.GeetestConfig;
-import music.util.GeetestLib;
 import music.util.JsonWrapper;
+import music.util.Md5Util;
 import music.util.SessionUtils;
 
 @Controller
@@ -75,8 +74,14 @@ public class UserAction {
 			return JsonWrapper.successWrapper("请输入6位以上的密码");
 		}
 		String rpassword = result.getPassword();
+		password = Md5Util.MD5(password);
 		if(!password.equals(rpassword)) {
 			return JsonWrapper.successWrapper("密码不正确");
+		}
+		int gtResult = serivec.checkValidate(request);
+		if (gtResult != 1) {
+			// 验证失败
+			return JsonWrapper.successWrapper("验证码不正确");
 		}
 		SessionUtils.setUser(request, result);
 		return JsonWrapper.successWrapper("登录成功");
@@ -104,6 +109,13 @@ public class UserAction {
 		if(!confirmPwd.equals(password)) {
 			return JsonWrapper.successWrapper("密码输入不一致");
 		}
+		int gtResult = serivec.checkValidate(request);
+		if (gtResult != 1) {
+			// 验证失败
+			return JsonWrapper.successWrapper("验证码不正确");
+		}
+		password = Md5Util.MD5(password);
+		user.setPassword(password);
 		try {
 			serivec.saveUser(user);
 			SessionUtils.setUser(request, user);
@@ -123,17 +135,7 @@ public class UserAction {
 	@RequestMapping("/initVerify")
 	@ResponseBody
 	public HashMap<String,Object> initVerify(HttpServletRequest request,HttpServletResponse response){
-		GeetestLib gtSdk = new GeetestLib(GeetestConfig.getGeetest_id(), GeetestConfig.getGeetest_key(), GeetestConfig.isnewfailback());
-		String resStr = "{}";
-		//自定义参数,可选择添加
-		HashMap<String, String> param = new HashMap<String, String>();
-		param.put("client_type", "web"); //web:电脑上的浏览器；h5:手机上的浏览器，包括移动应用内完全内置的web_view；native：通过原生SDK植入APP应用的方式
-		param.put("ip_address", "127.0.0.1"); //传输用户请求验证时所携带的IP
-		//进行验证预处理
-		int gtServerStatus = gtSdk.preProcess(param);
-		//将服务器状态设置到session中
-		request.getSession().setAttribute(gtSdk.gtServerStatusSessionKey, gtServerStatus);
-		resStr = gtSdk.getResponseStr();
+		String resStr = serivec.initVerify(request);
 		return JsonWrapper.successWrapper(resStr);
 	}
 }
