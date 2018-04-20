@@ -159,21 +159,23 @@ public class UserAction {
 		return JsonWrapper.successWrapper(resStr);
 	}
 	@RequestMapping("/activatemail")
-	@ResponseBody
-	public HashMap<String,Object>activatemail(HttpServletRequest request){
+	public String activatemail(HttpServletRequest request){
 		String email = request.getParameter("email");
         String token = request.getParameter("token");
         Long time = System.currentTimeMillis();
         User user = serivec.findByEmail(email);
         if(user==null) {
-        	return JsonWrapper.successWrapper("该邮箱未注册");
+        	request.setAttribute("activat","该邮箱未注册");
+        	return "user/activatemail";
         }
         Byte status = user.getStatus();
         if(status==-1) {
-        	return JsonWrapper.successWrapper("该账号已被禁用");
+        	request.setAttribute("activat","该账号已被禁用");
+        	return "user/activatemail";
         }
         if(status==1) {
-        	return JsonWrapper.successWrapper("该账号已激活");
+        	request.setAttribute("activat","该账号已激活");
+        	return "user/activatemail";
         }
         Long activatetime = user.getActivatetime().getTime();
         if(time-activatetime>0) {//激活时间大于一天
@@ -181,23 +183,28 @@ public class UserAction {
 				user = EmailUtil.activateMail(request, user);
 				//更新token和激活时间
 				serivec.saveUser(user);
-				return JsonWrapper.successWrapper("激活超时,请重新激活");
+				request.setAttribute("activat","激活超时,请重新激活");
+				return "user/activatemail";
 			} catch (Exception e) {
 				e.printStackTrace();
-				return JsonWrapper.failureWrapper("重新激活邮箱发送失败!");
+				request.setAttribute("activat","重新激活邮箱发送失败!");
+				return "user/activatemail";
 			}
         }
         if(!token.equals(user.getToken())) {
-        	return JsonWrapper.successWrapper("激活失败,激活码不正确");
+        	request.setAttribute("activat","激活失败,激活码不正确");
+        	return "user/activatemail";
         }
         //激活成功更改状态
         user.setStatus((byte)1);
         try {
 			serivec.saveUser(user);
-			return JsonWrapper.successWrapper("激活成功");
+			request.setAttribute("activat","激活成功");
+			return "user/activatemail";
 		} catch (Exception e) {
 			e.printStackTrace();
-			return JsonWrapper.successWrapper("网络异常,请稍后再试");
+			request.setAttribute("activat","网络异常,请稍后再试");
+			return "user/activatemail";
 		}
 	}
 	@RequestMapping("/toLogout")

@@ -49,7 +49,7 @@ public class EmailUtil {
         		+ "帐户需要激活才能使用，赶紧激活成为you-music正式的一员吧:)<br><br>"
         		+ "请在24小时内点击下面的链接立即激活帐户：<br>"
         		+ "<a href='"+basePath+"rest/userAction/activatemail/?token="+token+"&email="+to+"'>"
-        		+ basePath+"rest/userAction/activatemail/?token="+token+"&email="+to+"</a><br><br>"
+        		+ basePath+"rest/userAction/activatemail?token="+token+"&email="+to+"</a><br><br>"
         		+ "<b>系统邮件，请勿回复!</b></p>";
        //调用发送邮箱服务
         EmailUtil.sendMail(to, TITLE, content);
