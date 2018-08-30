@@ -28,7 +28,6 @@ $(function() {
 	jumpTime();
 });
 function Login(){
-	console.log("a")
 	window.location.href = basePath + "rest/userAction/toLogin";
 }
 // 初始化歌单
@@ -197,17 +196,28 @@ function searchMusic() {
 		},
 		dataType : "json",
 		success : function(json) {
+			console.log(json)
 			if (json.success) {
-				var data = JSON.parse(json.data)
+				var data;
+				try{
+					data = JSON.parse(json.data)
+				}catch(e){
+					data = json.data;
+					alert(data);
+					return
+				}
 				songList = data.data.song.list;
 				totalPages = Math.ceil(songList.length / count);
 				QueryPageToSearch(songList, 1)
 				initPage(totalPages, songList, "search");
 				start();
-				layer.close(index);
 			} else {
-				alert("没有搜索到")
+				alert(json.data)
 			}
+			layer.close(index);
+		},error:function(json){
+			layer.close(index);
+			alert(json)
 		}
 	})
 }

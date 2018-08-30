@@ -36,9 +36,10 @@ var warning = "本网站仅个人学习、研究使用，请勿用于商业用�
 
 function Warning(msg){
 	layer.open({
-		  title: '<span style="color:red;font-size:20px;">警告</span>',
-		  content: msg
-		});    
+		title: '<span style="color:red;font-size:20px;">警告</span>',
+		content: msg,
+		time:2000
+	});    
 }
 
 

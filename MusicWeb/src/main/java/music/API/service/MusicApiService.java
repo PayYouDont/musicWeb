@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Service;
 
+import music.util.UrlUtil;
+
 
 @Service("musicApiService")
 public class MusicApiService {
@@ -31,11 +33,24 @@ public class MusicApiService {
 	 * @author peiyongdong
 	 * @date 2017年12月6日 上午10:46:01
 	 */
-	public StringBuffer searchMusic(String name,Integer number) throws Exception{
-		String urlStr = "http://s.music.qq.com/fcgi-bin/music_search_new_platform?t=0&n="+number;
-		   	   urlStr += "&aggr=1&cr=1&loginUin=0&format=json&inCharset=GB2312&outCharset=utf-8&notice=0&platform=jqminiframe.json&needNewCode=0&p=1&catZhida=0&remoteplace=sizer.newclient.next_song&w="+name;
-	    StringBuffer sb = search(urlStr,"utf-8");
-		return sb;
+	public StringBuffer searchMusic(String name,Integer number){
+		String urlStr = "http://1s.music.qq.com/fcgi-bin/music_search_new_platform?t=0&n="+number;
+		  urlStr += "&aggr=1&cr=1&loginUin=0&format=json&inCharset=GB2312&outCharset=utf-8&notice=0&platform=jqminiframe.json&needNewCode=0&p=1&catZhida=0&remoteplace=sizer.newclient.next_song&w="+name;
+	    
+		StringBuffer sb;
+		try {
+			sb = search(urlStr,"utf-8");
+			return sb;
+		} catch (Exception e) {
+			urlStr = "http://120.78.80.106/musicweb/rest/musicApiAction/searchMusic?name="+name+"&number="+number;
+			try {
+				sb = search(urlStr);
+				return sb;
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+		return null;
 	}
 	/**
 	 * @Title: search 
@@ -56,8 +71,8 @@ public class MusicApiService {
 		connection.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36");
 		connection.setRequestProperty("referer","https://y.qq.com/portal/playlist.html");
 		connection.connect();// 连接会话 
-		
-		BufferedReader in = new BufferedReader( new InputStreamReader(connection.getInputStream(),encoding));   
+		InputStream is = connection.getInputStream();
+		BufferedReader in = new BufferedReader( new InputStreamReader(is,encoding));   
 		StringBuffer sb = new StringBuffer(); 
 	    String str = null;
 	    while((str = in.readLine()) != null) {
@@ -65,6 +80,10 @@ public class MusicApiService {
     	}
 	    in.close();
 		return sb;
+	}
+	public StringBuffer search(String urlStr) throws Exception{
+		String sb = UrlUtil.getList(urlStr);
+		return new StringBuffer(sb);
 	}
 	public void downLoad(HttpServletRequest request,HttpServletResponse response,String urlStr,String songName) throws IOException {
 		songName = songName+".mp3";

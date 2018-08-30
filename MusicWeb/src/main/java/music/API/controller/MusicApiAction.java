@@ -7,6 +7,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +19,7 @@ import music.util.JsonWrapper;
 @Controller
 @RequestMapping("/musicApiAction")
 public class MusicApiAction {
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Resource
 	private MusicApiService service;
 
@@ -42,8 +45,8 @@ public class MusicApiAction {
 			sb = service.searchMusic(name, number);
 			return JsonWrapper.successWrapper(sb);
 		} catch (Exception e) {
-			e.printStackTrace();
-			return JsonWrapper.failureWrapper("搜索失败");
+			logger.error(e.getMessage(),e);
+			return JsonWrapper.failureWrapper(e.getMessage(),e);
 		}
 	}
 
@@ -69,7 +72,7 @@ public class MusicApiAction {
 			sb = service.search(urlStr, "UTF-8");
 			return JsonWrapper.successWrapper(sb);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			return JsonWrapper.failureWrapper("获取失败");
 		}
 	}
@@ -98,7 +101,7 @@ public class MusicApiAction {
 			this.service.downLoad(request, response, url, songName);
 			return JsonWrapper.successWrapper(null, "下载成功");
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			return JsonWrapper.failureWrapper("下载失败");
 		}
 	}
@@ -113,7 +116,7 @@ public class MusicApiAction {
 			sb = service.getVkey(urlStr);
 			return JsonWrapper.successWrapper(sb);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			return JsonWrapper.failureWrapper("获取失败");
 		}
 	}
